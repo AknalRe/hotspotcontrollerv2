@@ -6,7 +6,7 @@ const urlWA2 = whatsapp.LINKWA2;
 const apikeyWA = whatsapp.APIKEYWA;
 const apikeyWA2 = whatsapp.APIKEYWA2;
 const idgrup = whatsapp.IDKOMUNITAS;
-console.log(APP_DEBUG, APP_ENV);
+// console.log(APP_DEBUG, APP_ENV);
 
 async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
     if (!APP_DEBUG && APP_ENV !== 'local') {
@@ -23,7 +23,7 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
     
         try {
             const response = await axios(options);
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
         } catch (err) {
             return KirimPesanWA2(nomorTujuan, pesan);
@@ -50,7 +50,7 @@ async function KirimPesanWA2(nomorTujuan, pesan) {
 
     try {
         const response = await axios(options);
-        console.log(response.data);
+        // // console.log(response.data);
         return response.data;
     } catch (err) {
         console.error(err);
@@ -80,7 +80,7 @@ async function kirimNotif(pesan) {
 
     try {
         const response = await axios(options);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (err) {
         console.error(err.response.data || err.message || err);
