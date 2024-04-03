@@ -47,7 +47,10 @@ module.exports = {
     moment,
     Mikrotik,
     MikrotikConfig,
+    APP_ENV,
+    APP_DEBUG,
     APP_NAME,
     APP_TITLE,
-    APP_AUTHOR
+    APP_AUTHOR,
+    APP_PORT
 }
