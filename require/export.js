@@ -1,4 +1,4 @@
-const { logg } = require('./main');
+const { logg, fs } = require('./main');
 
 const path = require('path');
 const XLSX = require('xlsx');
@@ -12,7 +12,7 @@ async function ExportXLSX(title, data) {
         const directoryPath = path.dirname(filePath);
     
         if (!fs.existsSync(directoryPath)) {
-        fs.mkdirSync(directoryPath, { recursive: true });
+            fs.mkdirSync(directoryPath, { recursive: true });
         }
     
         XLSX.writeFile(workbook, filePath);
