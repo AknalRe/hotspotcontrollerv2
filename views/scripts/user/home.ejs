@@ -1,0 +1,344 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const username = '<%= user_username %>';
+    // console.log(username);
+    const mikrotikstatus = '<%= mikrotik %>';
+    // console.log("Mikrotik :",mikrotikstatus);
+    function bytesToMegabytes(bytes) {
+        const megabytes = bytes / (1024 * 1024);
+        return megabytes;
+    }
+
+    const socket = io();
+    if (mikrotikstatus) {
+        const tombollogout = document.getElementById('btnlogoutuser');
+        toastToast(true, "", "Memproses mengambil info router")
+        socket.on('userhotspot', function (data) {
+            const hotspot = data.data;
+            // console.log(hotspot);
+            const tbody = document.querySelector('.custom-table-body-listhotspotuseraktif');
+            tbody.innerHTML = '';
+
+            if (hotspot && hotspot.length > 0) {
+                let count = 0;
+                hotspot.forEach(function (item) {
+                    if (item.user === username) {
+                        tombollogout.disabled = false;
+                        count++;
+
+                        const row = document.createElement('tr');
+
+                        const countCell = document.createElement('td');
+                        countCell.textContent = count + ".";
+                        countCell.style.width = '30px';
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = item.user;
+
+                        const divisiCell = document.createElement('td');
+                        divisiCell.textContent = item['mac-address'];
+
+                        const addressCell = document.createElement('td');
+                        addressCell.textContent = item.address;
+
+                        const pemakaianCell = document.createElement('td');
+                        const download = item["bytes-out"] > 0 ? formatkuota(item["bytes-out"]) : "0 Kbps";
+                        const upload = item["bytes-in"] > 0 ? formatkuota(item["bytes-in"]) : "0 Kbps";
+                        pemakaianCell.textContent = download + " / " + upload;
+                        pemakaianCell.style.color = (download.includes("GB") || upload.includes("GB")) ? "green" : "red";
+
+                        const actionCell = document.createElement('td');
+                        const nonaktifButton = document.createElement('button');
+                        nonaktifButton.classList.add('btn', 'btn-vpn-hapus', 'btn-danger');
+                        nonaktifButton.textContent = 'Logoutkan';
+                        nonaktifButton.style.margin = '5px';
+                        nonaktifButton.addEventListener('click', function () {
+                            logoutakunhotspot(item['.id'], item.user, item['mac-address']);
+                        });
+
+                        actionCell.appendChild(nonaktifButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(nameCell);
+                        row.appendChild(divisiCell);
+                        row.appendChild(addressCell);
+                        row.appendChild(pemakaianCell);
+                        row.appendChild(actionCell);
+
+                        tbody.appendChild(row);
+                    }
+                });
+
+                if (count === 0) {
+                    const row = document.createElement('tr');
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = "Tidak ada akun yang aktif";
+                    statusCell.style.textAlign = "center";
+                    statusCell.style.color = "red";
+                    statusCell.colSpan = 6;
+                    tombollogout.disabled = true;
+                    row.appendChild(statusCell);
+                    tbody.appendChild(row);
+                }
+            } else {
+                const row = document.createElement('tr');
+                const statusCell = document.createElement('td');
+                statusCell.textContent = "Tidak ada akun yang aktif";
+                statusCell.style.textAlign = "center";
+                statusCell.style.color = "red";
+                statusCell.colSpan = 6;
+                tombollogout.disabled = true;
+                row.appendChild(statusCell);
+                tbody.appendChild(row);
+            }
+        });
+
+    }
+</script>
+<script>
+    function listhotspot() {
+        return fetch('/listakunuser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data.data.length);
+                displayDataInTable(data.data);
+                return data;
+            })
+            .catch(error => {
+                console.log('Error:', error);
+                throw error;
+            });
+    }
+
+    listhotspot()
+        .then((result) => {
+            toastToast(result.success, '', result.message);
+        })
+        .catch((error) => {
+            console.error('Terjadi kesalahan:', error);
+        });
+
+    function displayDataInTable(data) {
+        // console.log(data);
+        const tbody = document.querySelector('.custom-table-body-listhotspotuser');
+        tbody.innerHTML = '';
+        let count = 0;
+
+        if (data && data.length > 0) {
+            data.forEach(item => {
+                if (item.name === username) {
+                    count++
+                    var row = document.createElement('tr');
+
+                    var countCell = document.createElement('td');
+                    countCell.textContent = count + ".";
+                    countCell.style.width = '30px';
+
+                    var nameCell = document.createElement('td');
+                    nameCell.textContent = item.name;
+
+                    var passwordCell = document.createElement('td');
+                    passwordCell.textContent = item.password;
+
+                    var pemakaianCell = document.createElement('td');
+                    if (item["bytes-in"] > 0 && item["bytes-out"] > 0) {
+                        let download = formatkuota(item["bytes-out"]);
+                        let upload = formatkuota(item["bytes-in"]);
+                        if (download.includes("GB") || upload.includes("GB")) {
+                            pemakaianCell.style.color = "green"
+                        }
+                        pemakaianCell.textContent = download + " / " + upload;
+                    } else {
+                        pemakaianCell.style.color = 'red';
+                        pemakaianCell.textContent = "Akun Belum Di Pakai";
+                    }
+
+                    var actionCell = document.createElement('td')
+                    // actionCell.textContent = "SOON";
+
+                    if (item.profile === 'default') {
+                        actionCell.textContent = "Akun Default";
+                    } else {
+                        var deleteButton = document.createElement('button');
+                        deleteButton.classList.add('btn', 'btn-vpn-hapus', 'btn-danger');
+                        deleteButton.textContent = 'Hapus';
+                        deleteButton.style.margin = '5px';
+                        deleteButton.addEventListener('click', function () {
+                            deleteakunhotspot(item['.id'], item.name);
+                        });
+
+                        var nonaktifkanButton = document.createElement('button');
+                        nonaktifkanButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-warning');
+                        nonaktifkanButton.textContent = item.disabled === "false" ? "Nonaktifkan" : "Aktifkan";
+                        nonaktifkanButton.style.margin = '5px';
+                        nonaktifkanButton.addEventListener('click', function () {
+                            nonaktifkanakunhotspot(item['.id'], item.disabled === "false" ? "true" : "false", item.name)
+                        })
+
+                        // var editForm = document.createElement('form');
+                        // editForm.method = 'GET';
+                        // editForm.action = `/editakunhotspot/${item['.id']}`;
+                        // var editButton = document.createElement('button');
+                        // editButton.style.margin = '5px';
+                        // editButton.type = 'submit';
+                        // editButton.textContent = 'Edit';
+                        // editButton.className = 'btn btn-primary';
+                        // editForm.appendChild(editButton);
+
+                        var editButton = document.createElement('button');
+                        editButton.classList.add('btn', 'btn-primary');
+                        editButton.textContent = 'Edit';
+                        editButton.style.margin = '5px';
+                        editButton.addEventListener('click', function () {
+                            editButton.disabled = true;
+                            editakunhotspot(item['.id'], item, function () {
+                                editButton.disabled = false;
+                            });
+                        })
+
+                        // actionCell.appendChild(deleteButton);
+                        // actionCell.appendChild(nonaktifkanButton);
+                        // actionCell.appendChild(editForm);
+                        actionCell.appendChild(editButton);
+                    }
+
+                    row.appendChild(countCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(passwordCell);
+                    row.appendChild(pemakaianCell);
+                    row.appendChild(actionCell);
+
+                    tbody.appendChild(row);
+                }
+            });
+        }
+    }
+
+    function editakunhotspot(id, data, action) {
+        const dataentry = { id: "AkunHotspotUser", data: data };
+        showConfirmationModal(`Edit Data ${data.name}`, `Ubah data di bawah untuk mengedit akun hotspot`, dataentry, function (status) {
+            if (status) {
+                // Fungsi aksi dapat ditambahkan di sini jika diperlukan
+                const nameValue = document.querySelector('input[name="name"]').value;
+                const passwordValue = document.querySelector('input[name="password"]').value;
+
+                if (
+                    data.name == nameValue &&
+                    data.password == passwordValue
+                ) {
+                    action();
+                    return toastToast(false, '', "Tidak disimpan, karena tidak ada perubahan.");
+                }
+
+                const formData = {
+                    id: id,
+                    usernamelama: data.name,
+                    username: nameValue,
+                    password: passwordValue,
+                    jenisAkun: data.profile,
+                };
+
+                if (data.name == nameValue) {
+                    showConfirmationModal2(`Edit Data ${data.name}`, `Username sebelumnya (${data.name}) dengan data username sekarang (${nameValue}) tidak ada perubahan, ingin melanjutkan?`, "", function (status) {
+                        if (status) {
+                            // Mengirim permintaan POST menggunakan fetch API
+                            fetch('/editakunhotspot', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    toastToast(data.success, '', data.message);
+                                    if (data.success) {
+                                        listhotspot()
+                                            .then((result) => {
+                                                toastToast(result.success, '', "Berhasil memperbarui data");
+                                            })
+                                            .catch((error) => {
+                                                console.error('Terjadi kesalahan:', error);
+                                            });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                        }
+                    });
+                } else {
+                    // Mengirim permintaan POST menggunakan fetch API
+                    fetch('/editakunhotspot', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            toastToast(data.success, '', data.message);
+                            if (data.success) {
+                                listhotspot()
+                                    .then((result) => {
+                                        toastToast(result.success, '', "Berhasil memperbarui data");
+                                    })
+                                    .catch((error) => {
+                                        console.error('Terjadi kesalahan:', error);
+                                    });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+                action();
+            } else {
+                action();
+            }
+        }, "Batal", "Simpan");
+    }
+
+    function logoutakunhotspot(id, user, mac) {
+        console.log(id, user, mac);
+        showConfirmationModal(`Logout User ${user}`, `Anda yakin ingin melogout user ${user}?\nUser akan terputus koneksi internetnya.`, "", function (status) {
+            if (status) {
+                let formData;
+                if (id) {
+                    formData = {
+                        id: id,
+                        user: user,
+                        mac: mac
+                    }
+                } else {
+                    formData = {
+                        id: id,
+                        user: user,
+                        mac: mac
+                    }
+                }
+                fetch('/logoutuser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        toastToast(data.success, "", data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }, "Batal", "Yakin");
+    }
+</script>

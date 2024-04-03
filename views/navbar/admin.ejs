@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid align-items-center">
+        <a class="navbar-brand" href="/"><%= title %></a>
+        <div class="info-mikrotik">
+            <div class="icon-container align-items-center justify-content-center">
+                <div class="icons-container align-items-center d-flex text-align-center">
+                    <i class="fas fa-cogs"></i>
+                    <p class="mb-1.5" id="info-mikrotik-cpu"></p>
+                </div>
+                <div class="icons-container align-items-center d-flex text-align-center">
+                    <i class="fas fa-wifi"></i>
+                    <p class="mb-1.5" id="info-mikrotik-user-hotspot-aktif"></p>
+                </div>
+                <div class="icons-container align-items-center d-flex text-align-center">
+                    <i class="fas fa-memory"></i>
+                    <p class="mb-1.5" id="info-mikrotik-memory"></p>
+                </div>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto"> <!-- mx-auto to center the items horizontally -->
+                <li class="nav-item">
+                    <a class="nav-link <%= name_page.toLowerCase().includes('home') ? 'active-menu' : '' %>" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle <%= !name_page.toLowerCase().includes('home') ? 'active-menu' : '' %>" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Mikrotik
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/listakun">List Akun</a></li>
+                        <li><a class="dropdown-item" href="/listakunaktif">List Akun Aktif</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="nav-item">
+                <button class="btn nav-link" id="logoutButton" onclick="logout()"></button>
+            </div>
+        </div>
+    </div>
+</nav>

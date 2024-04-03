@@ -1,0 +1,31 @@
+<div class="homepage">
+    <div class="form-tambahakun-container">
+        <h5>Tambah Akun</h5>
+        <form id="tambahAkunForm" action="/tambahakunhotspot" method="POST">
+            <div class="row">
+                <div class="col">
+                    <div class="form-grup">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                </div>
+                <div class="col form-password" id="formpassword" >
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="text" class="form-control" id="password" name="password">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="jenisAkun">Jenis Akun:</label>
+                        <select class="form-control" id="jenisAkun" name="jenisAkun" required>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-tambah-hotspot">
+                    <button type="submit" class="btn btn-primary btn-tambah-akun">Tambah Akun</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

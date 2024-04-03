@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
+    <title><%= name_page %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/<%= style %>.css">
+    <!-- <script src=”/js/script.js”></script> -->
+</head>
+
+<body>
+    
+    <% if (!name_page.toLowerCase().includes('login')) { %>
+        <main>
+            <% if (user_role !== "Administrator" && user_role !== "Admin") { %>
+                <div class="pageuser">
+                    <%- include(page) %>
+                </div>
+                
+            <% } else { %>
+                <% try { %>
+                <%- include(navbar) %>
+                <% } catch (error) { %>
+                <% } %>
+
+                <div class="page">
+                    <div class="pageon">
+                        <%- include(page) %>
+                    </div>
+                </div>
+                
+            <% } %>
+
+            <div class="modal fade mt-4" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel"></h5>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirmMessage"></p>
+                            <div class="contentModal" id="contentModal" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmActionClose">Batal</button>
+                            <button type="button" class="btn btn-danger" id="confirmAction">Ya</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade mt-4" id="confirmModal2" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel2" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel2"></h5>
+                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirmMessage2"></p>
+                            <div class="contentModal" id="contentModal2" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmActionClose2">Batal</button>
+                            <button type="button" class="btn btn-danger" id="confirmAction2">Ya</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    <% } else { %>
+        <div class="page_login">
+            <%- include(page) %>
+        </div>
+    <% } %>
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" id="toast-container">
+    </div>
+
+    <%- include(footer) %>
+
+    <%- include(scriptglobal) %>
+    <%- include(scriptlocal) %>
+
+</body>
+
+</html>

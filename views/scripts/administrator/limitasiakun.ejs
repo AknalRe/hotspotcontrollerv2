@@ -1,0 +1,228 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const mikrotikstatus = '<%= mikrotik %>';
+    // console.log("Mikrotik :",mikrotikstatus);
+    function bytesToMegabytes(bytes) {
+        const megabytes = bytes / (1024 * 1024);
+        return megabytes;
+    }
+
+    const socket = io();
+    if (mikrotikstatus) {
+        toastToast(true, "", "Memproses mengambil info router")
+        socket.on('resource', function (data) {
+            // console.log(data.data[0]);
+            const resource = data.data[0];
+            document.getElementById("info-mikrotik-cpu").innerHTML = resource["cpu-load"] + "%";
+            document.getElementById("info-mikrotik-memory").innerHTML = bytesToMegabytes(resource["free-memory"]).toFixed(0) + "MB";
+        })
+
+        socket.on('userhotspot', function (data) {
+            const hotspot = data.data;
+            // console.log(hotspot);
+            document.getElementById("info-mikrotik-user-hotspot-aktif").innerHTML = hotspot.length;
+        })
+
+        socket.on('queuesimple', function (data) {
+            const queue = data.data;
+            // console.log(queue);
+            function hasParent(item) {
+                return item.parent !== "";
+            }
+
+            // Mengurutkan data berdasarkan keberadaan parent
+            // queue.sort((a, b) => {
+            //     const aHasParent = hasParent(a);
+            //     const bHasParent = hasParent(b);
+
+            //     // Memeriksa apakah kedua data memiliki parent
+            //     if (aHasParent && bHasParent) {
+            //         // Jika keduanya memiliki parent, urutkan berdasarkan parent
+            //         if (a.parent < b.parent) return -1;
+            //         if (a.parent > b.parent) return 1;
+            //     } else if (!aHasParent && !bHasParent) {
+            //         // Jika keduanya tidak memiliki parent, urutkan berdasarkan nama
+            //         if (a.name < b.name) return -1;
+            //         if (a.name > b.name) return 1;
+            //     } else {
+            //         // Jika hanya satu dari keduanya yang memiliki parent, letakkan yang tidak memiliki parent di atas
+            //         return aHasParent ? -1 : 1; // Memodifikasi pengurutan di sini
+            //     }
+
+            //     return 0;
+            // });
+            document.getElementById("header-info-limitasiakun-h5").innerHTML = "List Limitasi ( Queue Aktif : " + queue.filter(item => item.disabled === "false").length + " )";
+            var tbody = document.querySelector('.custom-table-body-listlimitasiakun');
+            tbody.innerHTML = '';
+            let count = 0;
+            let dataqueue = false;
+            if (queue && queue.length > 0) {
+                queue.forEach(function (item) {
+                    if (item.disabled === "false") {
+                        dataqueue = true;
+                        count++;
+                        var row = document.createElement('tr');
+
+                        var countCell = document.createElement('td');
+                        countCell.textContent = count + ".";
+                        countCell.style.width = '30px';
+
+                        var namaCell = document.createElement('td');
+                        namaCell.textContent = item.name;
+
+                        var targetCell = document.createElement('td');
+                        targetCell.textContent = item.target.replace("/32", "");
+
+                        var prioCell = document.createElement('td');
+                        prioCell.textContent = item.priority;
+
+                        var maxlimitCell = document.createElement('td');
+                        maxlimitCell.textContent = formatValue(item['max-limit']);
+
+                        var rates = item.rate.split("/");
+                        var uploadRate = parseFloat(rates[0]);
+                        var downloadRate = parseFloat(rates[1]);
+
+                        var pemakaianCell = document.createElement('td');
+
+                        var uploadSpeed, downloadSpeed;
+                        if (uploadRate >= 1000000) {
+                            pemakaianCell.style.color = "red";
+                            row.style.background = 'white';
+                            row.style.color = "black";
+                            uploadSpeed = (uploadRate / 1000000).toFixed(2) + " Mbps";
+                        } else {
+                            uploadSpeed = (uploadRate / 1000).toFixed(2) + " kbps";
+                        }
+
+                        if (downloadRate >= 1000000) {
+                            pemakaianCell.style.color = "red";
+                            row.style.background = 'white';
+                            row.style.color = "black";
+                            downloadSpeed = (downloadRate / 1000000).toFixed(2) + " Mbps";
+                        } else {
+                            downloadSpeed = (downloadRate / 1000).toFixed(2) + " kbps";
+                        }
+
+                        var formattedRate = uploadSpeed + " / " + downloadSpeed;
+                        pemakaianCell.textContent = formattedRate;
+
+                        var statusCell = document.createElement('td');
+                        statusCell.textContent = item.disabled == "false" ? "Aktif" : "Tidak Aktif";
+
+                        var actionCell = document.createElement('td');
+                        var LimitasiButton = document.createElement('button');
+                        LimitasiButton.classList.add('btn', 'btn-vpn-hapus', 'btn-danger');
+                        LimitasiButton.textContent = 'Edit';
+                        LimitasiButton.style.margin = '5px';
+                        LimitasiButton.addEventListener('click', function () {
+                            LimitasiButton.disabled = true;
+                            EditLimitasiQueue(item['.id'], item, function () {
+                                LimitasiButton.disabled = false;
+                            });
+                        });
+
+                        actionCell.appendChild(LimitasiButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(namaCell);
+                        row.appendChild(targetCell);
+                        row.appendChild(prioCell);
+                        row.appendChild(maxlimitCell);
+                        row.appendChild(pemakaianCell);
+                        row.append(statusCell);
+                        row.appendChild(actionCell);
+                        tbody.appendChild(row);
+                    }
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function EditLimitasiQueue(id, data, action) {
+        const dataentry = { id: "LimitasiAkun", data: data };
+        showConfirmationModal(`Edit Limitasi ${data.name}`, `Mengedit limitasi ${data.name} :`, dataentry, function (status) {
+            if (status) {
+                const prioritas = document.querySelector('input[name="priority"]').value;
+                const maxlimit = document.querySelector('input[name="max-limit"]').value;
+                // console.log(prioritas);
+                // console.log(maxlimit);
+                // console.log(data.priority);
+                // console.log(data["max-limit"]);
+                // console.log(data);
+
+                if (
+                    prioritas === data.priority &&
+                    maxlimit === data["max-limit"]
+                ) {
+                    action();
+                    return toastToast(false, '', "Tidak disimpan, karena tidak ada perubahan.");
+                }
+
+                const formData = {
+                    id: id,
+                    nama: data.name,
+                    priority: prioritas,
+                    maxlimit: maxlimit,
+                };
+                fetch('/limitasiakun', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        toastToast(data.success, '', data.message);
+                        if (data.success) {
+                            toastToast(data.success, '', `Mohon ditunggu sebentar, untuk penerapan perubahan data`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                action();
+            } else {
+                action();
+            }
+        });
+
+        // Mendengarkan perubahan pada input prioritas
+        document.getElementById('form-modal-priority').addEventListener('input', function () {
+            updateNilai('priority', 'p-priority');
+        });
+
+        // Mendengarkan perubahan pada input batas maksimum
+        document.getElementById('form-modal-max-limit').addEventListener('input', function () {
+            updateNilai('max-limit', 'p-max-limit');
+        });
+
+        // Fungsi untuk mengupdate nilai pada elemen <p> yang sesuai
+        function updateNilai(inputName, spanId) {
+            const inputValue = document.getElementById(`form-modal-${inputName}`).value;
+            const nilaiSpan = document.getElementById(spanId);
+            const upvalue = "- Upload : " + konversi(inputName, inputValue.split("/")[0]);
+            const downvalue = "- Download : " + konversi(inputName, inputValue.split("/")[1]);
+            nilaiSpan.innerHTML = "Nilai :<br>" + upvalue + "<br>" + downvalue;
+        }
+
+        function konversi(key, value) {
+            if (key === "max-limit") {
+                if (value >= 1000000000) {
+                    return (value / 1000000000) + " Gbps";
+                } else if (value >= 1000000) {
+                    return (value / 1000000) + " Mbps";
+                } else if (value >= 1000) {
+                    return (value / 1000) + " Kbps";
+                } else {
+                    return value + " bps";
+                }
+            } else {
+                return value;
+            }
+        }
+    }
+</script>

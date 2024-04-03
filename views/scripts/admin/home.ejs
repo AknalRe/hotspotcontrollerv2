@@ -1,0 +1,119 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const mikrotikstatus = '<%= mikrotik %>';
+    // console.log("Mikrotik :",mikrotikstatus);
+    function bytesToMegabytes(bytes) {
+        const megabytes = bytes / (1024 * 1024);
+        return megabytes;
+    }
+
+    const socket = io();
+    if (mikrotikstatus) {
+        toastToast(true, "", "Memproses mengambil info router")
+        socket.on('resource', function(data) {
+            // console.log(data.data[0]);
+            const resource = data.data[0];
+            document.getElementById("info-mikrotik-cpu").innerHTML = resource["cpu-load"] + "%";
+            document.getElementById("info-mikrotik-memory").innerHTML = bytesToMegabytes(resource["free-memory"]).toFixed(0) + "MB";
+        })
+
+        socket.on('userhotspot', function(data) {
+            const hotspot = data.data;
+            // console.log(hotspot);
+            document.getElementById("info-mikrotik-user-hotspot-aktif").innerHTML = hotspot.length;
+        })
+    }
+</script>
+<script>
+    updateJenisAkunOptions()
+
+    function updateJenisAkunOptions() {
+        toastToast(true, "", "Memproses ambil data jenis akun");
+        fetch('/infoprofilhotspot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Hapus semua opsi saat ini
+                // console.log(data.response)
+                toastToast(true, "", "Data jenis akun didapatkan");
+                const selectElement = document.getElementById('jenisAkun');
+                selectElement.innerHTML = "";
+                data.response.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.textContent = option.name;
+                    optionElement.value = option.name;
+                    selectElement.appendChild(optionElement);
+                });
+                togglePasswordVisibility();
+            })
+            .catch(error => {
+                toastToast(true, "", "Gagal Mendapatkan data jenis akun");
+                console.log('Error:', error);
+            });
+    }
+
+    function togglePasswordVisibility() {
+        var jenisAkun = document.getElementById("jenisAkun");
+        var passwordField = document.getElementById("formpassword");
+        if (jenisAkun.value.toLowerCase().includes("tamu")) {
+            passwordField.style.display = "none";
+        } else {
+            passwordField.style.display = "block";
+        }
+    }
+
+    document.getElementById("jenisAkun").addEventListener("change", function () {
+        togglePasswordVisibility();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            const jenisAkun = document.getElementById('jenisAkun').value;
+            // if (!password) {
+            //     password = username;
+            // }
+            if (!username) {
+                return toastToast(false, "", "Silakan mengisikan username akun");
+            }
+
+            const formData = {
+                username: username,
+                jenisAkun: jenisAkun,
+                password: password,
+            }
+            fetch('/tambahakunhotspot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    toastToast(data.success, data.title, data.successwa == true ? `${data.message} & Berhasil mengirimkan pesan whatsapp` : data.message);
+                    if (data.success) {
+                        document.getElementById('username').value = '';
+                        document.getElementById('password').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    })
+
+    try {    
+        var iconContainer = document.getElementById('info-mikrotik');
+        iconContainer.style.display = 'none';
+    } catch (e) {
+    }
+
+</script>

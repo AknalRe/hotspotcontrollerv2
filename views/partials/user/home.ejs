@@ -1,0 +1,50 @@
+<div class="homepage">
+    <div class="header-info">
+        <h2>Halo <%= user_username %></h2>
+        <button class="btn btn-primary" id="logoutButton" onclick="logout()"></button>
+    </div>
+    <div class="containerusers">
+        <div class="containeruser">
+            <div class="header-info">
+                <h4>User Akun Aktif</h4>
+                <button class="btn btn-danger" id="btnlogoutuser" onclick="logoutakunhotspot('', '<%= user_username %>', '')">Logout User Hotspot</button>
+            </div>
+            <div class="tablediv table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table-list">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">No.</th>
+                            <th>Username</th>
+                            <th>Mac Address</th>
+                            <th>IP Address</th>
+                            <th>Pemakaian (Down/Up)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-table-body-listhotspotuseraktif">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="containeruser">
+            <div class="header-info">
+                <h4>Edit User Akun</h4>
+            </div>
+            <div class="tablediv table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table-list">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">No.</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Pemakaian (Down/Up)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="custom-table-body-listhotspotuser">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

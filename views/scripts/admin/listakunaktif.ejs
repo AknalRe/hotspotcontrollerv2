@@ -1,0 +1,202 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const mikrotikstatus = '<%= mikrotik %>';
+    // console.log("Mikrotik :",mikrotikstatus);
+    function bytesToMegabytes(bytes) {
+        const megabytes = bytes / (1024 * 1024);
+        return megabytes;
+    }
+
+    const socket = io();
+    if (mikrotikstatus) {
+        toastToast(true, "", "Memproses mengambil info router")
+        socket.on('resource', function (data) {
+            // console.log(data.data[0]);
+            const resource = data.data[0];
+            document.getElementById("info-mikrotik-cpu").innerHTML = resource["cpu-load"] + "%";
+            document.getElementById("info-mikrotik-memory").innerHTML = bytesToMegabytes(resource["free-memory"]).toFixed(0) + "MB";
+        })
+
+        socket.on('userhotspot', function (data) {
+            let count = 0;
+            const hotspot = data.data;
+            // console.log(hotspot);
+            document.getElementById("info-mikrotik-user-hotspot-aktif").innerHTML = hotspot.length;
+            document.getElementById("header-info-listakunaktif-h5").innerHTML = "List Akun Hotspot (" + hotspot.length + ")"
+            var tbody = document.querySelector('.custom-table-body-listhotspotuseraktif');
+            tbody.innerHTML = '';
+            if (data) {
+                if (Array.isArray(hotspot)) {
+                    hotspot.forEach(function (item) {
+                        count++;
+
+                        var row = document.createElement('tr');
+
+                        var countCell = document.createElement('td');
+                        countCell.textContent = count + ".";
+                        countCell.style.width = '30px';
+
+                        var nameCell = document.createElement('td');
+                        nameCell.textContent = item.user;
+
+                        var divisiCell = document.createElement('td');
+                        divisiCell.textContent = item.server;
+
+                        var addressCell = document.createElement('td');
+                        addressCell.textContent = item.address;
+
+                        var pemakaianCell = document.createElement('td');
+                        if (item["bytes-in"] > 0 && item["bytes-out"] > 0) {
+                            let download = formatkuota(item["bytes-out"]);
+                            let upload = formatkuota(item["bytes-in"]);
+                            if (download.includes("GB") || upload.includes("GB")) {
+                                pemakaianCell.style.color = "green"
+                            }
+                            pemakaianCell.textContent = download + " / " + upload;
+                        } else {
+                            pemakaianCell.style.color = 'red';
+                            pemakaianCell.textContent = "0 Kbps / 0 Kbps";
+                        }
+
+                        // var trafikCell = document.createElement('td');
+                        // trafikCell.textContent = "SOON"
+
+                        var actionCell = document.createElement('td');
+                        var nonaktifButton = document.createElement('button');
+                        nonaktifButton.classList.add('btn', 'btn-vpn-hapus', 'btn-danger');
+                        nonaktifButton.textContent = 'Logoutkan';
+                        nonaktifButton.style.margin = '5px';
+                        nonaktifButton.addEventListener('click', function () {
+                            logoutakunhotspot(item['.id'], item.user);
+                        });
+
+                        actionCell.appendChild(nonaktifButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(nameCell);
+                        row.appendChild(divisiCell);
+                        row.appendChild(addressCell);
+                        row.appendChild(pemakaianCell);
+                        // row.appendChild(trafikCell);
+                        row.appendChild(actionCell);
+
+                        tbody.appendChild(row);
+                    })
+                } else {
+                    count++;
+                    var row = document.createElement('tr');
+
+                    var countCell = document.createElement('td');
+                    countCell.textContent = count + ".";
+                    countCell.style.width = '30px';
+
+                    var nameCell = document.createElement('td');
+                    nameCell.textContent = data.user;
+
+                    var divisiCell = document.createElement('td');
+                    divisiCell.textContent = data.server;
+
+                    var addressCell = document.createElement('td');
+                    addressCell.textContent = data.address;
+
+                    var pemakaianCell = document.createElement('td');
+                    if (data["bytes-in"] > 0 && data["bytes-out"] > 0) {
+                        let download = formatkuota(data["bytes-out"]);
+                        let upload = formatkuota(data["bytes-in"]);
+                        if (download.includes("GB") || upload.includes("GB")) {
+                            pemakaianCell.style.color = "green";
+                        }
+                        pemakaianCell.textContent = download + " / " + upload;
+                    } else {
+                        pemakaianCell.style.color = 'red';
+                        pemakaianCell.textContent = "0 Kbps / 0 Kbps";
+                    }
+
+                    // var trafikCell = document.createElement('td');
+                    // trafikCell.textContent = "SOON"
+
+                    var actionCell = document.createElement('td');
+                    var nonaktifButton = document.createElement('button');
+                    nonaktifButton.classList.add('btn', 'btn-vpn-hapus', 'btn-danger');
+                    nonaktifButton.textContent = 'Logoutkan';
+                    nonaktifButton.style.margin = '5px';
+                    nonaktifButton.addEventListener('click', function () {
+                        logoutakunhotspot(data['.id'], data.user);
+                    });
+
+                    actionCell.appendChild(nonaktifButton)
+
+                    row.appendChild(countCell);
+                    row.appendChild(nameCell);
+                    row.appendChild(divisiCell);
+                    row.appendChild(addressCell);
+                    row.appendChild(pemakaianCell);
+                    // row.appendChild(trafikCell);
+                    row.appendChild(actionCell);
+
+                    tbody.appendChild(row);
+                }
+            } else {
+
+                var row = document.createElement('tr');
+                var statusCell = document.createElement('td');
+                statusCell.textContent = "Tidak ada akun yang aktif";
+                statusCell.style.textAlign = "center";
+                statusCell.style.color = "red";
+                statusCell.colSpan = 8;
+                infoaktif.textContent = "Tidak ada akun yang aktif";
+                row.appendChild(statusCell);
+                tbody.appendChild(row);
+            }
+
+        })
+    }
+</script>
+<script>
+    function logoutkansemua() {
+        showConfirmationModal(`Logout Semua User`, `Anda yakin ingin melogout semua user?\nUser akan terputus koneksi internetnya.`, "", function (status) {
+            if (status) {
+                fetch('/logoutkansemua', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        toastToast(data.success, "", data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
+    }
+
+    function logoutakunhotspot(id, nama) {
+        showConfirmationModal(`Logout User ${nama}`, `Anda yakin ingin melogout user ${nama}?\nUser akan terputus koneksi internetnya.`, "", function (status) {
+            if (status) {
+                const formData = {
+                    id: id,
+                    nama: nama,
+                }
+                fetch('/logoutakunhotspot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        toastToast(data.success, "", data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+    }
+</script>

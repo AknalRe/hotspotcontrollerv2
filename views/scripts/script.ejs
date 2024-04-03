@@ -1,0 +1,791 @@
+<script>
+    function getUcapan() {
+        const currentTime = new Date().getHours();
+        if (currentTime >= 5 && currentTime < 11) {
+            return "Pagi"
+        } else if (currentTime >= 11 && currentTime < 15) {
+            return "Siang"
+        } else if (currentTime >= 15 && currentTime < 17) {
+            return "Sore"
+        } else {
+            return "Malam"
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var footer = document.querySelector(".container-footer");
+        var contentHeight = document.body.scrollHeight;
+        var viewportHeight = document.documentElement.clientHeight;
+        // console.log("View Footer", footer.scrollHeight);
+        // console.log("View Content", contentHeight);
+        // console.log("View Viewvport",viewportHeight);
+
+        if (viewportHeight > 800 && contentHeight <= viewportHeight) {
+            footer.classList.add("show");
+        } else {
+            footer.classList.remove("show");
+        }
+
+
+        // <% if (typeof user_name !== 'undefined' && auth) { %>
+        //     const usernama = '<%= user_name %>';
+        //     const logoutButton = document.getElementById('logoutButton');
+        //     const ucapan = getUcapan();
+        //     const iconlogout = '<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 512 512"><path fill="#ff0000" d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"/></svg>'
+
+        //     logoutButton.innerHTML = iconlogout + " Logout";
+        // <% } %>
+        let auth = '<%= auth %>';
+        // console.log("Auth :", auth);
+
+
+        try {
+            if (auth) {
+                let usernama = '<%= user_name ? user_name : "" %>';
+                if (typeof usernama != 'undefined') {
+                    const logoutButton = document.getElementById('logoutButton');
+                    const infouser = document.getElementById('info-user');
+                    const ucapan = getUcapan();
+                    const iconlogout = '<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 512 512"><path fill="#ff0000" d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"/></svg>'
+
+                    // infouser.innerHTML = "Halo " + usernama + " !, Semangat kerja!";
+                    logoutButton.innerHTML = iconlogout + " Logout";
+                }
+            }
+        } catch (e) {
+        }
+    });
+
+    // function toastToast(success, title, message, timestamp) {
+    //     var toast = document.createElement('div');
+    //     toast.className = 'toast';
+    //     toast.setAttribute('role', 'alert');
+    //     toast.setAttribute('aria-live', 'assertive');
+    //     toast.setAttribute('aria-atomic', 'true');
+
+    //     var toastHeader = document.createElement('div');
+    //     toastHeader.className = 'toast-header';
+
+    //     var strongElement = document.createElement('strong');
+    //     strongElement.className = 'me-auto';
+    //     let titlefinal;
+    //     // if (message.includes('Terjadi kesalahan')) {
+    //     //     titlefinal = `${title} - Error`;
+    //     // } else if (success) {
+    //     //     titlefinal = `${title} - Success`;
+    //     // } else {
+    //     //     titlefinal = `${title} - Failure`;
+    //     // }
+    //     // strongElement.innerText = titlefinal;
+    //     strongElement.innerText = title;
+
+    //     // var smallElement = document.createElement('small');
+    //     // smallElement.className = '';
+    //     // smallElement.innerText = getTimeDifference(timestamp);
+
+    //     var buttonElement = document.createElement('button');
+    //     buttonElement.type = 'button';
+    //     buttonElement.className = 'btn-close';
+    //     buttonElement.setAttribute('data-bs-dismiss', 'toast');
+    //     buttonElement.setAttribute('aria-label', 'Close');
+    //     buttonElement.addEventListener('click', function () {
+    //         toast.remove();
+    //     });
+
+    //     var toastBody = document.createElement('div');
+    //     toastBody.className = 'toast-body';
+    //     toastBody.innerText = message;
+
+    //     toastHeader.appendChild(strongElement);
+    //     // toastHeader.appendChild(smallElement);
+    //     toastHeader.appendChild(buttonElement);
+
+    //     toast.appendChild(toastHeader);
+    //     toast.appendChild(toastBody);
+
+    //     var toastContainer = document.getElementById('toast-container');
+    //     toastContainer.appendChild(toast);
+
+    //     if (success) {
+    //         toast.classList.add('toast-success');
+    //     } else {
+    //         toast.classList.add('toast-error');
+    //     }
+
+    //     var bsToast = new bootstrap.Toast(toast);
+    //     bsToast.show();
+
+    // }
+    function toastToast(success, title, message) {
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        var toastHeader = document.createElement('div');
+        toastHeader.className = 'toast-header';
+
+        var strongElement = document.createElement('div');
+        strongElement.className = 'me-auto';
+        strongElement.innerText = message;
+
+        var buttonElement = document.createElement('button');
+        buttonElement.type = 'button';
+        buttonElement.className = 'btn-close';
+        buttonElement.setAttribute('data-bs-dismiss', 'toast');
+        buttonElement.setAttribute('aria-label', 'Close');
+        buttonElement.addEventListener('click', function () {
+            toast.remove();
+        });
+
+        toastHeader.appendChild(strongElement);
+        toastHeader.appendChild(buttonElement);
+
+        toast.appendChild(toastHeader);
+
+        var toastContainer = document.getElementById('toast-container');
+        toastContainer.appendChild(toast);
+
+        if (success) {
+            toastHeader.classList.add('toast-success');
+        } else {
+            toastHeader.classList.add('toast-error');
+        }
+
+        var bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+    }
+
+    function getTimeDifference(timestamp) {
+        var now = new Date();
+        var diff = Math.abs(now - timestamp);
+        var minutes = Math.floor(diff / (1000 * 60));
+        return minutes + ' mins ago';
+    }
+
+    function logout() {
+        const username = '<%= user_name %>';
+        showConfirmationModal('Konfirmasi Logout', `Apakah Anda (${username}) yakin ingin logout?`, "", function (status) {
+            if (status) {
+                const formData = {};
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        toastToast(data.success, data.title, data.message)
+                        if (data.success) {
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 2000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }, "Batal", "Logout");
+    }
+
+    async function showConfirmationModal(title, message, data, action, cancel, confirm) {
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmLabel = document.getElementById('confirmModalLabel');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmAction = document.getElementById('confirmAction');
+        const contentModal = document.getElementById('contentModal');
+        const confirmActionClose = document.getElementById('confirmActionClose');
+
+        confirmLabel.textContent = title;
+        confirmMessage.innerHTML = message.split('\n').join('<br>');
+        if (cancel !== undefined) {
+            confirmActionClose.innerHTML = cancel;
+        }
+        if (confirm !== undefined) {
+            confirmAction.innerHTML = confirm;
+        }
+
+        contentModal.innerHTML = '';
+
+        if (data && Object.keys(data.data).length > 0) {
+            if (data.id == "AkunHotspot") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        if (key === "name" || key === "password" || key === "profile") {
+                            const jenisAkunData = await jenisakun();
+                            const label = document.createElement('label');
+                            label.classList.add('form-label-modal');
+                            label.textContent = key.charAt(0).toUpperCase() + key.slice(1) + " :";
+                            const br = document.createElement('br');
+
+                            if (key === "profile") {
+                                const select = document.createElement('select');
+                                select.classList.add('form-input-modal');
+                                select.setAttribute('name', key);
+
+                                const firstOption = document.createElement('option');
+                                firstOption.value = data.data[key];
+                                firstOption.textContent = data.data[key];
+                                select.appendChild(firstOption);
+
+                                if (jenisAkunData.data.success) {
+                                    toastToast(true, "", "Data jenis/profil akun didapatkan");
+                                    jenisAkunData.data.response.forEach(optionData => {
+                                        if (optionData.name !== data.data[key]) {
+                                            const option = document.createElement('option');
+                                            option.value = optionData.name;
+                                            option.textContent = optionData.name;
+                                            select.appendChild(option);
+                                        }
+                                    });
+                                } else {
+                                    toastToast(true, "", "Gagal mendapatkan data jenis akun");
+                                    console.error("Gagal mendapatkan data jenis akun");
+                                }
+
+                                form.appendChild(label);
+                                form.appendChild(select);
+                            } else {
+                                const input = document.createElement('input');
+                                input.classList.add('form-input-modal');
+                                input.setAttribute('type', 'text');
+                                input.setAttribute('name', key);
+                                input.setAttribute('value', data.data[key]);
+                                form.appendChild(label);
+                                form.appendChild(input);
+                            }
+
+                            form.appendChild(br);
+                        }
+                    }
+                }
+
+                contentModal.appendChild(form);
+            } else if (data.id == "AkunHotspotUser") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        if (key === "name" || key === "password") {
+                            const jenisAkunData = await jenisakun();
+                            const label = document.createElement('label');
+                            label.classList.add('form-label-modal');
+                            label.textContent = key.charAt(0).toUpperCase() + key.slice(1) + " :";
+                            const br = document.createElement('br');
+                            const input = document.createElement('input');
+                            input.classList.add('form-input-modal');
+                            input.setAttribute('type', 'text');
+                            input.setAttribute('name', key);
+                            input.setAttribute('value', data.data[key]);
+                            form.appendChild(label);
+                            form.appendChild(input);
+
+                            form.appendChild(br);
+                        }
+                    }
+                }
+
+                contentModal.appendChild(form);
+            } else if (data.id == "LimitasiAkun") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+                const br = document.createElement('br');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        if (key === "priority" || key === "max-limit") {
+                            const label = document.createElement('label');
+                            label.classList.add('form-label-modal');
+                            label.textContent = key.charAt(0).toUpperCase() + key.slice(1) + " :";
+                            const br = document.createElement('br');
+                            const input = document.createElement('input');
+                            input.classList.add('form-input-modal');
+                            input.setAttribute('type', 'text');
+                            input.setAttribute('name', key);
+                            input.setAttribute('value', data.data[key]);
+                            input.id = `form-modal-${key}`;
+                            const p = document.createElement('p');
+                            p.id = `p-${key}`;
+                            form.appendChild(label);
+                            form.appendChild(input);
+                            form.appendChild(br);
+                            form.appendChild(p);
+
+                            form.appendChild(br);
+                        }
+                    }
+                }
+
+                const pinfo = document.createElement("p");
+                pinfo.innerHTML = `
+                    Informasi : <br><br>
+                    - Contoh Nilai = 2/3 atau 3/3 <br>
+                    - Maksimal nilai prioritas = 8/8 <br>
+                    - Minimal nilai prioritas = 0/0 <br>
+                    - Nilai 1 Bernilai lebih prioritas daripada 8 & 0 <br>
+                `;
+                form.appendChild(pinfo);
+                form.appendChild(br);
+
+                contentModal.appendChild(form);
+            } else if (data.id == "ListBinding") {
+                contentModal.style.display = 'block';
+
+                // Membuat elemen tabel
+                const tableWrapper = document.createElement("div");
+                tableWrapper.classList.add("tabledivbinding", "table-wrapper-scroll-y", "my-custom-scrollbar");
+                const table = document.createElement("table");
+                table.classList.add("table-list");
+
+                // Membuat elemen header tabel
+                const thead = document.createElement("thead");
+                const headerRow = document.createElement("tr");
+
+                // Membuat kolom-kolom header
+                const headers = ["No.", "Hotspot", "IP Address", "Mac Address", "Catatan", "Status", "Action"];
+                headers.forEach((headerText, index) => {
+                    const th = document.createElement("th");
+                    th.textContent = headerText;
+                    if (index === 0) {
+                        th.style.width = "30px";
+                    }
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                // Membuat elemen tbody untuk data
+                const tbody = document.createElement("tbody");
+                tbody.classList.add("custom-table-body-listterbinding"); // tambahkan kelas sesuai kebutuhan
+
+                // Memasukkan data ke dalam tabel
+                if (data.data && data.data.length > 0) {
+                    // console.log(data.data);
+                    data.data.forEach((item, index) => {
+                        const row = document.createElement('tr');
+
+                        const countCell = document.createElement('td');
+                        countCell.textContent = index + 1 + ".";
+                        countCell.style.width = '30px';
+
+                        const serverCell = document.createElement('td');
+                        serverCell.textContent = item.server || 'all';
+
+                        const addressCell = document.createElement('td');
+                        addressCell.textContent = item.address;
+
+                        const macCell = document.createElement('td');
+                        macCell.textContent = item['mac-address'];
+
+                        const catatanCell = document.createElement('td');
+                        catatanCell.textContent = item.comment;
+
+                        const statusCell = document.createElement('td');
+                        statusCell.textContent = item.disabled == "false" ? "Terbinding/Aktif" : "Terbinding/Tidak Aktif";
+                        statusCell.style.color = item.disabled == "true" ? 'red' : '';
+
+                        const actionCell = document.createElement('td');
+
+                        const hapusButton = document.createElement('button');
+                        hapusButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-danger');
+                        hapusButton.textContent = "Hapus";
+                        hapusButton.style.margin = '5px';
+                        hapusButton.addEventListener('click', function () {
+                            hapusbindingakun(item[".id"], item);
+                        });
+
+                        const aktifButton = document.createElement('button');
+                        aktifButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-primary');
+                        aktifButton.textContent = item.disabled == "false" ? "Nonaktifkan" : "Aktifkan";
+                        aktifButton.style.margin = '5px';
+                        aktifButton.addEventListener('click', function () {
+                            binding(item.disabled, item[".id"], item);
+                        });
+
+                        actionCell.appendChild(hapusButton);
+                        actionCell.appendChild(aktifButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(serverCell);
+                        row.appendChild(addressCell);
+                        row.appendChild(macCell);
+                        row.appendChild(catatanCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(actionCell);
+
+                        tbody.appendChild(row);
+                    });
+                }
+
+                // Menambahkan header dan body ke dalam tabel
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                tableWrapper.appendChild(table);
+
+                // Menambahkan tabel ke dalam modal
+                contentModal.appendChild(tableWrapper);
+            } else if (data.id == "TambahBinding") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        const labelkey = key.replace(/_/g, ' ');
+                        const newnamekey = key.replace(/_/g, '-');
+
+                        const label = document.createElement('label');
+                        label.classList.add('form-label-modal');
+                        label.textContent = labelkey.charAt(0).toUpperCase() + labelkey.slice(1) + " :";
+                        const br = document.createElement('br');
+                        const input = document.createElement('input');
+                        input.classList.add('form-input-modal');
+                        input.setAttribute('type', 'text');
+                        input.setAttribute('name', newnamekey);
+                        input.setAttribute('value', data.data[key]);
+                        form.appendChild(label);
+                        form.appendChild(input);
+                        form.appendChild(br);
+                    }
+                }
+                contentModal.appendChild(form);
+            }
+        }
+
+        confirmAction.onclick = function () {
+            action(true);
+            $(confirmModal).modal('hide');
+        };
+
+        confirmActionClose.onclick = function () {
+            action(false);
+        };
+
+        $(confirmModal).modal('show');
+    }
+
+    async function showConfirmationModal2(title, message, data, action, cancel, confirm) {
+        const confirmModal = document.getElementById('confirmModal2');
+        const confirmLabel = document.getElementById('confirmModalLabel2');
+        const confirmMessage = document.getElementById('confirmMessage2');
+        const confirmAction = document.getElementById('confirmAction2');
+        const contentModal = document.getElementById('contentModal2');
+        const confirmActionClose = document.getElementById('confirmActionClose2');
+
+        confirmLabel.textContent = title;
+        confirmMessage.innerHTML = message.split('\n').join('<br>');
+        if (cancel !== undefined) {
+            confirmActionClose.innerHTML = cancel;
+        }
+        if (confirm !== undefined) {
+            confirmAction.innerHTML = confirm;
+        }
+
+        contentModal.innerHTML = '';
+
+        if (data && Object.keys(data.data).length > 0) {
+            if (data.id == "AkunHotspot") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        if (key === "name" || key === "password" || key === "profile") {
+                            const jenisAkunData = await jenisakun();
+                            const label = document.createElement('label');
+                            label.classList.add('form-label-modal');
+                            label.textContent = key.charAt(0).toUpperCase() + key.slice(1) + " :";
+                            const br = document.createElement('br');
+
+                            if (key === "profile") {
+                                const select = document.createElement('select');
+                                select.classList.add('form-input-modal');
+                                select.setAttribute('name', key);
+
+                                const firstOption = document.createElement('option');
+                                firstOption.value = data.data[key];
+                                firstOption.textContent = data.data[key];
+                                select.appendChild(firstOption);
+
+                                if (jenisAkunData.data.success) {
+                                    toastToast(true, "", "Data jenis/profil akun didapatkan");
+                                    jenisAkunData.data.response.forEach(optionData => {
+                                        if (optionData.name !== data.data[key]) {
+                                            const option = document.createElement('option');
+                                            option.value = optionData.name;
+                                            option.textContent = optionData.name;
+                                            select.appendChild(option);
+                                        }
+                                    });
+                                } else {
+                                    toastToast(true, "", "Gagal mendapatkan data jenis akun");
+                                    console.error("Gagal mendapatkan data jenis akun");
+                                }
+
+                                form.appendChild(label);
+                                form.appendChild(select);
+                            } else {
+                                const input = document.createElement('input');
+                                input.classList.add('form-input-modal');
+                                input.setAttribute('type', 'text');
+                                input.setAttribute('name', key);
+                                input.setAttribute('value', data.data[key]);
+                                form.appendChild(label);
+                                form.appendChild(input);
+                            }
+
+                            form.appendChild(br);
+                        }
+                    }
+                }
+
+                contentModal.appendChild(form);
+            } else if (data.id == "LimitasiAkun") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+                const br = document.createElement('br');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        if (key === "priority" || key === "max-limit") {
+                            const label = document.createElement('label');
+                            label.classList.add('form-label-modal');
+                            label.textContent = key.charAt(0).toUpperCase() + key.slice(1) + " :";
+                            const br = document.createElement('br');
+                            const input = document.createElement('input');
+                            input.classList.add('form-input-modal');
+                            input.setAttribute('type', 'text');
+                            input.setAttribute('name', key);
+                            input.setAttribute('value', data.data[key]);
+                            input.id = `form-modal-${key}`;
+                            const p = document.createElement('p');
+                            p.id = `p-${key}`;
+                            form.appendChild(label);
+                            form.appendChild(input);
+                            form.appendChild(br);
+                            form.appendChild(p);
+
+                            form.appendChild(br);
+                        }
+                    }
+                }
+
+                const pinfo = document.createElement("p");
+                pinfo.innerHTML = `
+            Informasi : <br><br>
+            - Contoh Nilai = 2/3 atau 3/3 <br>
+            - Maksimal nilai prioritas = 8/8 <br>
+            - Minimal nilai prioritas = 0/0 <br>
+            - Nilai 1 Bernilai lebih prioritas daripada 8 & 0 <br>
+        `;
+                form.appendChild(pinfo);
+                form.appendChild(br);
+
+                contentModal.appendChild(form);
+            } else if (data.id == "ListBinding") {
+                contentModal.style.display = 'block';
+
+                // Membuat elemen tabel
+                const tableWrapper = document.createElement("div");
+                tableWrapper.classList.add("tabledivbinding", "table-wrapper-scroll-y", "my-custom-scrollbar");
+                const table = document.createElement("table");
+                table.classList.add("table-list");
+
+                // Membuat elemen header tabel
+                const thead = document.createElement("thead");
+                const headerRow = document.createElement("tr");
+
+                // Membuat kolom-kolom header
+                const headers = ["No.", "Hotspot", "IP Address", "Mac Address", "Catatan", "Status", "Action"];
+                headers.forEach((headerText, index) => {
+                    const th = document.createElement("th");
+                    th.textContent = headerText;
+                    if (index === 0) {
+                        th.style.width = "30px";
+                    }
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                // Membuat elemen tbody untuk data
+                const tbody = document.createElement("tbody");
+                tbody.classList.add("custom-table-body-listterbinding"); // tambahkan kelas sesuai kebutuhan
+
+                // Memasukkan data ke dalam tabel
+                if (data.data && data.data.length > 0) {
+                    // console.log(data.data);
+                    data.data.forEach((item, index) => {
+                        const row = document.createElement('tr');
+
+                        const countCell = document.createElement('td');
+                        countCell.textContent = index + 1 + ".";
+                        countCell.style.width = '30px';
+
+                        const serverCell = document.createElement('td');
+                        serverCell.textContent = item.server || 'all';
+
+                        const addressCell = document.createElement('td');
+                        addressCell.textContent = item.address;
+
+                        const macCell = document.createElement('td');
+                        macCell.textContent = item['mac-address'];
+
+                        const catatanCell = document.createElement('td');
+                        catatanCell.textContent = item.comment;
+
+                        const statusCell = document.createElement('td');
+                        statusCell.textContent = item.disabled == "false" ? "Terbinding/Aktif" : "Terbinding/Tidak Aktif";
+                        statusCell.style.color = item.disabled == "true" ? 'red' : '';
+
+                        const actionCell = document.createElement('td');
+
+                        const hapusButton = document.createElement('button');
+                        hapusButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-danger');
+                        hapusButton.textContent = "Hapus";
+                        hapusButton.style.margin = '5px';
+                        hapusButton.addEventListener('click', function () {
+                            hapusbindingakun(item[".id"], item);
+                        });
+
+                        const aktifButton = document.createElement('button');
+                        aktifButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-primary');
+                        aktifButton.textContent = item.disabled == "false" ? "Nonaktifkan" : "Aktifkan";
+                        aktifButton.style.margin = '5px';
+                        aktifButton.addEventListener('click', function () {
+                            binding(item.disabled, item[".id"], item);
+                        });
+
+                        actionCell.appendChild(hapusButton);
+                        actionCell.appendChild(aktifButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(serverCell);
+                        row.appendChild(addressCell);
+                        row.appendChild(macCell);
+                        row.appendChild(catatanCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(actionCell);
+
+                        tbody.appendChild(row);
+                    });
+                }
+
+                // Menambahkan header dan body ke dalam tabel
+                table.appendChild(thead);
+                table.appendChild(tbody);
+                tableWrapper.appendChild(table);
+
+                // Menambahkan tabel ke dalam modal
+                contentModal.appendChild(tableWrapper);
+            } else if (data.id == "TambahBinding") {
+                contentModal.style.display = 'block';
+
+                const form = document.createElement('form');
+                form.classList.add('form-modal');
+
+                for (const key in data.data) {
+                    if (Object.hasOwnProperty.call(data.data, key)) {
+                        const labelkey = key.replace(/_/g, ' ');
+                        const newnamekey = key.replace(/_/g, '-');
+
+                        const label = document.createElement('label');
+                        label.classList.add('form-label-modal');
+                        label.textContent = labelkey.charAt(0).toUpperCase() + labelkey.slice(1) + " :";
+                        const br = document.createElement('br');
+                        const input = document.createElement('input');
+                        input.classList.add('form-input-modal');
+                        input.setAttribute('type', 'text');
+                        input.setAttribute('name', newnamekey);
+                        input.setAttribute('value', data.data[key]);
+                        form.appendChild(label);
+                        form.appendChild(input);
+                        form.appendChild(br);
+                    }
+                }
+                contentModal.appendChild(form);
+            }
+        }
+
+        // Tambahkan event listener untuk menangani aksi setelah pengguna mengklik tombol konfirmasi di modal
+        confirmAction.onclick = function () {
+            action(true); // Panggil fungsi aksi yang diberikan
+            $(confirmModal).modal('hide'); // Tutup modal setelah aksi dilakukan
+        };
+
+        confirmActionClose.onclick = function () {
+            action(false);
+        };
+
+        // Tampilkan modal
+        $(confirmModal).modal('show');
+    }
+
+    async function jenisakun() {
+        // toastToast(true, "", "Memproses ambil data jenis akun");
+        const response = await fetch('/infoprofilhotspot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return { data };
+    }
+
+    function formatkuota(kuota) {
+        let format;
+        if (kuota.length > 9) {
+            format = (kuota / (1024 * 1024 * 1024)).toFixed(2) + " GB"; // Konversi ke MB jika lebih dari 9
+
+        } else {
+            format = (kuota / (1024 * 1024)).toFixed(2) + " MB"; // Konversi ke GB jika tidak lebih dari 9
+        }
+        return format;
+    }
+
+    function formatValue(value) {
+        if (value === "0/0") {
+            return "Tanpa Batas";
+        } else {
+            const parts = value.split('/');
+            const firstPart = parts[0];
+            const secondPart = parts[1];
+            const numericValue1 = parseFloat(firstPart);
+            const numericValue2 = parseFloat(secondPart);
+            let formattedValue1, formattedValue2;
+
+            if (numericValue1 >= 1000000) {
+                formattedValue1 = (numericValue1 / 1000000).toFixed(0) + " Mbps";
+            } else {
+                formattedValue1 = (numericValue1 / 1000).toFixed(0) + " Kbps";
+            }
+
+            if (numericValue2 >= 1000000) {
+                formattedValue2 = (numericValue2 / 1000000).toFixed(0) + " Mbps";
+            } else {
+                formattedValue2 = (numericValue2 / 1000).toFixed(0) + " Kbps";
+            }
+
+            return formattedValue1 + " / " + formattedValue2;
+        }
+    }
+</script>

@@ -1,0 +1,40 @@
+<script>
+    document.getElementById('login-post').addEventListener('submit', function (event) {
+        event.preventDefault(); // Menghentikan pengiriman formulir default
+        const loginbtn = document.getElementById('login-btn');
+        loginbtn.disabled = true;
+
+        // Mengumpulkan data formulir
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Menyiapkan data untuk dikirim sebagai JSON
+        const formData = {
+            username: username,
+            password: password
+        };
+
+        // Mengirim permintaan POST menggunakan fetch API
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                toastToast(data.success, data.title, data.message);
+                if (data.success) {
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    loginbtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+    });
+</script>

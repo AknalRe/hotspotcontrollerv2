@@ -1,0 +1,293 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const mikrotikstatus = '<%= mikrotik %>';
+    const user_role = '<%= user_role %>';
+    // console.log("Mikrotik :",mikrotikstatus);
+    function bytesToMegabytes(bytes) {
+        const megabytes = bytes / (1024 * 1024);
+        return megabytes;
+    }
+
+    const socket = io();
+    if (mikrotikstatus) {
+        toastToast(true, "", "Memproses mengambil info router")
+        socket.on('resource', function (data) {
+            // console.log(data.data[0]);
+            const resource = data.data[0];
+            document.getElementById("info-mikrotik-cpu").innerHTML = resource["cpu-load"] + "%";
+            document.getElementById("info-mikrotik-memory").innerHTML = bytesToMegabytes(resource["free-memory"]).toFixed(0) + "MB";
+        })
+
+        socket.on('userhotspot', function (data) {
+            const hotspot = data.data;
+            // console.log(hotspot);
+            document.getElementById("info-mikrotik-user-hotspot-aktif").innerHTML = hotspot.length;
+        })
+
+        socket.on("hosts", function (data) {
+            // console.log(data.data);
+            const terhubung = data.data.filter(item => item.authorized == "true").length;
+            const tidakterhubung = data.data.filter(item => item.authorized == "false" && item.bypassed == "false").length;
+            const terbinding = data.data.filter(item => item.bypassed == "true").length;
+            document.getElementById("header-info-listbinding-h5").innerHTML = "List Klien ( Terhubung : " + terhubung + ", Tidak Terhubung : " + tidakterhubung + ", Terbinding : " + terbinding + " )";
+
+            var tbody = document.querySelector('.custom-table-body-listbinding');
+            tbody.innerHTML = '';
+            let count = 0;
+            let datahost = false;
+
+            if (data.data && data.data.length > 0) {
+                data.data.forEach(function (item) {
+                    if (item.authorized == "false") {
+                        datahost = true;
+                        count++;
+                        var row = document.createElement('tr');
+
+                        var countCell = document.createElement('td');
+                        countCell.textContent = count + ".";
+                        countCell.style.width = '30px';
+
+                        var serverCell = document.createElement('td');
+                        serverCell.textContent = item.server;
+
+                        var addressCell = document.createElement('td');
+                        addressCell.textContent = item.address;
+
+                        var macCell = document.createElement('td');
+                        let panjang = item["mac-address"].length;
+                        macCell.textContent = user_role == "Administator" ? item['mac-address'] : '*'.repeat(panjang);
+
+                        var statusCell = document.createElement('td');
+                        statusCell.textContent = item.bypassed == "false" ? "Belum Login / Tidak Terbinding" : "Terbinding";
+
+                        var actionCell = document.createElement('td');
+
+                        var nonaktifkanButton = document.createElement('button');
+                        nonaktifkanButton.classList.add('btn', 'btn-vpn-nonaktif', 'btn-danger');
+                        nonaktifkanButton.textContent = item.bypassed == "false" ? "Binding" : "Lepas Binding";
+                        nonaktifkanButton.style.margin = '5px';
+                        nonaktifkanButton.addEventListener('click', function () {
+                            bindingakun(item.bypassed == "false" ? false : true, item['.id'], item.address, item["to-address"], item['mac-address'], item.server)
+                        });
+
+                        actionCell.appendChild(nonaktifkanButton);
+
+                        row.appendChild(countCell);
+                        row.appendChild(serverCell);
+                        row.appendChild(addressCell);
+                        row.appendChild(macCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(actionCell);
+
+                        tbody.appendChild(row);
+                    }
+                })
+            }
+        })
+    }
+</script>
+<script>
+    function bindingakun(action, id, add, toadd, mac, server) {
+        if (action) {
+            showConfirmationModal('Konfirmasi Lepas Binding', `Apakah Anda yakin ingin melepas binding "${mac}-${add}" ?\n\nMelepas binding akan membuat klien tidak terkoneksi ke internet`, "", function (status) {
+                if (status) {
+                    const formData = {
+                        action: action,
+                        id: id,
+                        add: add,
+                        toadd: toadd,
+                        mac: mac,
+                        server: server,
+                    }
+                    fetch('/binding', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // console.log(data);
+                            toastToast(data.success, "", data.message);
+                        })
+                        .catch(error => {
+                            toastToast(false, "", error);
+                        });
+                }
+            }, "Batal", "Ya");
+        } else {
+            showConfirmationModal('Konfirmasi Binding', `Apakah Anda yakin ingin mebinding "${mac}-${add}" ?`, "", function (status) {
+                if (status) {
+                    toastToast(true, "", `Memproses binding "${mac}-${add}"`);
+                    const formData = {
+                        action: action,
+                        id: id,
+                        add: add,
+                        toadd: toadd,
+                        mac: mac,
+                        server: server,
+                    }
+                    fetch('/binding', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // console.log(data);
+                            toastToast(data.success, "", data.message);
+                        })
+                        .catch(error => {
+                            toastToast(false, "", error);
+                        });
+                }
+            }, "Batal", "Ya")
+        }
+    }
+
+    async function lihatlistbinding() {
+        // console.log('lihatlistbinding');
+        return fetch('/listbinding', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // toastToast(data.success, "", data.message);
+                if (data.success) {
+                    // console.log(data.data);
+                    const dataentry = { id: "ListBinding", data: data.data };
+                    showConfirmationModal("List binding", `List binding ip/mac : `, dataentry, function (status) {
+                        if (status) {
+                        } else {
+                        }
+                    }, "Batal", "Tutup")
+                }
+                return data;
+            })
+            .catch(error => {
+                // console.log('Error:', error);
+                toastToast(false, "", error);
+                throw error;
+            });
+    }
+
+    function hapusbindingakun(id, data) {
+        // console.log(data.disabled)
+        showConfirmationModal('Konfirmasi Hapus Binding', `Apakah Anda yakin ingin menghapus binding "${data['mac-address']}-${data.address}" ?\n\nStatus Binding saat ini "${data.disabled == "false" ? "Aktif" : "Nonaktif"}"`, "", function (status) {
+            if (status) {
+                const formData = {
+                    id: id,
+                    data: data,
+                }
+                fetch('/hapusbinding', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        toastToast(data.success, "", data.message);
+                    })
+                    .catch(error => {
+                        toastToast(false, "", error);
+                    });
+            }
+        }, "Batal", "Ya");
+    }
+
+    function binding(action, id, data) {
+        let status = action == "false" ? true : false;
+        // console.log(status);
+        // console.log(id);
+        // console.log(data);
+        const formData = {
+            action: status,
+            id: id,
+            data: data,
+        }
+        fetch('/bindingstatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                toastToast(data.success, "", data.message);
+                if (data.success) {
+                    lihatlistbinding()
+                        .then((result) => {
+                            toastToast(result.success, '', result.success == true ? `Berhasil memperbarui data list binding` : result.message);
+                        })
+                        .catch((error) => {
+                            toastToast(false, "", error)
+                            console.error('Terjadi kesalahan:', error);
+                        });
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                toastToast(false, "", error);
+            });
+    }
+
+    function tambahbinding() {
+        const data = {
+            ip_address: "",
+            mac_address: "",
+        }
+        const dataentry = { id: "TambahBinding", data: data };
+
+        showConfirmationModal("Tambah Binding", `Isi data tambah binding :`, dataentry, function (status) {
+            if (status) {
+                const ipaddress = document.querySelector('input[name="ip-address"]').value;
+                const macaddress = document.querySelector('input[name="mac-address"]').value;
+
+                // Pengecekan nilai ipaddress dan macaddress
+                if (ipaddress === "" || macaddress === "") {
+                    toastToast(false, "", "Tidak melanjutkan eksekusi karena nilai kosong");
+                } else {
+                    const formDataa = {
+                        action: "",
+                        id: "",
+                        add: ipaddress,
+                        toadd: ipaddress,
+                        mac: macaddress,
+                        server: "all",
+                    }
+
+                    showConfirmationModal2("Konfirmasi Tambah Binding", `Apakah anda yakin ingin menambah binding "${ipaddress}-${macaddress}" ?\n\nPastikan data tersebut tidak ada pada list binding.`, "", function (status) {
+                        if (status) {
+                            fetch('/binding', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formDataa)
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    // console.log(data);
+                                    toastToast(data.success, "", data.message);
+                                })
+                                .catch(error => {
+                                    toastToast(false, "", error);
+                                });
+                        }
+                    }, "Batal", "Yakin");
+                }
+            }
+        }, "Batal", "Tambah");
+    }
+</script>
