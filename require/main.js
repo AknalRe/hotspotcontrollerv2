@@ -6,7 +6,8 @@ const moment = require('moment-timezone');
 require('moment/locale/id');
 moment.locale('id');
 
-const { APP_ENV, APP_DEBUG, APP_PORT, APP_NAME, APP_TITLE, APP_AUTHOR, MK_HOST, MK_PORT, MK_USER, MK_PASS, MK_TIMEOUT, LINKWA, LINKWA2, APIKEYWA, APIKEYWA2, IDKOMUNITAS } = process.env;
+const { APP_ENV, APP_PORT, APP_NAME, APP_TITLE, APP_AUTHOR, MK_HOST, MK_PORT, MK_USER, MK_PASS, MK_TIMEOUT, LINKWA, LINKWA2, APIKEYWA, APIKEYWA2, IDKOMUNITAS } = process.env;
+const APP_DEBUG = process.env.APP_DEBUG == "true";
 
 const MikrotikConfig = {
     host: MK_HOST,
