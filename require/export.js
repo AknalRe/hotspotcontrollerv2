@@ -20,7 +20,7 @@ async function ExportXLSX(title, data) {
         return { success: true, title: `Export Akun`, message: `Berhasil melakukan export data menjadi xlsx dengan nama ${title}`, file: `${title}.xlsx`};
     } catch (err) {
         logg(false, `Gagal melakukan export data menjadi xlsx dengan nama ${title}, error: ${err.message}`);
-        return { success: true, title: `Export Akun`, message: `Gagal melakukan export data menjadi xlsx dengan nama ${title}, error: ${err.message}`, file: `""`};
+        return { success: false, title: `Export Akun`, message: `Gagal melakukan export data menjadi xlsx dengan nama ${title}, error: ${err.message}`, file: `""`};
     }
 }
 
