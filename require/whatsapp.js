@@ -1,11 +1,11 @@
-const { logg, moment, Mikrotik, APP_DEBUG, APP_ENV } = require('./main');
+const { logg, moment, Mikrotik, APP_DEBUG, APP_ENV, whatsapp } = require('./main');
 const axios = require('axios');
 
-const urlWA = process.env.LINKWA;
-const urlWA2 = process.env.LINKWA2;
-const apikeyWA = process.env.APIKEYWA;
-const apikeyWA2 = process.env.APIKEYWA2;
-const idgrup = process.env.IDKOMUNITAS;
+const urlWA = whatsapp.LINKWA;
+const urlWA2 = whatsapp.LINKWA2;
+const apikeyWA = whatsapp.APIKEYWA;
+const apikeyWA2 = whatsapp.APIKEYWA2;
+const idgrup = whatsapp.IDKOMUNITAS;
 
 async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
     if (!APP_DEBUG && APP_ENV !== 'local') {
