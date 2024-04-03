@@ -312,6 +312,9 @@ router.post('/exportakun', isAuthenticated, async (req, res) => {
 
         let title = `${moment().format("DD-MMMM-YYYY_hh-mm-ss")}_${name}_${role}`;
         const exports = await ExportXLSX(title, transformedData);
+        if (exports.success) {
+            await notif(req.hostname, req.session.username, req.session.role, `Mengeksport list akun nama ${title}`);
+        }
         res.json(exports);
     } else {
         res.json({ success: false, title: `Export Akun`, message: `Gagal melakukan export akun`});
