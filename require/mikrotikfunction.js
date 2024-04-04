@@ -25,6 +25,20 @@ async function CekTotalUserHotspot() {
                 disabled: 'false'
             };
             response.push(newData);
+            newData = {
+                name: 'admin',
+                password: 'csoperator',
+                profile: 'Admin',
+                disabled: 'false'
+            };
+            response.push(newData);
+            newData = {
+                name: 'admin2',
+                password: 'csoperator2',
+                profile: 'Admin',
+                disabled: 'false'
+            };
+            response.push(newData);
             if (response) {
                 success = true;
                 // logg(true, 'Berhasil mendapatkan data pengguna hotspot.');
