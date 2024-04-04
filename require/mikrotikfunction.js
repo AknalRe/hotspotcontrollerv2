@@ -160,7 +160,7 @@ async function listakun(role) {
                 } else if (role == "Demo") {
                     let panjang = item.password ? (item.password.length >= 12 ? item.password.length : 16) : 16;
                     let passwordDiganti = '*'.repeat(panjang);
-                    let nama = item.name.substring(0, 3) + "*".repeat(item.name.length - 3);
+                    let nama = item.name.substring(0, 3) + "*".repeat(item.name.length >= 16 ? (item.name.length - 3) : (20 - 3));
                     item.password = passwordDiganti;
                     item.name = nama;
                     return item[".id"] !== "*0" && item[".id"] !== "*2";
