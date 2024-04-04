@@ -72,7 +72,7 @@
                 countCell.style.width = '30px';
 
                 var nameCell = document.createElement('td');
-                nameCell.textContent = user_name.toLocaleLowerCase() !== "demo" ? item.name : item.name.substring(0, 3) + "*".repeat(item.name.length - 3);
+                nameCell.textContent = item.name;
 
                 var passwordCell = document.createElement('td');
                 passwordCell.textContent = item.password;
