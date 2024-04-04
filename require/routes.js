@@ -183,6 +183,31 @@ router.get('/bannerhotspot', isAuthenticated, async (req, res) => {
     res.render('index', data);
 });
 
+router.get('/generateqr', isAuthenticated, async (req, res) => {
+    const { mikrotikstatus } = Mikrotik;
+    req.session.prevpage = req.path;
+    const role = req.session.role;
+    const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
+    const style = (userRole !== "administrator" && userRole !== "admin" ? "user" : "style");
+    const data = {
+        auth: true,
+        mikrotik: mikrotikstatus,
+        user_name: req.session.name,
+        user_username: req.session.username,
+        user_role: (role == "Demo" ? "Administrator" : role),
+        title: APP_TITLE,
+        author: APP_AUTHOR,
+        name_page: `Generate Banner - ${APP_TITLE}`,
+        scriptglobal: "scripts/script",
+        footer: "footer",
+        style: style,
+        navbar: `navbar/${userRole}`,
+        page: `partials/${userRole}/generateqr`,
+        scriptlocal: `scripts/${userRole}/generateqr`
+    };
+    res.render('index', data);
+})
+
 // router.get('/user', async (req, res) => {
 //     req.session.prevpage = req.path;
 //     const response = await CekTotalUserHotspot();
