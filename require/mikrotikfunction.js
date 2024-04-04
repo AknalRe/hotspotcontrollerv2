@@ -155,7 +155,7 @@ async function listakun(role) {
         try {
             const response = await client.write('/ip/hotspot/user/print');
             const filteredData = response.filter(item => {
-                if (role === "Administrator") {
+                if (role == "Administrator") {
                     return item[".id"] !== "*0" && item[".id"] !== "*2";
                 } else if (role == "Demo") {
                     let panjang = item.password ? (item.password.length >= 12 ? item.password.length : 16) : 16;

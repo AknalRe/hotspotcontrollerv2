@@ -55,7 +55,7 @@
 
                         var macCell = document.createElement('td');
                         let panjang = item["mac-address"].length;
-                        macCell.textContent = user_role == "Administator" ? item['mac-address'] : '*'.repeat(panjang);
+                        macCell.textContent = user_name == "Demo" ? item['mac-address'] : '*'.repeat(panjang);
 
                         var statusCell = document.createElement('td');
                         statusCell.textContent = item.bypassed == "false" ? "Belum Login / Tidak Terbinding" : "Terbinding";
