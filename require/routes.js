@@ -220,7 +220,7 @@ router.post('/login', async (req, res) => {
             req.session.username = username;
             req.session.role = user.profile;
             req.session.name = user.name.replace(/\d+/g, '');
-            console.log(await notif(req.hostname, req.session.username, req.session.role, `${ip} - Berhasil login username : ${username}`));
+            await notif(req.hostname, req.session.username, req.session.role, `${ip} - Berhasil login username : ${username}`);
             res.json({ success: true, title: `Autentikasi`, message: 'Login berhasil!' });
         } else {
             res.json({ success: false, title: `Autentikasi`, message: 'Login gagal. Periksa username dan password!' });
