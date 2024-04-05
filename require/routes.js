@@ -736,21 +736,21 @@ router.post('/logoutuser', isAuthenticated, async (req, res) => {
 
 router.post("/generateqr", isAuthenticated, async (req, res) => {
     let { tipe, nama, link, ssid, password } = req.body;
-    let wifiqr, path;
+    let wifiqr, pathfile;
     const directoryPath = path.join(__dirname, '..', 'views', 'public', 'images');
     if (!fs.existsSync(directoryPath)) {
         fs.mkdirSync(directoryPath, { recursive: true });
     }
     try {
         if (tipe === "link") {
-            path = `./views/public/images/${nama}.png`;
-            await QRCode.toFile(path, link, { errorCorrectionLevel: 'H', scale: 8 });
+            pathfile = `./views/public/images/${nama}.png`;
+            await QRCode.toFile(pathfile, link, { errorCorrectionLevel: 'H', scale: 8 });
             logg(true, `Berhasil generate QR (${nama})`);
             return res.json({ success: true, message: `Berhasil generate QR (${nama})`, url: `${nama}.png` });
         } else if (tipe === "wifi") {
             wifiqr = password ? `WIFI:T:WPA;S:${ssid};P:${password};;` : `WIFI:T:NONE;S:${ssid};;`;
-            path = `./views/public/images/${nama}.png`;
-            await QRCode.toFile(path, wifiqr, { errorCorrectionLevel: 'H', scale: 8 });
+            pathfile = `./views/public/images/${nama}.png`;
+            await QRCode.toFile(pathfile, wifiqr, { errorCorrectionLevel: 'H', scale: 8 });
             logg(true, `Berhasil generate QR (${nama})`);
             return res.json({ success: true, message: `Berhasil generate QR (${nama})`, url: `${nama}.png` });
         }
