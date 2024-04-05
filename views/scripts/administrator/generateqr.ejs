@@ -58,7 +58,7 @@
                     if (data.success) {
                         showConfirmationModal(`Download Hasil Generate QR`, `Apakah anda ingin mendownload hasil generate QR`, "", function (status) {
                             if (status) {
-                                const url = `/static/exports/${data.url}`;
+                                const url = `/static/images/${data.url}`;
                                 window.location.href = url;
                                 setTimeout(() => {
                                     const formData = {
