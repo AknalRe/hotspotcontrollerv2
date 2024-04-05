@@ -776,7 +776,7 @@ router.use(async (req, res) => {
     const hostname = req.hostname;
     const url = req.url;
     const username = req.username || "Anonymous";
-    const message = `WARNING !!!!!!\n\n${username} terdapat ${ip} mengakses pada ${hostname}${url} `;
+    const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url} `;
     await notifspam(message);
     res.status(404).send('<html><head><link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png"><title>404</title></head><body></body></html>');
 });

@@ -1,0 +1,26 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const jenisqr = document.getElementById('jenisqr');
+        const linkForm = document.getElementById('linkForm');
+        const wifiForm = document.getElementById('wifiForm');
+
+        jenisqr.addEventListener('change', function () {
+            if (jenisqr.value === 'link') {
+                linkForm.style.display = 'block';
+                wifiForm.style.display = 'none';
+            } else if (jenisqr.value === 'wifi') {
+                linkForm.style.display = 'none';
+                wifiForm.style.display = 'block';
+            }
+        });
+
+        // Set initial display
+        if (jenisqr.value === 'link') {
+            linkForm.style.display = 'block';
+            wifiForm.style.display = 'none';
+        } else if (jenisqr.value === 'wifi') {
+            linkForm.style.display = 'none';
+            wifiForm.style.display = 'block';
+        }
+    });
+</script>
