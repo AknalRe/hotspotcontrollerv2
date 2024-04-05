@@ -59,12 +59,18 @@
                         showConfirmationModal(`Download Hasil Generate QR`, `Apakah anda ingin mendownload hasil generate QR`, "", function (status) {
                             if (status) {
                                 const url = `/static/images/${data.url}`;
-                                window.location.href = url;
-                                setTimeout(() => {
+                                fetch(url)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const a = document.createElement('a');
+                                    a.href = URL.createObjectURL(blob);
+                                    a.download = data.url;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    window.URL.revokeObjectURL(url);
                                     const formData = {
                                         file: data.url,
                                     };
-
                                     fetch('/hapusgenerateqr', {
                                         method: 'POST',
                                         headers: {
@@ -72,14 +78,17 @@
                                         },
                                         body: JSON.stringify(formData)
                                     })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            toastToast(data.success, "", data.message);
-                                        })
-                                        .catch(error => {
-                                            console.log('Error:', error);
-                                        });
-                                }, 15000);
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        toastToast(data.success, "", data.message);
+                                    })
+                                    .catch(error => {
+                                        console.log('Error:', error);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.log('Error:', error);
+                                });
                             } else {
                                 const formData = {
                                     file: data.url,
