@@ -743,6 +743,9 @@ router.post("/generateqr", isAuthenticated, async (req, res) => {
     }
     try {
         if (tipe === "link") {
+            if (!link.startsWith("https://") && !link.startsWith("http://")) {
+                link = "https://" + link;
+            }
             pathfile = `./views/public/images/${nama}.png`;
             await QRCode.toFile(pathfile, link, { errorCorrectionLevel: 'H', scale: 8 });
             logg(true, `Berhasil generate QR (${nama})`);
@@ -757,6 +760,26 @@ router.post("/generateqr", isAuthenticated, async (req, res) => {
     } catch (error) {
         logg(false, `Gagal Generate QR (${nama}), error: ${error.message}`);
         return res.json({ success: false, title: `Generate Qr`, message: `Gagal Generate QR (${nama}), error: ${error.message}` });
+    }
+})
+
+router.post("/hapusgenerateqr", isAuthenticated, async (req, req) => {
+    let { file } = req.body;
+    const filepath = path.join(__dirname, '..', 'views', 'public', 'images', `${file}`);
+    try {
+        // Periksa apakah file ada sebelum menghapusnya
+        if (fs.existsSync(filepath)) {
+            // Hapus file
+            fs.unlinkSync(filepath);
+            logg(true, `Images QR ${file} berhasil dihapus`);
+            res.json({ success: true, message: `Images QR ${file} berhasil dihapus` });
+        } else {
+            logg(false, `Images QR ${file} tidak ditemukan`)
+            res.json({ success: false, message: `Images QR ${file} tidak ditemukan` });
+        }
+    } catch (err) {
+        logg(false, `Gagal menghapus Images QR ${file}, error: ${err.message}`)
+        res.json({ success: false, message: `Gagal menghapus Images QR ${file}, error: ${err.message}` });
     }
 })
 
