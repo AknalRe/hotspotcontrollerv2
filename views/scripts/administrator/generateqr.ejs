@@ -30,7 +30,7 @@
             const password = document.getElementById('password').value;
 
             // Memeriksa apakah ada nilai yang kosong atau undefined
-            if (!nama || !tipe || (tipe === 'link' && (!link || link.trim() === '')) || (tipe === 'wifi' && (!ssid || ssid.trim() === '' || !password || password.trim() === ''))) {
+            if (!nama || !tipe || (tipe === 'link' && (!link || link.trim() === '')) || (tipe === 'wifi' && (!ssid || ssid.trim() === ''))) {
                 alert('Harap lengkapi semua kolom');
                 return;
             }
