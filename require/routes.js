@@ -763,7 +763,7 @@ router.post("/generateqr", isAuthenticated, async (req, res) => {
     }
 })
 
-router.post("/hapusgenerateqr", isAuthenticated, async (req, req) => {
+router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
     let { file } = req.body;
     const filepath = path.join(__dirname, '..', 'views', 'public', 'images', `${file}`);
     try {
