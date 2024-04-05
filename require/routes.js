@@ -737,6 +737,10 @@ router.post('/logoutuser', isAuthenticated, async (req, res) => {
 router.post("/generateqr", isAuthenticated, async (req, res) => {
     let { tipe, nama, link, ssid, password } = req.body;
     let wifiqr, path;
+    const directoryPath = path.join(__dirname, '..', 'views', 'public', 'images');
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+    }
     try {
         if (tipe === "link") {
             path = `./views/public/images/${nama}.png`;
