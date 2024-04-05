@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const path = require('path');
+const QRCode = require('qrcode');
 const fs = require('fs');
 const moment = require('moment-timezone');
 require('moment/locale/id');
@@ -53,6 +54,7 @@ module.exports = {
     path,
     logg,
     fs,
+    QRCode,
     moment,
     Mikrotik,
     MikrotikConfig,

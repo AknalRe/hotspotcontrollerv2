@@ -1,7 +1,7 @@
 const path = require('path');
 
 const { router, isAuthenticated } = require('./server');
-const { logg, moment, fs, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik } = require('./main');
+const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik } = require('./main');
 const { CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
 const { KirimPesanWA, kirimNotif, notif } = require('./whatsapp');
 const { client } = require('./mikrotik');
@@ -731,6 +731,20 @@ router.post('/logoutuser', isAuthenticated, async (req, res) => {
     } else {
         logg(false, `Mikrotik tidak terhubung`)
         res.json({ success: false, title: `User Logout`, message: `Mikrotik tidak terhubung` });
+    }
+})
+
+router.post("/logout", isAuthenticated, async (req, res) => {
+    let { tipe, nama, link, ssid, password } = req.body;
+    let wifiqr, path;
+    try {
+        if (tipe == "link") {
+            path = ``;
+        } else if (tipe == "wifi") {
+    
+        }
+    } catch (e) {
+        return res.json({ success: false, title: `Generate Qr`, message: `Gagal generate qr, error: ${e.message}`});
     }
 })
 
