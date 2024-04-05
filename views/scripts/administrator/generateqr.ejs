@@ -60,8 +60,45 @@
                             if (status) {
                                 const url = `/static/exports/${data.url}`;
                                 window.location.href = url;
+                                setTimeout(() => {
+                                    const formData = {
+                                        file: data.url,
+                                    };
+
+                                    fetch('/hapusgenerateqr', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(formData)
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            toastToast(data.success, "", data.message);
+                                        })
+                                        .catch(error => {
+                                            console.log('Error:', error);
+                                        });
+                                }, 15000);
                             } else {
-                                
+                                const formData = {
+                                    file: data.url,
+                                };
+
+                                fetch('/hapusgenerateqr', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(formData)
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        toastToast(data.success, "", data.message);
+                                    })
+                                    .catch(error => {
+                                        console.log('Error:', error);
+                                    });
                             }
                         }, "Tidak", "Download")
                     }

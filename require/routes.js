@@ -772,14 +772,14 @@ router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
             // Hapus file
             fs.unlinkSync(filepath);
             logg(true, `Images QR ${file} berhasil dihapus`);
-            res.json({ success: true, message: `Images QR ${file} berhasil dihapus` });
+            res.json({ success: true, title: `Hapus Images QR`, message: `Images QR ${file} berhasil dihapus` });
         } else {
             logg(false, `Images QR ${file} tidak ditemukan`)
-            res.json({ success: false, message: `Images QR ${file} tidak ditemukan` });
+            res.json({ success: false, title: `Hapus Images QR`, message: `Images QR ${file} tidak ditemukan` });
         }
     } catch (err) {
         logg(false, `Gagal menghapus Images QR ${file}, error: ${err.message}`)
-        res.json({ success: false, message: `Gagal menghapus Images QR ${file}, error: ${err.message}` });
+        res.json({ success: false, title: `Hapus Images QR`, message: `Gagal menghapus Images QR ${file}, error: ${err.message}` });
     }
 })
 
