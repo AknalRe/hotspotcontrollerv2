@@ -1,0 +1,33 @@
+<div class="generateqrpage">
+    <div class="form-tambahakun-container">
+        <h5>Generate QR</h5>
+        <form id="generateQrForm" action="/generateqr" method="POST">
+            <div class="form-group">
+                <label for="jenisqr">Jenis QR:</label>
+                <select class="form-control" id="jenisqr" name="tipe" required>
+                    <option value="link">Link</option>
+                    <option value="wifi">WiFi</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" class="form-control" id="nama" name="nama" required>
+            </div>
+            <div class="form-group" id="linkForm">
+                <label for="link">Link:</label>
+                <input type="text" class="form-control" id="link" name="link">
+            </div>
+            <div class="form-group wifiForm" style="display: none;">
+                <label for="ssid">SSID:</label>
+                <input type="text" class="form-control" id="ssid" name="ssid">
+            </div>
+            <div class="form-group wifiForm" style="display: none;">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <div class="btn-generate-qr">
+                <button type="submit" class="btn btn-primary">Generate QR</button>
+            </div>
+        </form>
+    </div>
+</div>

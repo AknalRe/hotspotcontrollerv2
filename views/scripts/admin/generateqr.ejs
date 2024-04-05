@@ -1,0 +1,135 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const jenisqr = document.getElementById('jenisqr');
+        const linkForm = document.getElementById('linkForm');
+        const wifiForms = document.querySelectorAll('.wifiForm');
+        const generateQrForm = document.getElementById('generateQrForm');
+
+        jenisqr.addEventListener('change', function () {
+            if (jenisqr.value === 'link') {
+                linkForm.style.display = 'block';
+                wifiForms.forEach(form => {
+                    form.style.display = 'none';
+                });
+            } else if (jenisqr.value === 'wifi') {
+                linkForm.style.display = 'none';
+                wifiForms.forEach(form => {
+                    form.style.display = 'block';
+                });
+            }
+        });
+
+        generateQrForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah form dari pengiriman default
+
+            // Mendapatkan nilai dari form
+            const tipe = jenisqr.value;
+            const nama = document.getElementById('nama').value;
+            const link = document.getElementById('link').value;
+            const ssid = document.getElementById('ssid').value;
+            const password = document.getElementById('password').value;
+
+            // Memeriksa apakah ada nilai yang kosong atau undefined
+            if (!nama || !tipe || (tipe === 'link' && (!link || link.trim() === '')) || (tipe === 'wifi' && (!ssid || ssid.trim() === ''))) {
+                alert('Harap lengkapi semua kolom');
+                return;
+            }
+
+            // Mengirimkan permintaan AJAX jika semua nilai telah diisi
+            const formData = {
+                tipe: tipe,
+                nama: nama,
+                link: tipe === 'link' ? link : null,
+                ssid: tipe === 'wifi' ? ssid : null,
+                password: tipe === 'wifi' ? password : null
+            };
+
+            fetch('/generateqr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    toastToast(data.success, "", data.message);
+                    if (data.success) {
+                        showConfirmationModal(`Download Hasil Generate QR`, `Apakah anda ingin mendownload hasil generate QR`, "", function (status) {
+                            if (status) {
+                                const url = `/static/images/${data.url}`;
+                                fetch(url)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const a = document.createElement('a');
+                                    a.href = URL.createObjectURL(blob);
+                                    a.download = data.url;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    window.URL.revokeObjectURL(url);
+                                    toastToast(true, "", `Berhasil mendownload file ${data.url}`);
+                                    const formData = {
+                                        file: data.url,
+                                    };
+                                    fetch('/hapusgenerateqr', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(formData)
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        toastToast(data.success, "", data.message);
+                                    })
+                                    .catch(error => {
+                                        console.log('Error:', error);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.log('Error:', error);
+                                });
+                            } else {
+                                const formData = {
+                                    file: data.url,
+                                };
+
+                                fetch('/hapusgenerateqr', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(formData)
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        toastToast(data.success, "", data.message);
+                                    })
+                                    .catch(error => {
+                                        console.log('Error:', error);
+                                    });
+                            }
+                        }, "Tidak", "Download")
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Tambahkan logika untuk menangani kesalahan di sini
+                });
+        });
+
+        // Set initial display
+        if (jenisqr.value === 'link') {
+            linkForm.style.display = 'block';
+            wifiForms.forEach(form => {
+                form.style.display = 'none';
+            });
+        } else if (jenisqr.value === 'wifi') {
+            linkForm.style.display = 'none';
+            wifiForms.forEach(form => {
+                form.style.display = 'block';
+            });
+        }
+    });
+</script>
