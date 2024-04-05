@@ -769,7 +769,7 @@ router.post("/logout", isAuthenticated, async (req, res) => {
     }
 })
 
-router.use((req, res) => {
+router.use(async (req, res) => {
     const ip = req.headers['x-forwarded-for']
         ? `${req.headers['x-forwarded-for']}`
         : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
