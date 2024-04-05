@@ -3,7 +3,7 @@ const path = require('path');
 const { router, isAuthenticated } = require('./server');
 const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik } = require('./main');
 const { CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
-const { KirimPesanWA, kirimNotif, notif } = require('./whatsapp');
+const { KirimPesanWA, kirimNotif, notif, notifspam } = require('./whatsapp');
 const { client } = require('./mikrotik');
 const { ExportXLSX } = require('./export');
 
@@ -759,7 +759,7 @@ router.post("/generateqr", isAuthenticated, async (req, res) => {
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
         ? `${req.headers['x-forwarded-for']}`
-        : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`
+        : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
     const username = req.session.username;
     try {
         req.session.destroy();
@@ -770,6 +770,13 @@ router.post("/logout", isAuthenticated, async (req, res) => {
 })
 
 router.use((req, res) => {
+    const ip = req.headers['x-forwarded-for']
+        ? `${req.headers['x-forwarded-for']}`
+        : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
+    const hostname = req.hostname;
+    const url = req.url;
+    const message = `WARNING !!!!!!\nTerdapat ${ip} mengakses pada ${hostname}${url} `;
+    await notifspam(message);
     res.status(404).send('<html><head><link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png"><title>404</title></head><body></body></html>');
 });
 
