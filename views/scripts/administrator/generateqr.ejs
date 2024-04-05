@@ -68,6 +68,7 @@
                                     document.body.appendChild(a);
                                     a.click();
                                     window.URL.revokeObjectURL(url);
+                                    toastToast(true, "", `Berhasil mendownload file ${data.url}`);
                                     const formData = {
                                         file: data.url,
                                     };
