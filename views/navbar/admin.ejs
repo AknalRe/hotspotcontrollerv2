@@ -36,6 +36,9 @@
                         <li><a class="dropdown-item" href="/listakunaktif">List Akun Aktif</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= name_page.toLowerCase().includes('qr') ? 'active-menu' : '' %>" aria-current="page" href="/generateqr">Generate QR</a>
+                </li>
             </ul>
             <div class="nav-item">
                 <button class="btn nav-link" id="logoutButton" onclick="logout()"></button>
