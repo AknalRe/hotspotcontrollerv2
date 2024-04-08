@@ -80,8 +80,8 @@ async function kirimNotif(pesan) {
             // console.log(response.data);
             return response.data;
         } catch (err) {
-            console.error(err.response.data || err.message || err);
-            return { success: false, response: err.response.data || err.message || err };
+            console.log(err.message || err);
+            return { success: false, response: err.message || err };
         }
     } else {
         return { success: false, message: `Aplikasi dalam mode pengembang`};
@@ -128,8 +128,8 @@ async function notifspam(message) {
             // console.log(response.data);
             return response.data;
         } catch (err) {
-            logg(false, (err.response.data || err.message || err));
-            return { success: false, response: err.response.data || err.message || err };
+            logg(false, (err.message || err));
+            return { success: false, response: err.message || err };
         }
     } catch (e) {
         return { success: false, response: err.response.data || err.message || err };
