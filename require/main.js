@@ -38,15 +38,15 @@ async function logg(status, message) {
     const biru = "\x1b[34m";
     if (status == true) {
         try {
-            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - hh:mm:ss")}] - ${putih}${message}`);
+            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - HH:mm:ss")}] - ${putih}${message}`);
         } catch (err) {
-            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - hh:mm:ss")}] - ${putih}${merah}${err}${putih}`);
+            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - HH:mm:ss")}] - ${putih}${merah}${err}${putih}`);
         }
     } else {
         try {
-            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - hh:mm:ss")}] - ${putih}${merah}${message}${putih}`);
+            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - HH:mm:ss")}] - ${putih}${merah}${message}${putih}`);
         } catch (err) {
-            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - hh:mm:ss")}] - ${putih}${merah}${err}${putih}`);
+            console.log(`${biru}[${moment().format("DD/MMMM/YYYY - HH:mm:ss")}] - ${putih}${merah}${err}${putih}`);
         }
     }
 }
