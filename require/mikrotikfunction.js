@@ -193,7 +193,7 @@ async function listakunuser(name) {
     }
 }
 
-async function editakun(usernamelama, id, username, jenisakun, password) {
+async function editakun(usernamelama, id, username, jenisakun, password, comment) {
     // console.log(usernamelama, id, username, jenisakun, password)
     const { mikrotikstatus } = Mikrotik;
     if (mikrotikstatus) {
@@ -212,6 +212,7 @@ async function editakun(usernamelama, id, username, jenisakun, password) {
                 "=name=" + username,
                 "=password=" + newpassword,
                 "=profile=" + jenisakun,
+                "=comment=" + comment,
             ])
 
             isAkunHotspotAvailable = await checkakun(username);

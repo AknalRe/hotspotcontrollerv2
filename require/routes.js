@@ -460,12 +460,12 @@ router.post('/deleteakunhotspot', isAuthenticated, async (req, res) => {
 
 router.post('/editakunhotspot', isAuthenticated, async (req, res) => {
     if (req.session.role.toLowerCase() !== 'demo') {
-        const { usernamelama, id, username, password, jenisAkun } = req.body;
+        const { usernamelama, id, username, password, jenisAkun, comment } = req.body;
         // console.log(usernamelama, id, username, password, jenisAkun)
         const ip = req.headers['x-forwarded-for']
             ? `${req.headers['x-forwarded-for']}`
             : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
-        const response = await editakun(usernamelama, id, username, jenisAkun, password);
+        const response = await editakun(usernamelama, id, username, jenisAkun, password, comment);
         if (response.success) {
             await notif(req.hostname, req.session.username, req.session.role, `Berhasil mengubah data akun ${usernamelama} menjadi ${username}-${jenisAkun}`);
             res.json(response);
