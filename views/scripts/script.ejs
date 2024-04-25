@@ -56,66 +56,6 @@
         }
     });
 
-    // function toastToast(success, title, message, timestamp) {
-    //     var toast = document.createElement('div');
-    //     toast.className = 'toast';
-    //     toast.setAttribute('role', 'alert');
-    //     toast.setAttribute('aria-live', 'assertive');
-    //     toast.setAttribute('aria-atomic', 'true');
-
-    //     var toastHeader = document.createElement('div');
-    //     toastHeader.className = 'toast-header';
-
-    //     var strongElement = document.createElement('strong');
-    //     strongElement.className = 'me-auto';
-    //     let titlefinal;
-    //     // if (message.includes('Terjadi kesalahan')) {
-    //     //     titlefinal = `${title} - Error`;
-    //     // } else if (success) {
-    //     //     titlefinal = `${title} - Success`;
-    //     // } else {
-    //     //     titlefinal = `${title} - Failure`;
-    //     // }
-    //     // strongElement.innerText = titlefinal;
-    //     strongElement.innerText = title;
-
-    //     // var smallElement = document.createElement('small');
-    //     // smallElement.className = '';
-    //     // smallElement.innerText = getTimeDifference(timestamp);
-
-    //     var buttonElement = document.createElement('button');
-    //     buttonElement.type = 'button';
-    //     buttonElement.className = 'btn-close';
-    //     buttonElement.setAttribute('data-bs-dismiss', 'toast');
-    //     buttonElement.setAttribute('aria-label', 'Close');
-    //     buttonElement.addEventListener('click', function () {
-    //         toast.remove();
-    //     });
-
-    //     var toastBody = document.createElement('div');
-    //     toastBody.className = 'toast-body';
-    //     toastBody.innerText = message;
-
-    //     toastHeader.appendChild(strongElement);
-    //     // toastHeader.appendChild(smallElement);
-    //     toastHeader.appendChild(buttonElement);
-
-    //     toast.appendChild(toastHeader);
-    //     toast.appendChild(toastBody);
-
-    //     var toastContainer = document.getElementById('toast-container');
-    //     toastContainer.appendChild(toast);
-
-    //     if (success) {
-    //         toast.classList.add('toast-success');
-    //     } else {
-    //         toast.classList.add('toast-error');
-    //     }
-
-    //     var bsToast = new bootstrap.Toast(toast);
-    //     bsToast.show();
-
-    // }
     function toastToast(success, title, message) {
         var toast = document.createElement('div');
         toast.className = 'toast';
