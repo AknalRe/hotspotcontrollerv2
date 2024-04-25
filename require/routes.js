@@ -859,8 +859,8 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil ${message}` });
         } catch(err) {
             // Memberikan respons error jika terjadi kesalahan saat broadcast
-            console.error("Error saat mengirim broadcast:", err);
-            res.status(500).json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+            // console.error("Error saat mengirim broadcast:", err);
+            res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }
     } else {
         // Memberikan respons jika pengguna berada dalam mode demo
