@@ -846,30 +846,23 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     
     if (req.session.role.toLowerCase() !== "demo") {
         try {
-            let promises = []; // Array untuk menyimpan janji-janji
+            let promises = [];
 
             if (Array.isArray(tujuan)) {
-                // Mengumpulkan janji-janji untuk setiap tujuan dalam array
                 tujuan.forEach(item => {
                     promises.push(KirimPesanWA(item.name, pesan));
                 });
             } else {
-                // Menambahkan janji untuk tujuan tunggal
                 promises.push(KirimPesanWA(tujuan, pesan));
             }
 
-            // Menunggu sampai semua janji selesai diproses
             await Promise.all(promises);
 
-            // Memberikan respons sukses jika broadcast berhasil
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}` });
         } catch(err) {
-            // Memberikan respons error jika terjadi kesalahan saat broadcast
-            // console.error("Error saat mengirim broadcast:", err);
             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }
     } else {
-        // Memberikan respons jika pengguna berada dalam mode demo
         res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di mode demo` })
     }
 })
