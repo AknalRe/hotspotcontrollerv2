@@ -159,11 +159,11 @@
 
                 for (const key in data.data) {
                     if (Object.hasOwnProperty.call(data.data, key)) {
-                        if (key === "name" || key === "password" || key === "profile" || key === "comment") {
+                        if (key === "name" || key === "password" || key === "profile") {
                             const jenisAkunData = await jenisakun();
                             const label = document.createElement('label');
                             label.classList.add('form-label-modal');
-                            label.textContent = key !== "comment" ? `${key.charAt(0).toUpperCase() + key.slice(1)} :` : `Catatan :`;
+                            label.textContent = `${key.charAt(0).toUpperCase() + key.slice(1)} :`;
                             const br = document.createElement('br');
 
                             if (key === "profile") {
@@ -193,20 +193,23 @@
 
                                 form.appendChild(label);
                                 form.appendChild(select);
-                            } else if (!data.data.hasOwnProperty("comment")) {
-                                // Buat elemen label dan input untuk "comment" jika tidak ada properti "comment" dalam objek data
-                                const input = document.createElement('input');
-                                input.classList.add('form-input-modal');
-                                input.setAttribute('type', 'text');
-                                input.setAttribute('name', "comment");
-                                input.setAttribute('placeholder', 'Isikan catatan bila diperlukan...');
-                                
-                                const label = document.createElement('label');
-                                label.classList.add('form-label-modal');
-                                label.textContent = "Catatan :";
-                                
-                                form.appendChild(label);
-                                form.appendChild(input);
+
+                                // Mengecek apakah properti "comment" tidak ada dalam objek data
+                                if (!data.data.hasOwnProperty("comment")) {
+                                    // Buat elemen label dan input untuk "comment"
+                                    const inputComment = document.createElement('input');
+                                    inputComment.classList.add('form-input-modal');
+                                    inputComment.setAttribute('type', 'text');
+                                    inputComment.setAttribute('name', "comment");
+                                    inputComment.setAttribute('placeholder', 'Isikan catatan bila diperlukan...');
+
+                                    const labelComment = document.createElement('label');
+                                    labelComment.classList.add('form-label-modal');
+                                    labelComment.textContent = "Catatan :";
+
+                                    form.appendChild(labelComment);
+                                    form.appendChild(inputComment);
+                                }
                             } else {
                                 const input = document.createElement('input');
                                 input.classList.add('form-input-modal');
@@ -219,6 +222,7 @@
 
                             form.appendChild(br);
                         }
+
                     }
                 }
 
