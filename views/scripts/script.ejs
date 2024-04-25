@@ -193,7 +193,7 @@
 
                                 form.appendChild(label);
                                 form.appendChild(select);
-                            } else if (!data.data.hasOwnProperty("comment")) {
+                            } else if (!key.hasOwnProperty("comment")) {
                                 // Buat elemen label dan input untuk "comment" jika tidak ada dalam objek data
                                 const input = document.createElement('input');
                                 input.classList.add('form-input-modal');
