@@ -10,14 +10,14 @@
     const socket = io();
     if (mikrotikstatus) {
         toastToast(true, "", "Memproses mengambil info router")
-        socket.on('resource', function(data) {
+        socket.on('resource', function (data) {
             // console.log(data.data[0]);
             const resource = data.data[0];
             document.getElementById("info-mikrotik-cpu").innerHTML = resource["cpu-load"] + "%";
             document.getElementById("info-mikrotik-memory").innerHTML = bytesToMegabytes(resource["free-memory"]).toFixed(0) + "MB";
         })
 
-        socket.on('userhotspot', function(data) {
+        socket.on('userhotspot', function (data) {
             const hotspot = data.data;
             // console.log(hotspot);
             document.getElementById("info-mikrotik-user-hotspot-aktif").innerHTML = hotspot.length;
@@ -69,17 +69,26 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         const broadcastForm = document.getElementById('broadcastForm');
+        const submitButton = document.getElementById('submitButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
         broadcastForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
+            // Menampilkan animasi loading
+            submitButton.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+
             let message;
-            let tujuan  = document.getElementById('tujuan').value;
-            const pesan =  document.getElementById('pesan').value;
+            let tujuan = document.getElementById('tujuan').value;
+            const pesan = document.getElementById('pesan').value;
 
             if (pesan == null || pesan == "") {
                 alert('Harap isi kolom pesan');
                 toastToast(false, "", `Batal mengirimkan broadcast karena pesan kosong`);
+                // Menyembunyikan animasi loading
+                submitButton.disabled = false;
+                loadingSpinner.style.display = 'none';
                 return;
             }
 
@@ -106,10 +115,16 @@
                 .then(response => response.json())
                 .then(data => {
                     toastToast(data.success, "", data.message);
+                    // Menyembunyikan animasi loading
+                    submitButton.disabled = false;
+                    loadingSpinner.style.display = 'none';
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     toastToast(true, "", `Gagal melakukan broadcast, Error: ${error}`);
+                    // Menyembunyikan animasi loading
+                    submitButton.disabled = false;
+                    loadingSpinner.style.display = 'none';
                 });
         })
     })
