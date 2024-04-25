@@ -843,24 +843,28 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message } = req.body;
-    // console.log(tujuan, pesan, message);
+    
     if (req.session.role.toLowerCase() !== "demo") {
         try {
             if (Array.isArray(tujuan)) {
-                tujuan.forEach(async item => {
-                    // console.log(item);
-                    console.log(await KirimPesanWA(item.name, pesan));
-                });
+                // Mengirim pesan kepada setiap tujuan dalam array
+                await Promise.all(tujuan.map(async item => {
+                    await KirimPesanWA(item.name, pesan);
+                }));
             } else {
-                // console.log(tujuan);
-                console.log(await KirimPesanWA(tujuan, pesan));
+                // Mengirim pesan kepada tujuan tunggal
+                await KirimPesanWA(tujuan, pesan);
             }
+            // Memberikan respons sukses jika broadcast berhasil
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil ${message}` });
         } catch(err) {
-            res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+            // Memberikan respons error jika terjadi kesalahan saat broadcast
+            console.error("Error saat mengirim broadcast:", err);
+            res.status(500).json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }
     } else {
-        res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di user demo` })
+        // Memberikan respons jika pengguna berada dalam mode demo
+        res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di mode demo` })
     }
 })
 
