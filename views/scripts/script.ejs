@@ -401,6 +401,12 @@
                     }
                 }
                 contentModal.appendChild(form);
+            } else if (data.id == "GenerateQr") {
+                contentModal.style.display = 'block';
+                const qrImage = document.createElement('img');
+                qrImage.classList.add('qr-image');
+                qrImage.src = data.data.qrImageUrl;
+                contentModal.appendChild(qrImage);
             }
         }
 
