@@ -846,17 +846,23 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     
     if (req.session.role.toLowerCase() !== "demo") {
         try {
+            let promises = []; // Array untuk menyimpan janji-janji
+
             if (Array.isArray(tujuan)) {
-                // Mengirim pesan kepada setiap tujuan dalam array
-                await Promise.all(tujuan.map(async item => {
-                    await KirimPesanWA(item.name, pesan);
-                }));
+                // Mengumpulkan janji-janji untuk setiap tujuan dalam array
+                tujuan.forEach(item => {
+                    promises.push(KirimPesanWA(item.name, pesan));
+                });
             } else {
-                // Mengirim pesan kepada tujuan tunggal
-                await KirimPesanWA(tujuan, pesan);
+                // Menambahkan janji untuk tujuan tunggal
+                promises.push(KirimPesanWA(tujuan, pesan));
             }
+
+            // Menunggu sampai semua janji selesai diproses
+            await Promise.all(promises);
+
             // Memberikan respons sukses jika broadcast berhasil
-            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil ${message}` });
+            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}` });
         } catch(err) {
             // Memberikan respons error jika terjadi kesalahan saat broadcast
             // console.error("Error saat mengirim broadcast:", err);
