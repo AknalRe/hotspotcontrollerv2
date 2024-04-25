@@ -319,3 +319,8 @@ main {
 .form-modal p {
     text-align: left;
 }
+
+.qr-image-center {
+    display: block;
+    margin: 0 auto;
+}

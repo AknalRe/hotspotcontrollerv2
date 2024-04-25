@@ -404,7 +404,7 @@
             } else if (data.id == "GenerateQr") {
                 contentModal.style.display = 'block';
                 const qrImage = document.createElement('img');
-                qrImage.classList.add('qr-image');
+                qrImage.classList.add('qr-image', 'qr-image-center');
                 qrImage.src = data.data;
                 contentModal.appendChild(qrImage);
             }
