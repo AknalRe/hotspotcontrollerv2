@@ -809,6 +809,7 @@ router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
 })
 
 router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
+    const { mikrotikstatus } = Mikrotik;
     if (mikrotikstatus) {
         try {
             let sendData = [];
