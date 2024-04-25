@@ -843,18 +843,19 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message } = req.body;
-    console.log(tujuan, pesan, message);
+    // console.log(tujuan, pesan, message);
     if (req.session.role.toLowerCase() !== "demo") {
         try {
             if (Array.isArray(tujuan)) {
                 tujuan.forEach(async item => {
-                    console.log(item);
-                    // await KirimPesanWA(item.name, pesan);
+                    // console.log(item);
+                    await KirimPesanWA(item.name, pesan);
                 });
             } else {
-                console.log(tujuan);
-                // await KirimPesanWA(tujuan, pesan);
+                // console.log(tujuan);
+                await KirimPesanWA(tujuan, pesan);
             }
+            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil ${message}` });
         } catch(err) {
             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }
