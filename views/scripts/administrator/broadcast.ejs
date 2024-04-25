@@ -26,6 +26,7 @@
 
 </script>
 <script>
+    let dataklien;
     updatelistklien();
 
     function updatelistklien() {
@@ -42,6 +43,8 @@
                 console.log(data)
                 toastToast(data.success, "", data.message);
                 if (data.success) {
+                    dataklien = data.data;
+                    console.log(dataklien);
                     const selectElement = document.getElementById('tujuan');
                     selectElement.innerHTML = "";
 
@@ -63,4 +66,45 @@
                 console.log('Error:', error);
             });
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const broadcastForm = document.getElementById('broadcastForm');
+
+        broadcastForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            let tujuan  = document.getElementById('tujuan');
+            const pesan =  document.getElementById('pesan');
+
+            if (pesan == null || pesan == "") {
+                alert('Harap isi kolom pesan');
+                toastToast(false, "", `Batal mengirimkan broadcast karena pesan kosong`);
+                return;
+            }
+
+            if (tujuan == "semua") {
+                tujuan = dataklien;
+            }
+
+            const formData = {
+                tujuan: tujuan,
+                pesan: pesan
+            };
+
+            fetch('/broadcast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    toastToast(true, "", `Gagal melakukan broadcast, Error: ${error}`);
+                });
+        })
+    })
 </script>

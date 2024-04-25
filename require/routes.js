@@ -837,6 +837,15 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
     }
 });
 
+router.post("/broadcast", isAuthenticated, async (req, res) => {
+    let { tujuan, pesan } = req.body;
+    try {
+        
+    } catch(err) {
+
+    }
+})
+
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
         ? `${req.headers['x-forwarded-for']}`
