@@ -849,11 +849,11 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             if (Array.isArray(tujuan)) {
                 tujuan.forEach(async item => {
                     // console.log(item);
-                    await KirimPesanWA(item.name, pesan);
+                    console.log(await KirimPesanWA(item.name, pesan));
                 });
             } else {
                 // console.log(tujuan);
-                await KirimPesanWA(tujuan, pesan);
+                console.log(await KirimPesanWA(tujuan, pesan));
             }
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil ${message}` });
         } catch(err) {
