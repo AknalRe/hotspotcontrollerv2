@@ -3,30 +3,18 @@
         <h5>Broadcast</h5>
         <form id="broadcastForm" action="/broadcast" method="POST">
             <div class="form-group">
-                <label for="jenisqr">Jenis QR:</label>
-                <select class="form-control" id="jenisqr" name="tipe" required>
-                    <option value="link">Link</option>
-                    <option value="wifi">WiFi</option>
-                </select>
+                <div class="form-group">
+                    <label for="tujuan">Tujuan Broadcast:</label>
+                    <select class="form-control" id="tujuan" name="tujuan" required>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label for="nama">Nama:</label>
-                <input type="text" class="form-control" id="nama" name="nama" required>
-            </div>
-            <div class="form-group" id="linkForm">
-                <label for="link">Link:</label>
-                <input type="text" class="form-control" id="link" name="link">
-            </div>
-            <div class="form-group wifiForm" style="display: none;">
-                <label for="ssid">SSID:</label>
-                <input type="text" class="form-control" id="ssid" name="ssid">
-            </div>
-            <div class="form-group wifiForm" style="display: none;">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <label for="pesan">Pesan:</label>
+                <textarea class="form-control" id="pesan" name="pesan" rows="5" required></textarea>
             </div>
             <div class="btn-generate-qr">
-                <button type="submit" class="btn btn-primary">Generate QR</button>
+                <button type="submit" class="btn btn-primary">Kirim Broadcast</button>
             </div>
         </form>
     </div>

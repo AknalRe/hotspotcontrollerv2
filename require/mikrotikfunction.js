@@ -318,5 +318,6 @@ module.exports = {
     listakun,
     editakun,
     addbinding,
-    listakunuser
+    listakunuser,
+    testINT
 }

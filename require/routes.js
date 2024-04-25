@@ -2,7 +2,7 @@ const path = require('path');
 
 const { router, isAuthenticated } = require('./server');
 const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik } = require('./main');
-const { CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
+const { testINT, CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
 const { KirimPesanWA, kirimNotif, notif, notifspam } = require('./whatsapp');
 const { client } = require('./mikrotik');
 const { ExportXLSX } = require('./export');
@@ -807,6 +807,34 @@ router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
         res.json({ success: false, title: `Hapus Images QR`, message: `Gagal menghapus Images QR ${file}, error: ${err.message}` });
     }
 })
+
+router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
+    if (mikrotikstatus) {
+        try {
+            let sendData = [];
+            let response = await client.write('/ip/hotspot/user/print');
+            // Memeriksa setiap item dalam respons
+            for (let item of response) {
+                // Memeriksa apakah objek memiliki key 'name'
+                if (item.hasOwnProperty('name')) {
+                    // Memanggil fungsi testINT di luar blok forEach
+                    let isInt = await testINT(item.name);
+                    // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
+                    if (isInt) {
+                        sendData.push({ name: item.name  });
+                    }
+                }
+            }
+            res.json({ success: true, title: `List Klien Broadcast`, message: `Berhasil mendapatkan list klien broadcast`, data: sendData });
+        } catch (er) {
+            logg(false, `Gagal mendapatkan list klien broadcast, error: ${er.message}`);
+            res.json({ success: false, title: `List Klien Broadcast`, message: `Gagal mendapatkan list klien broadcast, error: ${er.message}` });
+        }
+    } else {
+        logg(false, `Mikrotik tidak terhubung`);
+        res.json({ success: false, title: `List Klien Broadcast`, message: `Mikrotik tidak terhubung` });
+    }
+});
 
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
