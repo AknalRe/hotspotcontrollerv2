@@ -40,16 +40,23 @@
             .then(data => {
                 // Hapus semua opsi saat ini
                 console.log(data)
-                // toastToast(true, "", "Data jenis akun didapatkan");
-                // const selectElement = document.getElementById('jenisAkun');
-                // selectElement.innerHTML = "";
-                // data.response.forEach(option => {
-                //     const optionElement = document.createElement('option');
-                //     optionElement.textContent = option.name;
-                //     optionElement.value = option.name;
-                //     selectElement.appendChild(optionElement);
-                // });
-                // togglePasswordVisibility();
+                toastToast(data.success, "", data.message);
+                if (data.success) {
+                    const selectElement = document.getElementById('tujuan');
+                    selectElement.innerHTML = "";
+
+                    const semuaOption = document.createElement('option');
+                    semuaOption.textContent = "Semua";
+                    semuaOption.value = "semua";
+                    selectElement.appendChild(semuaOption);
+
+                    data.data.forEach(option => {
+                        const optionElement = document.createElement('option');
+                        optionElement.textContent = option.name;
+                        optionElement.value = option.name;
+                        selectElement.appendChild(optionElement);
+                    });
+                }
             })
             .catch(error => {
                 toastToast(true, "", `Gagal Mendapatkan data jenis akun, Error: ${error}`);
