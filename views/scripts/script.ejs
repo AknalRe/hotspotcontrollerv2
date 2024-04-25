@@ -137,6 +137,7 @@
         const confirmAction = document.getElementById('confirmAction');
         const contentModal = document.getElementById('contentModal');
         const confirmActionClose = document.getElementById('confirmActionClose');
+        const ActionClose = document.getElementById('ActionClose');
 
         confirmLabel.textContent = title;
         confirmMessage.innerHTML = message.split('\n').join('<br>');
@@ -419,6 +420,10 @@
             action(false);
         };
 
+        ActionClose.onclick = function () {
+            action(false);
+        }
+
         $(confirmModal).modal('show');
     }
 
@@ -429,6 +434,7 @@
         const confirmAction = document.getElementById('confirmAction2');
         const contentModal = document.getElementById('contentModal2');
         const confirmActionClose = document.getElementById('confirmActionClose2');
+        const ActionClose = document.getElementById('ActionClose2');
 
         confirmLabel.textContent = title;
         confirmMessage.innerHTML = message.split('\n').join('<br>');
@@ -677,6 +683,10 @@
         confirmActionClose.onclick = function () {
             action(false);
         };
+
+        ActionClose.onclick = function () {
+            action(false);
+        }
 
         // Tampilkan modal
         $(confirmModal).modal('show');
