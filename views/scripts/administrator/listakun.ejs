@@ -95,6 +95,9 @@
                 var profileCell = document.createElement('td');
                 profileCell.textContent = item.profile;
 
+                var commentCell = document.createElement('td');
+                commentCell.textContent = item.comment ? item.comment : "";
+
                 var statusCell = document.createElement('td');
                 let status = item.disabled === 'false' ? 'Aktif' : 'Tidak Aktif';
                 statusCell.style.color = item.disabled === 'false' ? 'green' : 'red';
@@ -154,6 +157,7 @@
                 row.appendChild(passwordCell);
                 row.appendChild(pemakaianCell);
                 row.appendChild(profileCell);
+                row.appendChild(commentCell);
                 row.appendChild(statusCell);
                 row.appendChild(actionCell);
 
@@ -163,10 +167,10 @@
         } else {
             var row = document.createElement('tr');
             var statusCell = document.createElement('td');
-            statusCell.textContent = "Tidak ada akun tamu";
+            statusCell.textContent = "Tidak ada akun";
             statusCell.style.textAlign = "center";
             statusCell.style.color = "red";
-            statusCell.colSpan = 8;
+            statusCell.colSpan = 9;
             row.appendChild(statusCell);
             tbody.appendChild(row);
         }
