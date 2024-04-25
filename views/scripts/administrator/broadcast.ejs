@@ -40,11 +40,11 @@
             .then(response => response.json())
             .then(data => {
                 // Hapus semua opsi saat ini
-                console.log(data)
+                // console.log(data)
                 toastToast(data.success, "", data.message);
                 if (data.success) {
                     dataklien = data.data;
-                    console.log(dataklien);
+                    // console.log(dataklien);
                     const selectElement = document.getElementById('tujuan');
                     selectElement.innerHTML = "";
 
@@ -73,6 +73,7 @@
         broadcastForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
+            let message;
             let tujuan  = document.getElementById('tujuan');
             const pesan =  document.getElementById('pesan');
 
@@ -84,11 +85,15 @@
 
             if (tujuan == "semua") {
                 tujuan = dataklien;
+                message = "Mengirimkan ke semua klien";
+            } else {
+                message = `Mengirimkan ke klien ${tujuan}`;
             }
 
             const formData = {
                 tujuan: tujuan,
-                pesan: pesan
+                pesan: pesan,
+                message: message
             };
 
             fetch('/broadcast', {

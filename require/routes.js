@@ -809,40 +809,57 @@ router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
 })
 
 router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
-    const { mikrotikstatus } = Mikrotik;
-    if (mikrotikstatus) {
-        try {
-            let sendData = [];
-            let response = await client.write('/ip/hotspot/user/print');
-            // Memeriksa setiap item dalam respons
-            for (let item of response) {
-                // Memeriksa apakah objek memiliki key 'name'
-                if (item.hasOwnProperty('name')) {
-                    // Memanggil fungsi testINT di luar blok forEach
-                    let isInt = await testINT(item.name);
-                    // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
-                    if (isInt) {
-                        sendData.push({ name: item.name  });
+    if (req.session.role.toLowerCase() !== "demo") {
+        const { mikrotikstatus } = Mikrotik;
+        if (mikrotikstatus) {
+            try {
+                let sendData = [];
+                let response = await client.write('/ip/hotspot/user/print');
+                // Memeriksa setiap item dalam respons
+                for (let item of response) {
+                    // Memeriksa apakah objek memiliki key 'name'
+                    if (item.hasOwnProperty('name')) {
+                        // Memanggil fungsi testINT di luar blok forEach
+                        let isInt = await testINT(item.name);
+                        // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
+                        if (isInt) {
+                            sendData.push({ name: item.name  });
+                        }
                     }
                 }
+                res.json({ success: true, title: `List Klien Broadcast`, message: `Berhasil mendapatkan list klien broadcast`, data: sendData });
+            } catch (er) {
+                logg(false, `Gagal mendapatkan list klien broadcast, error: ${er.message}`);
+                res.json({ success: false, title: `List Klien Broadcast`, message: `Gagal mendapatkan list klien broadcast, error: ${er.message}` });
             }
-            res.json({ success: true, title: `List Klien Broadcast`, message: `Berhasil mendapatkan list klien broadcast`, data: sendData });
-        } catch (er) {
-            logg(false, `Gagal mendapatkan list klien broadcast, error: ${er.message}`);
-            res.json({ success: false, title: `List Klien Broadcast`, message: `Gagal mendapatkan list klien broadcast, error: ${er.message}` });
+        } else {
+            logg(false, `Mikrotik tidak terhubung`);
+            res.json({ success: false, title: `List Klien Broadcast`, message: `Mikrotik tidak terhubung` });
         }
     } else {
-        logg(false, `Mikrotik tidak terhubung`);
-        res.json({ success: false, title: `List Klien Broadcast`, message: `Mikrotik tidak terhubung` });
+        res.json({ success: false, title: `List Klien Broadcast`, message: `Anda berada di user demo` })
     }
 });
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
-    let { tujuan, pesan } = req.body;
-    try {
-        
-    } catch(err) {
-
+    let { tujuan, pesan, message } = req.body;
+    console.log(tujuan, pesan, message);
+    if (req.session.role.toLowerCase() !== "demo") {
+        try {
+            if (Array.isArray(tujuan)) {
+                tujuan.forEach(async item => {
+                    console.log(item);
+                    // await KirimPesanWA(item.name, pesan);
+                });
+            } else {
+                console.log(tujuan);
+                // await KirimPesanWA(tujuan, pesan);
+            }
+        } catch(err) {
+            res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+        }
+    } else {
+        res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di user demo` })
     }
 })
 
