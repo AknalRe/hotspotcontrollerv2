@@ -251,11 +251,13 @@
                 const nameValue = document.querySelector('input[name="name"]').value;
                 const passwordValue = document.querySelector('input[name="password"]').value;
                 const profileValue = document.querySelector('select[name="profile"]').value;
+                const commentValue = document.querySelector('select[name="comment"]').value;
 
                 if (
                     data.name == nameValue &&
                     data.password == passwordValue &&
-                    data.profile == profileValue
+                    data.profile == profileValue &&
+                    data.comment == commentValue
                 ) {
                     action();
                     return toastToast(false, '', "Tidak disimpan, karena tidak ada perubahan.");
@@ -267,6 +269,7 @@
                     username: nameValue,
                     password: passwordValue,
                     jenisAkun: profileValue,
+                    comment: commentValue,
                 };
 
                 if (data.name == nameValue) {
