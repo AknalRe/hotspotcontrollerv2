@@ -193,13 +193,13 @@
 
                                 form.appendChild(label);
                                 form.appendChild(select);
-                            } else if (key === "comment" && !data.data.hasOwnProperty("comment")) {
+                            } else if (!data.data.hasOwnProperty("comment")) {
                                 // Buat elemen label dan input untuk "comment" jika tidak ada dalam objek data
                                 const input = document.createElement('input');
                                 input.classList.add('form-input-modal');
                                 input.setAttribute('type', 'text');
-                                input.setAttribute('name', key);
-                                input.setAttribute('placeholder', 'Masukkan catatan...');
+                                input.setAttribute('name', "comment");
+                                input.setAttribute('placeholder', 'isikan catatan bila di perlukan...');
                                 const newLabel = document.createElement('label');
                                 newLabel.classList.add('form-label-modal');
                                 newLabel.textContent = "Catatan :";
