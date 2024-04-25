@@ -208,7 +208,7 @@ router.get('/generateqr', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/generateqr', isAuthenticated, async (req, res) => {
+router.get('/broadcast', isAuthenticated, async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
     req.session.prevpage = req.path;
     const role = req.session.role;
