@@ -823,7 +823,8 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
                         let isInt = await testINT(item.name);
                         // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
                         if (isInt) {
-                            sendData.push({ item });
+                            // sendData.push({ name: item.name  });
+                            sendData.push(item);
                         }
                     }
                 }
