@@ -16,9 +16,6 @@
         var footer = document.querySelector(".container-footer");
         var contentHeight = document.body.scrollHeight;
         var viewportHeight = document.documentElement.clientHeight;
-        // console.log("View Footer", footer.scrollHeight);
-        // console.log("View Content", contentHeight);
-        // console.log("View Viewvport",viewportHeight);
 
         if (viewportHeight > 800 && contentHeight <= viewportHeight) {
             footer.classList.add("show");
