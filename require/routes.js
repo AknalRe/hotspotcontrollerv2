@@ -357,6 +357,7 @@ router.post('/exportakun', isAuthenticated, async (req, res) => {
             Password: item.password,
             Pemakaian: formatkuota(item['bytes-out']) + ' / ' + formatkuota(item['bytes-in']),
             Profile: item.profile,
+            Catatan: item.comment ? item.comment : "",
             Status: item.disabled === 'false' ? 'Aktif' : 'Nonaktif'
         }));
 
