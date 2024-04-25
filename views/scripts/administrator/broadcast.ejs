@@ -26,9 +26,11 @@
 
 </script>
 <script>
-    function updateJenisAkunOptions() {
+    updatelistklien();
+    
+    function updatelistklien() {
         toastToast(true, "", "Memproses ambil data jenis akun");
-        fetch('/infoprofilhotspot', {
+        fetch('/listklienbroadcast', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -37,20 +39,20 @@
             .then(response => response.json())
             .then(data => {
                 // Hapus semua opsi saat ini
-                // console.log(data.response)
-                toastToast(true, "", "Data jenis akun didapatkan");
-                const selectElement = document.getElementById('jenisAkun');
-                selectElement.innerHTML = "";
-                data.response.forEach(option => {
-                    const optionElement = document.createElement('option');
-                    optionElement.textContent = option.name;
-                    optionElement.value = option.name;
-                    selectElement.appendChild(optionElement);
-                });
-                togglePasswordVisibility();
+                console.log(data)
+                // toastToast(true, "", "Data jenis akun didapatkan");
+                // const selectElement = document.getElementById('jenisAkun');
+                // selectElement.innerHTML = "";
+                // data.response.forEach(option => {
+                //     const optionElement = document.createElement('option');
+                //     optionElement.textContent = option.name;
+                //     optionElement.value = option.name;
+                //     selectElement.appendChild(optionElement);
+                // });
+                // togglePasswordVisibility();
             })
             .catch(error => {
-                toastToast(true, "", "Gagal Mendapatkan data jenis akun");
+                toastToast(true, "", `Gagal Mendapatkan data jenis akun, Error: ${error}`);
                 console.log('Error:', error);
             });
     }
