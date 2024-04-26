@@ -51,7 +51,7 @@
 
             //     return 0;
             // });
-            document.getElementById("header-info-limitasiakun-h5").innerHTML = "List Limitasi ( Queue Aktif : " + queue.filter(item => item.disabled === "false").length + `, Queue Klien : ${queue.filter(item => item.parent.toLowerCase().includes("selain").length)}` +" )";
+            document.getElementById("header-info-limitasiakun-h5").innerHTML = "List Limitasi ( Queue Aktif : " + queue.filter(item => item.disabled === "false").length + `, Queue Klien : ${queue.filter(item => !item.parent.toLowerCase().includes("selain")).length}` +" )";
             var tbody = document.querySelector('.custom-table-body-listlimitasiakun');
             tbody.innerHTML = '';
             let count = 0;
