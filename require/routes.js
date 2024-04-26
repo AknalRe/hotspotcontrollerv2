@@ -845,16 +845,50 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
     }
 });
 
+// router.post("/broadcast", isAuthenticated, async (req, res) => {
+//     let { tujuan, pesan, message } = req.body;
+    
+//     if (req.session.role.toLowerCase() !== "demo") {
+//         try {
+//             let promises = [];
+
+//             if (Array.isArray(tujuan)) {
+//                 tujuan.forEach(item => {
+//                     promises.push(KirimPesanWA(item.name, pesan));
+//                 });
+//             } else {
+//                 promises.push(KirimPesanWA(tujuan, pesan));
+//             }
+
+//             await Promise.all(promises);
+
+//             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}` });
+//         } catch(err) {
+//             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+//         }
+//     } else {
+//         res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di mode demo` })
+//     }
+// })
+
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message } = req.body;
     
     if (req.session.role.toLowerCase() !== "demo") {
         try {
             let promises = [];
+            const delayBetweenMessages = 1000; // Delay antara setiap pesan (dalam milidetik)
+            const delayAfterFiveMessages = 5000; // Delay tambahan setelah mengirim 5 pesan
 
             if (Array.isArray(tujuan)) {
-                tujuan.forEach(item => {
-                    promises.push(KirimPesanWA(item.name, pesan));
+                tujuan.forEach((item, index) => {
+                    const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
+                    promises.push(new Promise(resolve => {
+                        setTimeout(async () => {
+                            await KirimPesanWA(item.name, pesan);
+                            resolve();
+                        }, delay);
+                    }));
                 });
             } else {
                 promises.push(KirimPesanWA(tujuan, pesan));
