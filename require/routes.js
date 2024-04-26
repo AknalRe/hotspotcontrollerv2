@@ -354,7 +354,7 @@ router.post('/exportakun', isAuthenticated, async (req, res) => {
     const response = await listakun(role);
     if (response.success) {
         const transformedData = response.data.map((item, index) => ({
-            Nomor: index + 1, // Nomor dimulai dari 1
+            No: `${index + 1}.`, // Nomor dimulai dari 1
             Nama: item.name,
             Password: item.password,
             Pemakaian: formatkuota(item['bytes-out']) + ' / ' + formatkuota(item['bytes-in']),
