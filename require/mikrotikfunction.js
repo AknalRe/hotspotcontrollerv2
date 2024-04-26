@@ -96,7 +96,7 @@ async function getUcapan() {
     }
 }
 
-async function addakun(username, jenisakun, password) {
+async function addakun(username, jenisakun, password, comment) {
     const { mikrotikstatus } = Mikrotik;
     if (mikrotikstatus) {
         try {
@@ -105,6 +105,7 @@ async function addakun(username, jenisakun, password) {
                 `=password=${password ? password : username}`,
                 `=profile=${jenisakun}`,
                 '=disabled=false',
+                `=comment=${comment ? comment : ""}`,
             ];
 
             // Cek apakah akun hotspot sudah tersedia

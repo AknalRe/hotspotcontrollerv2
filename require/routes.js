@@ -307,8 +307,10 @@ router.post('/infoprofilhotspot', isAuthenticated, async (req, res) => {
 
 router.post('/tambahakunhotspot', isAuthenticated, async (req, res) => {
     if (req.session.role.toLowerCase() !== 'demo') {
-        const { username, password, jenisAkun } = req.body;
-        const response = password ? await addakun(username, jenisAkun, password) : await addakun(username, jenisAkun);
+        const { username, password, jenisAkun, comment } = req.body;
+        const response = comment ?
+        password ? await addakun(username, jenisAkun, password, comment) : await addakun(username, jenisAkun, null, comment) :
+        password ? await addakun(username, jenisAkun, password) : await addakun(username, jenisAkun);
         if (response.success) {
             const notifres = await notif(req.hostname, req.session.username, req.session.role, `Menambahkan akun ${username}-${jenisAkun}`)
             logg(notif.success, notifres.success ? `Berhasil mengirimkan notif informasi tambahakun` : `Gagal mengirimkan notif informasi tambahakun`)
