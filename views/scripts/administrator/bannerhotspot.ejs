@@ -187,14 +187,14 @@
             var newid = newarray.id ? newarray.id : id;
             var newAlt = altInput.value;
             var newLink = linkInput.value;
-            // console.log(newid, newAlt, newLink)
+            console.log(newid, newAlt, newLink)
             var index = array.findIndex(x => x.id === newid);
             var isFound = index !== -1;
-            // console.log(isFound)
+            console.log(isFound)
             if (!isFound) {
-                // console.log(array)
+                console.log(array)
                 array.push({ id: newid, alt: newAlt, link: newLink })
-                // console.log(array)
+                console.log(array)
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di simpan dan di tambahkan`);
             } else {
                 toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan dan di tambahkan`);
