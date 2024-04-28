@@ -233,7 +233,7 @@
             // }
 
             var newid = newarray.id ? newarray.id : id;
-            var index = newarray.findIndex(x => 
+            var index = array.findIndex(x => 
                 x.id === newid
             );
             var isFound = index !== -1;
@@ -241,9 +241,9 @@
             console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
             if (isFound) {
                 console.log('Count lama : ', count);
-                console.log('newarray lama : ', newarray)
-                newarray.splice(index, 1);
-                console.log('newarray baru : ', newarray)
+                console.log('array lama : ', array)
+                array.splice(index, 1);
+                console.log('array baru : ', array)
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
                 tbody.removeChild(row);
                 count -= 1;
