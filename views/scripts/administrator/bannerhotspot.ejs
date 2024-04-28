@@ -205,7 +205,10 @@
         DeleteButton.textContent = "Hapus";
         DeleteButton.style.margin = '5px';
         DeleteButton.addEventListener('click', function () {
-            var index = array.findIndex(x => x.id === newarray.id ? newarray.id : count);
+            var newid = newarray.id ? newarray.id : id;
+            var index = array.findIndex(x => 
+                x.id === newid
+            );
             var isFound = index !== -1;
             console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
             if (!isFound) {
