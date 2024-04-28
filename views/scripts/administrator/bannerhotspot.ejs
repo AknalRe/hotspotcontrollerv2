@@ -238,10 +238,12 @@
             console.log(newid);
             console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
             if (isFound) {
+                console.log('Count lama : ', count);
                 newarray.splice(index, 1);
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
                 tbody.removeChild(row);
                 count -= 1;
+                console.log('Count baru : ', count)
             } else {
                 toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} tidak ditemukan & gagal menghapus`);
             }
