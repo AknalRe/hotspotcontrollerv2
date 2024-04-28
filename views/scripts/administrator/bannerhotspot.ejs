@@ -122,7 +122,7 @@
                 var index = array.findIndex(x => x.id === item.id);
                 var isFound = index !== -1;
                 console.log(`index : \n${index}\n\nisFound : ${isFound}`);
-                if (index !== -1) {
+                if (isFound) {
                     console.log('Array lama : ', array)
                     array.splice(index, 1);
                     console.log('Array baru : ', array)
