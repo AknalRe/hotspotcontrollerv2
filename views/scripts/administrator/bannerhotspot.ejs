@@ -205,7 +205,7 @@
             } else {
                 const foundIndex = array.findIndex(item => item.id === newid);
                 const found = foundIndex !== -1;
-                console.log('Array lama : ', array)
+                // console.log('Array lama : ', array);
                 // console.log(found);
                 if (found) {
                     // array.forEach(item => {
@@ -216,7 +216,7 @@
                     // })
                     array[foundIndex].alt = newAlt;
                     array[foundIndex].link = newLink;
-                    console.log('Array baru : ', array)
+                    // console.log('Array baru : ', array)
                     toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di ubah`);
                 } else {
                     toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan dan di tambahkan`);
