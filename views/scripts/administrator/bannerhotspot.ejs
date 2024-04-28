@@ -106,9 +106,13 @@
                 var index = array.findIndex(x => x.id === item.id);
                 // console.log(index)
                 if (index !== -1) {
-                    array[index].alt = newAlt;
-                    array[index].link = newLink;
-                    toastToast(true, "", `Data nomor ${array[index].id} berhasil diubah`);
+                    if (array[index].alt !== newAlt || array[index].link !== newLink) {
+                        array[index].alt = newAlt;
+                        array[index].link = newLink;
+                        toastToast(true, "", `Data nomor ${array[index].id} berhasil diubah`);
+                    } else {
+                        toastToast(false, "", `Data nomor ${array[index].id} gagal di simpan, tidak ada perubahan`);
+                    }
                 } else {
                     toastToast(false, "", `Data dengan ID ${item.id} tidak ditemukan`);
                 }
