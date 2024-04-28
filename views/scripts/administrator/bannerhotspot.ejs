@@ -207,6 +207,7 @@
         DeleteButton.addEventListener('click', function () {
             var index = array.findIndex(x => x.id === newarray.id ? newarray.id : count);
             var isFound = index !== -1;
+            console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
             if (!isFound) {
                 console.log('Array lama : ', array)
                 array.splice(index, 1);
