@@ -120,8 +120,12 @@
             DeleteButton.style.margin = '5px';
             DeleteButton.addEventListener('click', function () {
                 var index = array.findIndex(x => x.id === item.id);
+                var isFound = index !== -1;
+                console.log(`index : \n${index}\n\nisFound : ${isFound}`);
                 if (index !== -1) {
+                    console.log('Array lama : ', array)
                     array.splice(index, 1);
+                    console.log('Array baru : ', array)
                     toastToast(true, "", `Data nomor ${item.id} berhasil dihapus`);
                     tbody.removeChild(row);
                 } else {
@@ -220,6 +224,7 @@
                 tbody.removeChild(row);
                 count -= 1;
             } else {
+                newarray.splice(index, 1);
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
                 tbody.removeChild(row);
                 count -= 1;
