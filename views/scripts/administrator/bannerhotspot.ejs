@@ -207,7 +207,7 @@
                 const found = foundIndex !== -1;
                 // console.log('Array lama : ', array);
                 // console.log(found);
-                if (found) {
+                if (found && array[foundIndex].alt !== newAlt || array[foundIndex].link !== newLink) {
                     // array.forEach(item => {
                     //     if (item.id === newid) {
                     //         item.alt = newAlt;
