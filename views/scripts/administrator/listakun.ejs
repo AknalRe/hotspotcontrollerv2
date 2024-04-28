@@ -209,7 +209,7 @@
     }
 
     function deleteakunhotspot(id, nama) {
-        showConfirmationModal('Konfirmasi Hapus Akun', `Apakah Anda yakin ingin menghapus akun "${nama}"?`, "", function (status) {
+        showConfirmationModal('Konfirmasi Hapus Akun', `Apakah Anda yakin ingin menghapus akun "${nama}" ?`, "", function (status) {
             if (status) {
                 const formData = {
                     id: id,
@@ -274,7 +274,7 @@
                 };
 
                 if (data.name == nameValue) {
-                    showConfirmationModal2(`Edit Data ${data.name}`, `Username sebelumnya (${data.name}) dengan data username sekarang (${nameValue}) tidak ada perubahan, ingin melanjutkan?`, "", function (status) {
+                    showConfirmationModal2(`Edit Data ${data.name}`, `Username sebelumnya (${data.name}) dengan data username sekarang (${nameValue}) tidak ada perubahan, ingin melanjutkan ?`, "", function (status) {
                         if (status) {
                             // Mengirim permintaan POST menggunakan fetch API
                             fetch('/editakunhotspot', {
@@ -347,7 +347,7 @@
                 // console.log(data);
                 toastToast(data.success, data.title, data.message);
                 if (data.success) {
-                    showConfirmationModal(`Download List Akun`, `Apakah anda ingin mendownload file hasil export list akun?`, "", function (status) {
+                    showConfirmationModal(`Download List Akun`, `Apakah anda ingin mendownload file hasil export list akun ?`, "", function (status) {
                         if (status) {
                             const url = `/static/exports/${data.file}`;
                             window.location.href = url;
