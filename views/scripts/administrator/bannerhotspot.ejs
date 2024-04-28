@@ -203,16 +203,19 @@
                 // SaveButton.disabled = 'true';
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di simpan dan di tambahkan`);
             } else {
-                const found = array.some(item => item.id === newid);
+                const foundIndex = array.findIndex(item => item.id === newid);
+                const found = foundIndex !== -1;
                 console.log('Array lama : ', array)
                 // console.log(found);
                 if (found) {
-                    array.forEach(item => {
-                        if (item.id === newid) {
-                            item.alt = newAlt;
-                            item.link = newLink;
-                        }
-                    })
+                    // array.forEach(item => {
+                    //     if (item.id === newid) {
+                    //         item.alt = newAlt;
+                    //         item.link = newLink;
+                    //     }
+                    // })
+                    array[foundIndex].alt = newAlt;
+                    array[foundIndex].link = newLink;
                     console.log('Array baru : ', array)
                     toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di ubah`);
                 } else {
