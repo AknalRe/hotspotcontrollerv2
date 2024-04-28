@@ -213,7 +213,7 @@
                         array[foundIndex].link = newLink;
                         toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di ubah ke data baru`);
                     } else {
-                        toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan, tidak ada perubahan`);
+                        toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan, tidak ada perubahan`);
                     }
                 } else {
                     toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan dan di tambahkan`);
