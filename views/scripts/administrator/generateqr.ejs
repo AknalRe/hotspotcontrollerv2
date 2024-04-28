@@ -85,7 +85,7 @@
                     if (data.success) {
                         const url = `/static/images/${data.url}`;
                         let newdata = { id: "GenerateQr", data: url };
-                        showConfirmationModal(`Download Hasil Generate QR`, `Apakah anda ingin mendownload hasil generate QR`, newdata, function (status) {
+                        showConfirmationModal(`Download Hasil Generate QR (${nama})`, `Apakah anda ingin mendownload hasil generate QR ?`, newdata, function (status) {
                             if (status) {
                                 fetch(url)
                                 .then(response => response.blob())
