@@ -209,25 +209,41 @@
         DeleteButton.textContent = "Hapus";
         DeleteButton.style.margin = '5px';
         DeleteButton.addEventListener('click', function () {
+            // var newid = newarray.id ? newarray.id : id;
+            // var index = array.findIndex(x => 
+            //     x.id === newid
+            // );
+            // var isFound = index !== -1;
+            // console.log(newid);
+            // console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
+            // if (!isFound) {
+            //     // console.log('Array lama : ', array)
+            //     array.splice(index, 1);
+            //     // console.log('Array baru : ', array)
+            //     toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
+            //     tbody.removeChild(row);
+            //     count -= 1;
+            // } else {
+            //     newarray.splice(index, 1);
+            //     toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
+            //     tbody.removeChild(row);
+            //     count -= 1;
+            // }
+
             var newid = newarray.id ? newarray.id : id;
-            var index = array.findIndex(x => 
+            var index = newarray.findIndex(x => 
                 x.id === newid
             );
             var isFound = index !== -1;
             console.log(newid);
             console.log(`index : \n${index}\n\nisFound : \n${isFound}`);
-            if (!isFound) {
-                // console.log('Array lama : ', array)
-                array.splice(index, 1);
-                // console.log('Array baru : ', array)
-                toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
-                tbody.removeChild(row);
-                count -= 1;
-            } else {
+            if (isFound) {
                 newarray.splice(index, 1);
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil dihapus`);
                 tbody.removeChild(row);
                 count -= 1;
+            } else {
+                toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} tidak ditemukan & gagal menghapus`);
             }
         });
 
