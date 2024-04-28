@@ -204,9 +204,9 @@
                 toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di simpan dan di tambahkan`);
             } else {
                 const found = array.some(item => item.id === newid);
+                console.log('Array lama : ', array)
                 // console.log(found);
                 if (found) {
-                    console.log('Array lama : ', array)
                     array.forEach(item => {
                         if (item.id === newid) {
                             item.alt = newAlt;
