@@ -326,7 +326,7 @@ router.post('/tambahakunhotspot', isAuthenticated, async (req, res) => {
         }
         res.json(response);
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 });
 
@@ -442,7 +442,7 @@ router.post('/nonaktifkanakunhotspot', isAuthenticated, async (req, res) => {
             res.json({ success: false, message: "Mikrotik Tidak Terkoneksi" });
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -466,7 +466,7 @@ router.post('/deleteakunhotspot', isAuthenticated, async (req, res) => {
             res.json({ success: false, message: "Mikrotik Tidak Terkoneksi" });
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -485,7 +485,7 @@ router.post('/editakunhotspot', isAuthenticated, async (req, res) => {
             res.json(response);
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -512,7 +512,7 @@ router.post('/logoutakunhotspot', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: "User Aktif Logout", message: `Error melogout (${nama}) user, error: ${err.message}` });
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -545,7 +545,7 @@ router.post('/logoutkansemua', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: "User Aktif Logout", message: `Error melogout semua user, error: ${err.message}` });
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -573,7 +573,7 @@ router.post('/limitasiakun', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: "User Aktif Logout", message: `Berhasil mengedit limitasi (${nama}), error: ${err.message}` });
         }
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -611,7 +611,7 @@ router.post('/binding', isAuthenticated, async (req, res) => {
         const response = await addbinding(action, id, add, toadd, mac, server, req);
         res.json(response);
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -634,7 +634,7 @@ router.post('/hapusbinding', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: "Hapus Binding", message: `Gagal hapus binding, terjadi kesalahan : ${err.message}`, data: "" });
         };
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 })
 
@@ -659,7 +659,7 @@ router.post('/bindingstatus', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: "Binding", message: `Gagal ${message} binding, terjadi kesalahan : ${err.message}`, data: "" });
         };
     } else {
-        res.json({ success: false, message: `Anda berada di user demo` })
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
     }
 });
 
@@ -730,7 +730,7 @@ router.post('/updatebannerjs', isAuthenticated, async (req, res) => {
             res.json({ success: false, title: `Ubah Banner Hotspot`, message: `Mikrotik tidak terhubung` });
         }
     } else {
-        res.json({ success: false, title: `Ubah Banner Hotspot`, message: `Anda berada di user demo` })
+        res.json({ success: false, title: `Ubah Banner Hotspot`, message: `Gagal, Anda berada di user demo` })
     }
 })
 
