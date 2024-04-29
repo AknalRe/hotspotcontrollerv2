@@ -821,36 +821,34 @@ router.post("/hapusgenerateqr", isAuthenticated, async (req, res) => {
 })
 
 router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
-    if (req.session.role.toLowerCase() !== "demo") {
-        const { mikrotikstatus } = Mikrotik;
-        if (mikrotikstatus) {
-            try {
-                let sendData = [];
-                let response = await client.write('/ip/hotspot/user/print');
-                // Memeriksa setiap item dalam respons
-                for (let item of response) {
-                    // Memeriksa apakah objek memiliki key 'name'
-                    if (item.hasOwnProperty('name')) {
-                        // Memanggil fungsi testINT di luar blok forEach
-                        let isInt = await testINT(item.name);
-                        // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
-                        if (isInt) {
-                            // sendData.push({ name: item.name  });
-                            sendData.push(item);
-                        }
+    const { mikrotikstatus } = Mikrotik;
+    if (mikrotikstatus) {
+        try {
+            let sendData = [];
+            let response = await client.write('/ip/hotspot/user/print');
+            // Memeriksa setiap item dalam respons
+            for (let item of response) {
+                // Memeriksa apakah objek memiliki key 'name'
+                if (item.hasOwnProperty('name')) {
+                    // Memanggil fungsi testINT di luar blok forEach
+                    let isInt = await testINT(item.name);
+                    // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
+                    if (isInt) {
+                        // sendData.push({ name: item.name  });
+                        const nama = req.session.role.toLowerCase() == "demo" ? (item.name.substring(0, 3) + "*".repeat(item.name.length >= 16 ? (item.name.length - 3) : (20 - 3))) : item.name;
+                        item.name = nama;
+                        sendData.push(item);
                     }
                 }
-                res.json({ success: true, title: `List Klien Broadcast`, message: `Berhasil mendapatkan list klien broadcast`, data: sendData });
-            } catch (er) {
-                logg(false, `Gagal mendapatkan list klien broadcast, error: ${er.message}`);
-                res.json({ success: false, title: `List Klien Broadcast`, message: `Gagal mendapatkan list klien broadcast, error: ${er.message}` });
             }
-        } else {
-            logg(false, `Mikrotik tidak terhubung`);
-            res.json({ success: false, title: `List Klien Broadcast`, message: `Mikrotik tidak terhubung` });
+            res.json({ success: true, title: `List Klien Broadcast`, message: `Berhasil mendapatkan list klien broadcast`, data: sendData });
+        } catch (er) {
+            logg(false, `Gagal mendapatkan list klien broadcast, error: ${er.message}`);
+            res.json({ success: false, title: `List Klien Broadcast`, message: `Gagal mendapatkan list klien broadcast, error: ${er.message}` });
         }
     } else {
-        res.json({ success: false, title: `List Klien Broadcast`, message: `Anda berada di user demo` })
+        logg(false, `Mikrotik tidak terhubung`);
+        res.json({ success: false, title: `List Klien Broadcast`, message: `Mikrotik tidak terhubung` });
     }
 });
 
