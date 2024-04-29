@@ -874,7 +874,7 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 //             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
 //         }
 //     } else {
-//         res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di mode demo` })
+//         res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
 //     }
 // })
 
@@ -908,7 +908,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }
     } else {
-        res.json({ success: false, title: `Broadcast Klien`, message: `Anda berada di mode demo` })
+        res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
     }
 })
 
