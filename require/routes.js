@@ -835,8 +835,8 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
                     // Jika nilai 'name' sesuai dengan kondisi testINT, tambahkan ke sendData
                     if (isInt) {
                         // sendData.push({ name: item.name  });
-                        const nama = req.session.role.toLowerCase() == "demo" ? (item.name.substring(0, 3) + "*".repeat(item.name.length >= 16 ? (item.name.length - 3) : (20 - 3))) : item.name;
-                        item.name = nama;
+                        const nomor = req.session.role.toLowerCase() == "demo" ? (item.name.substring(0, 3) + "*".repeat(item.name.length >= 16 ? (item.name.length - 3) : (20 - 3))) : item.name;
+                        item.name = nomor;
                         sendData.push(item);
                     }
                 }
