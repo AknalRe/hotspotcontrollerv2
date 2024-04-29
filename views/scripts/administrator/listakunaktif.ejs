@@ -1,6 +1,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const mikrotikstatus = '<%= mikrotik %>';
+    const userrole = '<%= user_role %>' || '';
     // console.log("Mikrotik :",mikrotikstatus);
     function bytesToMegabytes(bytes) {
         const megabytes = bytes / (1024 * 1024);
@@ -37,7 +38,7 @@
                         countCell.style.width = '30px';
 
                         var nameCell = document.createElement('td');
-                        nameCell.textContent = item.user;
+                        nameCell.textContent = userrole.toLocaleLowerCase() == 'demo' ? (item.user.substring(0, 3) + "*".repeat(item.user.length >= 16 ? (item.user.length - 3) : (20 - 3))) : item.user;
 
                         var divisiCell = document.createElement('td');
                         divisiCell.textContent = item.server;
