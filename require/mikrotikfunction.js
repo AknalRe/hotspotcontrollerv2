@@ -162,7 +162,7 @@ async function listakun(role) {
                     let panjang = item.password ? (item.password.length >= 12 ? item.password.length : 16) : 16;
                     let passwordDiganti = '*'.repeat(panjang);
                     let nama = item.name.substring(0, 3) + "*".repeat(item.name.length >= 16 ? (item.name.length - 3) : (20 - 3));
-                    let profil = "*".repeat(10);
+                    let profil = "*".repeat(12);
                     item.password = passwordDiganti;
                     item.name = nama;
                     item.profile = profil;
