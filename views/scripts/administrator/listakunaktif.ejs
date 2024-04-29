@@ -176,7 +176,7 @@
     }
 
     function logoutakunhotspot(id, nama) {
-        showConfirmationModal(`Logout User ${nama}`, `Anda yakin ingin melogout user ${nama}?\nUser akan terputus koneksi internetnya.`, "", function (status) {
+        showConfirmationModal(`Logout User ${nama}`, `Anda yakin ingin melogout user ${nama} ?\n\nUser akan terputus koneksi internetnya.`, "", function (status) {
             if (status) {
                 const formData = {
                     id: id,
