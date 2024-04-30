@@ -205,22 +205,22 @@
                 array.push({ id: newid, alt: newAlt, link: newLink })
                 // console.log('Array baru : ', array)
                 // SaveButton.disabled = 'true';
-                toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di simpan dan di tambahkan`);
+                toastToast(true, "", `Data nomor ${array[index].id ? array[index].id : count} berhasil di simpan dan di tambahkan`);
             } else {
                 const foundIndex = array.findIndex(item => item.id === newid);
                 const found = foundIndex !== -1;
                 // console.log('Array lama : ', array);
                 // console.log(found);
                 if (found) {
-                    if (array[foundIndex].alt !== newAlt || array[foundIndex].link !== newLink) {
+                    if (array[foundIndex].alt !== newAlt || array[index].link !== newLink) {
                         array[foundIndex].alt = newAlt;
                         array[foundIndex].link = newLink;
-                        toastToast(true, "", `Data nomor ${newarray.id ? newarray.id : count} berhasil di ubah ke data baru`);
+                        toastToast(true, "", `Data nomor ${array[index].id ? array[index].id : count} berhasil di ubah ke data baru`);
                     } else {
-                        toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan, tidak ada perubahan`);
+                        toastToast(false, "", `Data nomor ${array[index].id ? array[index].id : count} gagal di simpan, tidak ada perubahan`);
                     }
                 } else {
-                    toastToast(false, "", `Data nomor ${newarray.id ? newarray.id : count} gagal di simpan dan di tambahkan`);
+                    toastToast(false, "", `Data nomor ${array[index].id ? array[index].id : count} gagal di simpan dan di tambahkan`);
                 }
             }
         });
