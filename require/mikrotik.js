@@ -48,7 +48,7 @@ async function CekStatus() {
             response = await client.connect();
             if (!response.connected) {
                 if (mikrotikerror >= 3) {
-                    Mikrotik.mikrotikStatus = false;
+                    Mikrotik.mikrotikstatus = false;
                     clearInterval(cekstatusinterval);
                 }
             } else {
