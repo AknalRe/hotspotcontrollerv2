@@ -36,7 +36,7 @@
             .then(data => {
                 // console.log(data.data.length);
                 if (data.success) {
-                    const hotspotDataLength = data.data.filter(item => item.topics.includes('hotspot')).length;
+                    const hotspotDataLength = data.data.filter(item => !item.topics.includes('hotspot')).length;
                     document.getElementById("header-info-loghotspot-h5").innerHTML = `Log Hotspot ( ` + hotspotDataLength + ` )`;
                     displayDataloghotspot(data.data);
                 }
