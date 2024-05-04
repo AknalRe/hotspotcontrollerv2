@@ -38,7 +38,7 @@ app.use((req, res, next) => {
     const ips = forwardedFor.split(',').map(ip => ip.trim());
     req.ip = ips[0];
   } else {
-    req.ip = req.connection.remoteAddress;
+    next();
   }
   next();
 });
