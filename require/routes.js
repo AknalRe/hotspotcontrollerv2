@@ -939,9 +939,9 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                 }
             }
 
-            console.log(await Promise.all(promises));
+            const results = await Promise.all(promises);
 
-            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}` });
+            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
         } catch(err) {
             res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
         }

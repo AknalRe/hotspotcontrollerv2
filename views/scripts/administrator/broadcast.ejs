@@ -40,7 +40,7 @@
             .then(response => response.json())
             .then(data => {
                 // Hapus semua opsi saat ini
-                console.log(data)
+                // console.log(data)
                 toastToast(data.success, "", data.message);
                 if (data.success) {
                     dataklien = data.data;
@@ -52,6 +52,16 @@
                     semuaOption.textContent = "Semua";
                     semuaOption.value = "semua";
                     selectElement.appendChild(semuaOption);
+
+                    const tamuOption = document.createElement('option');
+                    tamuOption.textContent = "Tamu";
+                    tamuOption.value = "tamu";
+                    selectElement.appendChild(tamuOption);
+
+                    const karyawanOption = document.createElement('option');
+                    karyawanOption.textContent = "Karyawan";
+                    karyawanOption.value = "karyawan";
+                    selectElement.appendChild(karyawanOption);
 
                     data.data.forEach(option => {
                         const optionElement = document.createElement('option');
@@ -97,7 +107,16 @@
                 tujuan = dataklien;
                 message = "mengirimkan ke semua klien";
                 alert('Anda melakukan broadcast ke semua klien');
+            } else if (tujuan == 'tamu') {
+                tujuan = dataklien.filter(klien => klien.profile.toLowerCase().includes('tamu'));
+                message = "mengirimkan ke semua tamu";
+                alert('Anda melakukan broadcast ke semua tamu');
+            } else if (tujuan == 'karyawan') {
+                tujuan = dataklien.filter(klien => !klien.profile.toLowerCase().includes('tamu'));
+                message = "mengirimkan ke semua karyawan";
+                alert('Anda melakukan broadcast ke semua karyawan');
             } else {
+                tujuan = dataklien.filter(klien => klien.profile === tujuan);
                 message = `mengirimkan ke klien ${tujuan}`;
             }
 
@@ -121,6 +140,7 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     toastToast(data.success, "", data.message);
                     // Menyembunyikan animasi loading
                     submitButton.disabled = false;
