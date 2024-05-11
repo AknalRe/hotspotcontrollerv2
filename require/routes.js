@@ -911,6 +911,48 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message, gambar } = req.body;
     console.log(tujuan, pesan, message, gambar);
+
+    if (req.session.role.toLowerCase() !== "demo") {
+        let results = [];
+        try {
+            if (Array.isArray(tujuan)) {
+                let jumlahkirim = 0;
+                const tujuanlength = tujuan.length;
+                for (let i = 0; i < tujuanlength; i++) {
+                    let result;
+                    if (gambar) {
+                        result = await KirimPesanWA(tujuan[i], pesan, gambar);
+                    } else {
+                        result = await KirimPesanWA(tujuan[i], pesan);
+                    }
+                    results.push({ tujuan: result });
+                    jumlahkirim++;
+                    if (jumlahkirim === 5) {
+                        await new Promise(resolve => setTimeout(resolve, 7000));
+                        jumlahkirim = 0;
+                    } else {
+                        const nilaiRandom = Math.floor(Math.random() * 10) + 1;
+                        console.log(nilaiRandom);
+                        await new Promise(resolve => setTimeout(resolve, nilaiRandom * 1000)); // Menunggu 2 detik
+                    }
+                }
+            } else {
+                let result;
+                if (gambar) {
+                    result = await KirimPesanWA(tujuan, pesan, gambar);
+                } else {
+                    result = await KirimPesanWA(tujuan, pesan);
+                }
+                results.push({ tujuan: result});
+            }
+
+            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
+        } catch (err) {
+            res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+        }
+    } else {
+        res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
+    }
     
     // if (req.session.role.toLowerCase() !== "demo") {
     //     let results = [];
