@@ -910,7 +910,7 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message, gambar } = req.body;
-    console.log(tujuan, pesan, message, gambar);
+    // console.log(tujuan, pesan, message, gambar);
 
     if (req.session.role.toLowerCase() !== "demo") {
         let results = [];
@@ -953,6 +953,9 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     } else {
         res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
     }
+})
+
+
     
     // if (req.session.role.toLowerCase() !== "demo") {
     //     let results = [];
@@ -1001,7 +1004,6 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     // } else {
     //     res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
     // }
-})
 
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
