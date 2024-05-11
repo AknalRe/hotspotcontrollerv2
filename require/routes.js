@@ -931,7 +931,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                 promises.push(KirimPesanWA(tujuan, pesan));
             }
 
-            await Promise.all(promises);
+            console.log(await Promise.all(promises));
 
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}` });
         } catch(err) {
