@@ -920,30 +920,31 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             if (Array.isArray(tujuan)) {
                 tujuan.forEach((item, index) => {
                     const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
-                    promises.push(new Promise(resolve => {
-                        setTimeout(async () => {
+                    promises.push(new Promise(async (resolve) => {
+                        try {
                             if (gambar) {
                                 await KirimPesanWA(item.name, pesan, gambar);
                             } else {
                                 await KirimPesanWA(item.name, pesan);
                             }
                             resolve();
-                        }, delay);
+                        } catch (err) {
+                            resolve({ success: false, response: err });
+                        }
+                        setTimeout(resolve, delay); // Resolve promise setelah delay
                     }));
                 });
             } else {
+                let resultkirim;
                 if (gambar) {
-                    promises.push(KirimPesanWA(tujuan, pesan, gambar));
+                    resultkirim = await KirimPesanWA(tujuan, pesan, gambar);
                 } else {
-                    promises.push(KirimPesanWA(tujuan, pesan));
+                    resultkirim = await KirimPesanWA(tujuan, pesan);
                 }
+                promises.push(Promise.resolve(resultkirim));
             }
 
             const results = await Promise.all(promises);
-            console.log(results)
-            results.forEach(result => {
-                console.log(result.data);
-            });
 
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
         } catch(err) {
@@ -953,6 +954,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
         res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
     }
 })
+
 
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
