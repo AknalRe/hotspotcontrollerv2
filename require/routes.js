@@ -940,6 +940,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             }
 
             const results = await Promise.all(promises);
+            console.log(results)
             results.forEach(result => {
                 console.log(result.data);
             });
