@@ -162,14 +162,16 @@
                     table.innerHTML = `
                         <thead class="table-list">
                             <tr>
+                                <th>No.</th>
                                 <th>Status</th>
                                 <th>Tujuan</th>
                                 <th>Message</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${data.result.map(result => `
+                            ${data.result.map((result, index) => `
                                 <tr>
+                                    <td>${index++}</td>
                                     <td>${result.msg.success ? 'Success' : 'Failed'}</td>
                                     <td>${result.tujuan}</td>
                                     <td>${result.msg.message}</td>
