@@ -55,7 +55,7 @@
 
                     data.data.forEach(option => {
                         const optionElement = document.createElement('option');
-                        optionElement.textContent = option.comment ? `${option.name} - ${option.comment}` : option.name;
+                        optionElement.textContent = option.comment ? `${option.name} - ${option.comment} - ${option.profile.toLowerCase().includes('tamu') ? 'Tamu' : 'Karyawan'}` : option.name;
                         optionElement.value = option.name;
                         selectElement.appendChild(optionElement);
                     });
