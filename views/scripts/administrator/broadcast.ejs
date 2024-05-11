@@ -169,9 +169,9 @@
                         <tbody>
                             ${data.result.map(result => `
                                 <tr>
-                                    <td>${result.success ? 'Success' : 'Failed'}</td>
+                                    <td>${result.msg.success ? 'Success' : 'Failed'}</td>
                                     <td>${result.tujuan}</td>
-                                    <td>${result.message}</td>
+                                    <td>${result.msg.message}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
