@@ -925,7 +925,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                     } else {
                         result = await KirimPesanWA(tujuan[i], pesan);
                     }
-                    results.push({ tujuan: result });
+                    results[tujuan] = result;
                     jumlahkirim++;
                     if (jumlahkirim === 5) {
                         await new Promise(resolve => setTimeout(resolve, 7000));
@@ -943,7 +943,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                 } else {
                     result = await KirimPesanWA(tujuan, pesan);
                 }
-                results.push({ tujuan: result});
+                results[tujuan] = result;
             }
 
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
