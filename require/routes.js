@@ -922,13 +922,21 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                     const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
                     promises.push(new Promise(resolve => {
                         setTimeout(async () => {
-                            await KirimPesanWA(item.name, pesan);
+                            if (gambar) {
+                                await KirimPesanWA(item.name, pesan, gambar);
+                            } else {
+                                await KirimPesanWA(item.name, pesan);
+                            }
                             resolve();
                         }, delay);
                     }));
                 });
             } else {
-                promises.push(KirimPesanWA(tujuan, pesan));
+                if (gambar) {
+                    promises.push(KirimPesanWA(tujuan, pesan, gambar));
+                } else {
+                    promises.push(KirimPesanWA(tujuan, pesan));
+                }
             }
 
             console.log(await Promise.all(promises));
