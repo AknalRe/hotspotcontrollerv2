@@ -151,7 +151,7 @@
 
                     // Tambahkan tombol clear result
                     const clearButton = document.createElement('button');
-                    clearButton.classList = 'btn', 'btn-danger';
+                    clearButton.classList.add('btn', 'btn-danger');
                     clearButton.textContent = 'Hapus Hasil';
                     clearButton.addEventListener('click', () => {
                         resultDiv.innerHTML = '';
@@ -171,7 +171,7 @@
                         <tbody>
                             ${data.result.map((result, index) => `
                                 <tr>
-                                    <td>${index++}</td>
+                                    <td>${index + 1}</td>
                                     <td>${result.msg.success ? 'Success' : 'Failed'}</td>
                                     <td>${result.tujuan}</td>
                                     <td>${result.msg.message}</td>
