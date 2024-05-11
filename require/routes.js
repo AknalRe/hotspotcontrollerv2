@@ -933,9 +933,9 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                 });
             } else {
                 if (gambar) {
-                    promises.push(KirimPesanWA(tujuan, pesan, gambar));
+                    promises.push( resolve(KirimPesanWA(tujuan, pesan, gambar)));
                 } else {
-                    promises.push(KirimPesanWA(tujuan, pesan));
+                    promises.push(resolve(KirimPesanWA(tujuan, pesan)));
                 }
             }
 
