@@ -933,13 +933,16 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
                 });
             } else {
                 if (gambar) {
-                    promises.push( resolve(KirimPesanWA(tujuan, pesan, gambar)));
+                    promises.push(KirimPesanWA(tujuan, pesan, gambar));
                 } else {
-                    promises.push(resolve(KirimPesanWA(tujuan, pesan)));
+                    promises.push(KirimPesanWA(tujuan, pesan));
                 }
             }
 
             const results = await Promise.all(promises);
+            results.forEach(result => {
+                console.log(result.data);
+            });
 
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
         } catch(err) {
