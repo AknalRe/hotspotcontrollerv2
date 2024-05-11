@@ -295,6 +295,10 @@ router.post('/login', async (req, res) => {
 
         const userData = await CekTotalUserHotspot();
 
+        if (!userData.success) {
+            return res.json({ success: false, title: `Autentikasi`, message: userData.message });
+        }
+
         const user = userData.data.find(user =>
             user.disabled !== "true" && user.name === username && user.password === password
         );
