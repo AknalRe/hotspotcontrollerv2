@@ -32,7 +32,8 @@ async function connect(){
         return { success: true, message: `Mikrotik berhasil terhubung`}
     } catch (err){
         Mikrotik.mikrotikstatus = false;
-        logg(false, `Mikrotik gagal terhubung`)
+        cekstatusinterval = setInterval(CekStatus, interval * 60 * 1000)
+        logg(false, `Mikrotik gagal terhubung`);
         return { success: false, message: `Mikrotik gagal terhubung` }
     }
 }
