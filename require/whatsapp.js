@@ -51,17 +51,14 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
         // console.log(response.data);
         return response.data;
     } catch (err) {
-        return KirimPesanWA2(nomorTujuan, pesan);
+        return KirimPesanWA2(nomorTujuan, pesan, linkGambar);
     }
 }
 
-async function KirimPesanWA2(nomorTujuan, pesan) {
-    const payload = {
-        secretApp: apikeyWA2,
-        grup: "no",
-        phoneNumber: nomorTujuan,
-        message: pesan,
-    };
+async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
+    const payload = linkGambar 
+        ? { secretApp: apikeyWA2, grup: "no", phoneNumber: nomorTujuan, message: pesan, url: linkGambar }
+        : { secretApp: apikeyWA2, grup: "no", phoneNumber: nomorTujuan, message: pesan };
 
     const options = {
         method: "POST",

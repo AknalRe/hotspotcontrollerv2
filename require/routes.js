@@ -909,7 +909,7 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 // })
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
-    let { tujuan, pesan, message } = req.body;
+    let { tujuan, pesan, message, gambar } = req.body;
     
     if (req.session.role.toLowerCase() !== "demo") {
         try {

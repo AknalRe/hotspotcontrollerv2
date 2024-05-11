@@ -82,6 +82,7 @@
             let message;
             let tujuan = document.getElementById('tujuan').value;
             const pesan = document.getElementById('pesan').value;
+            let gambar = document.getElementById('gambar').value;
 
             if (pesan == null || pesan == "") {
                 alert('Harap isi kolom pesan');
@@ -100,10 +101,15 @@
                 message = `mengirimkan ke klien ${tujuan}`;
             }
 
-            const formData = {
+            const formData = !gambar ? {
                 tujuan: tujuan,
                 pesan: pesan,
                 message: message
+            } : {
+                tujuan: tujuan,
+                pesan: pesan,
+                message: message,
+                gambar: gambar
             };
 
             fetch('/broadcast', {
