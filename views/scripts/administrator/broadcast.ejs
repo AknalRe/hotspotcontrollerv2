@@ -139,11 +139,48 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
+                    console.log(data);
                     toastToast(data.success, "", data.message);
                     // Menyembunyikan animasi loading
                     submitButton.disabled = false;
                     loadingSpinner.style.display = 'none';
+
+                    // Menampilkan hasil broadcast dalam tabel
+                    const resultDiv = document.getElementById('result-broadcast');
+
+                    // Tambahkan tombol clear result
+                    const clearButton = document.createElement('button');
+                    clearButton.textContent = 'Clear Result';
+                    clearButton.addEventListener('click', () => {
+                        resultDiv.innerHTML = '';
+                    });
+                    resultDiv.appendChild(clearButton);
+
+                    const table = document.createElement('table');
+                    table.innerHTML = `
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Tujuan</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.result.map(result => `
+                                <tr>
+                                    <td>${result.success ? 'Success' : 'Failed'}</td>
+                                    <td>${result.tujuan}</td>
+                                    <td>${result.message}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    `;
+                    resultDiv.appendChild(table);
+
+                    // Hapus isi dalam div setelah 5 menit
+                    setTimeout(() => {
+                        resultDiv.innerHTML = '';
+                    }, 5 * 60 * 1000); // 5 menit dalam milidetik
                 })
                 .catch(error => {
                     console.error('Error:', error);
