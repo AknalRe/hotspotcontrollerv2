@@ -912,6 +912,7 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message, gambar } = req.body;
     
     if (req.session.role.toLowerCase() !== "demo") {
+        let results = [];
         try {
             let promises = [];
             const delayBetweenMessages = 1000; // Delay antara setiap pesan (dalam milidetik)
@@ -920,31 +921,35 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
             if (Array.isArray(tujuan)) {
                 tujuan.forEach((item, index) => {
                     const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
-                    promises.push(new Promise(async (resolve) => {
-                        try {
+                    promises.push(new Promise(resolve => {
+                        setTimeout(async () => {
+                            let result;
                             if (gambar) {
-                                await KirimPesanWA(item.name, pesan, gambar);
+                                result = await KirimPesanWA(item.name, pesan, gambar);
                             } else {
-                                await KirimPesanWA(item.name, pesan);
+                                result = await KirimPesanWA(item.name, pesan);
                             }
+                            results.push(result);
                             resolve();
-                        } catch (err) {
-                            resolve({ success: false, response: err });
-                        }
-                        setTimeout(resolve, delay); // Resolve promise setelah delay
+                        }, delay);
                     }));
                 });
             } else {
-                let resultkirim;
+                // if (gambar) {
+                //     promises.push(KirimPesanWA(tujuan, pesan, gambar));
+                // } else {
+                //     promises.push(KirimPesanWA(tujuan, pesan));
+                // }
+                let result;
                 if (gambar) {
-                    resultkirim = await KirimPesanWA(tujuan, pesan, gambar);
+                    result = await KirimPesanWA(tujuan, pesan, gambar);
                 } else {
-                    resultkirim = await KirimPesanWA(tujuan, pesan);
+                    result = await KirimPesanWA(tujuan, pesan);
                 }
-                promises.push(Promise.resolve(resultkirim));
+                results.push(result);
             }
 
-            const results = await Promise.all(promises);
+            await Promise.all(promises);
 
             res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
         } catch(err) {
@@ -954,7 +959,6 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
         res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
     }
 })
-
 
 router.post("/logout", isAuthenticated, async (req, res) => {
     const ip = req.headers['x-forwarded-for']
