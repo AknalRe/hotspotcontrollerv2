@@ -910,54 +910,55 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
 
 router.post("/broadcast", isAuthenticated, async (req, res) => {
     let { tujuan, pesan, message, gambar } = req.body;
+    console.log(tujuan, pesan, message, gambar);
     
-    if (req.session.role.toLowerCase() !== "demo") {
-        let results = [];
-        try {
-            let promises = [];
-            const delayBetweenMessages = 1000; // Delay antara setiap pesan (dalam milidetik)
-            const delayAfterFiveMessages = 5000; // Delay tambahan setelah mengirim 5 pesan
+    // if (req.session.role.toLowerCase() !== "demo") {
+    //     let results = [];
+    //     try {
+    //         let promises = [];
+    //         const delayBetweenMessages = 1000; // Delay antara setiap pesan (dalam milidetik)
+    //         const delayAfterFiveMessages = 5000; // Delay tambahan setelah mengirim 5 pesan
 
-            if (Array.isArray(tujuan)) {
-                tujuan.forEach((item, index) => {
-                    const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
-                    promises.push(new Promise(resolve => {
-                        setTimeout(async () => {
-                            let result;
-                            if (gambar) {
-                                result = await KirimPesanWA(item.name, pesan, gambar);
-                            } else {
-                                result = await KirimPesanWA(item.name, pesan);
-                            }
-                            results.push(result);
-                            resolve();
-                        }, delay);
-                    }));
-                });
-            } else {
-                // if (gambar) {
-                //     promises.push(KirimPesanWA(tujuan, pesan, gambar));
-                // } else {
-                //     promises.push(KirimPesanWA(tujuan, pesan));
-                // }
-                let result;
-                if (gambar) {
-                    result = await KirimPesanWA(tujuan, pesan, gambar);
-                } else {
-                    result = await KirimPesanWA(tujuan, pesan);
-                }
-                results.push(result);
-            }
+    //         if (Array.isArray(tujuan)) {
+    //             tujuan.forEach((item, index) => {
+    //                 const delay = index % 5 === 0 && index !== 0 ? delayAfterFiveMessages : delayBetweenMessages;
+    //                 promises.push(new Promise(resolve => {
+    //                     setTimeout(async () => {
+    //                         let result;
+    //                         if (gambar) {
+    //                             result = await KirimPesanWA(item.name, pesan, gambar);
+    //                         } else {
+    //                             result = await KirimPesanWA(item.name, pesan);
+    //                         }
+    //                         results.push(result);
+    //                         resolve();
+    //                     }, delay);
+    //                 }));
+    //             });
+    //         } else {
+    //             // if (gambar) {
+    //             //     promises.push(KirimPesanWA(tujuan, pesan, gambar));
+    //             // } else {
+    //             //     promises.push(KirimPesanWA(tujuan, pesan));
+    //             // }
+    //             let result;
+    //             if (gambar) {
+    //                 result = await KirimPesanWA(tujuan, pesan, gambar);
+    //             } else {
+    //                 result = await KirimPesanWA(tujuan, pesan);
+    //             }
+    //             results.push(result);
+    //         }
 
-            await Promise.all(promises);
+    //         await Promise.all(promises);
 
-            res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
-        } catch(err) {
-            res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
-        }
-    } else {
-        res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
-    }
+    //         res.json({ success: true, title: `Broadcast Klien`, message: `Broadcast berhasil memproses ${message}`, result: results });
+    //     } catch(err) {
+    //         res.json({ success: false, title: `Broadcast Klien`, message: `Gagal broadcast ke klien, error: ${err.message}` });
+    //     }
+    // } else {
+    //     res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
+    // }
 })
 
 router.post("/logout", isAuthenticated, async (req, res) => {
