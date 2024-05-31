@@ -287,8 +287,8 @@ router.post('/testing', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-        ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+        ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
         : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
     try {
         const { username, password } = req.body;
@@ -504,8 +504,8 @@ router.post('/editakunhotspot', isAuthenticated, async (req, res) => {
     if (req.session.role.toLowerCase() !== 'demo') {
         const { usernamelama, id, username, password, jenisAkun, comment } = req.body;
         // console.log(usernamelama, id, username, password, jenisAkun)
-        const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-            ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+        const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+            ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
             : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
         const response = await editakun(usernamelama, id, username, jenisAkun, password, comment);
         if (response.success) {
@@ -1006,8 +1006,8 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
     // }
 
 router.post("/logout", isAuthenticated, async (req, res) => {
-    const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-        ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+        ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
         : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
     const username = req.session.username;
     try {
@@ -1019,8 +1019,8 @@ router.post("/logout", isAuthenticated, async (req, res) => {
 })
 
 router.use(async (req, res) => {
-    const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-        ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+        ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
         : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
     const hostname = req.hostname;
     const url = req.url;

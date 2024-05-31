@@ -33,7 +33,7 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-  const forwardedFor = req.headers['x-real-ip'] || req.headers['x-forwarded-for'];
+  const forwardedFor = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'];
   if (forwardedFor) {
     const ips = forwardedFor.split(',').map(ip => ip.trim());
     req.ip = ips[0];
@@ -50,14 +50,14 @@ app.use((req, res, next) => {
       const logMessage = req.session.username
         ? `${method} - ${req.url} - ${req.session.username}/${req.session.role}`
         : `${method} - ${req.url}`;
-      const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-        ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+      const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+        ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
         : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`
       logg(true, `${ip} - ${logMessage}`);
     }
   } catch (err) {
-    const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for']
-      ? `${req.headers['x-real-ip'] || req.headers['x-forwarded-for']}`
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+      ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
       : `${req.ip == "::1" ? "127.0.0.1" : req.ip}`
     logg(false, `${ip} - ${method} - ${req.url}`);
   }
