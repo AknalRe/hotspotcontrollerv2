@@ -8,22 +8,22 @@ APP_AUTHOR="AknalRe"
 
 
 # Mikrotik Host
-# MK_HOST=cc210dc581e3.sn.mynetname.net
-MK_HOST="vpn.aknalre.my.id"
+# MK_HOST=
+MK_HOST=
 # MK_PORT=8729
 MK_PORT=8730
-# MK_USER=Renaldi
-MK_USER=admin
-MK_PASS="Renaldi123!@#"
+# MK_USER=
+MK_USER=
+MK_PASS=
 MK_TIMEOUT=3000
 INTERVAL=5
 
 # Whatsapp Api
-LINKWA="https://clarice.aknalre.my.id/waadmin/send-message"
-LINKWA2="https://wagt.aknalre.my.id/message/"
-APIKEYWA="Renaldi123!@#"
-APIKEYWA2="Contoh123"
+LINKWA=
+LINKWA2=
+APIKEYWA=
+APIKEYWA2=
 
 # Whatsapp Komunitas untuk notif info
-IDKOMUNITAS="120363234613370358"
-IDGRUPINFOSPAM="120363279295807788"
+IDKOMUNITAS=
+IDGRUPINFOSPAM=
