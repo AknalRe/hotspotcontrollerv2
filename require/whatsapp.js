@@ -72,7 +72,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
         // // console.log(response.data);
         return response.data;
     } catch (err) {
-        console.error(err);
+        console.log(err.message || err)
         return { success: false, response: err };
     }
 }
@@ -98,7 +98,7 @@ async function kirimNotif(pesan) {
             // console.log(response.data);
             return response.data;
         } catch (err) {
-            // console.log(err.message || err);
+            console.log(err.message || err);
             return { success: false, response: err.message || err };
         }
     } else {
@@ -118,6 +118,7 @@ async function notif(hostname, username, role, message) {
             }
             return response
         } catch (err) {
+            console.log(err.message || err)
             return { success: false, response: err.message}
         }
     } else {
