@@ -286,13 +286,13 @@ router.get('/usertambah', async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/user', async (req, res) => {
-    req.session.prevpage = req.path;
-    const response = await CekTotalUserHotspot();
-    // console.log(JSON.parse(JSON.stringify(response.data)));
-    console.log(response.data);
-    res.render('testing', { response: response})
-})
+// router.get('/user', async (req, res) => {
+//     req.session.prevpage = req.path;
+//     const response = await CekTotalUserHotspot();
+//     // console.log(JSON.parse(JSON.stringify(response.data)));
+//     console.log(response.data);
+//     res.render('testing', { response: response})
+// })
 
 // POST
 router.post('/testing', async (req, res) => {
