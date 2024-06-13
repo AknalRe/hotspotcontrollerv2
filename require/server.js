@@ -127,6 +127,7 @@ async function start() {
 }
 
 const isAuthenticated = async (req, res, next) => {
+  console.log(req.params)
   const { mikrotikstatus } = Mikrotik;
   if (req.session && req.session.username) {
     const username = req.session.username;
@@ -140,7 +141,7 @@ const isAuthenticated = async (req, res, next) => {
     if (user) {
       return next();
     }
-  } else if (req.param.param == PARAM_USERTAMBAH) {
+  } else if (req.params.param == PARAM_USERTAMBAH) {
     req.session.role = "tamu";
     return next();
   } else {
