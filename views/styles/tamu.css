@@ -156,12 +156,12 @@ main {
 }
 
 .form-tambahakun-container {
-    margin-top: 20px;
+    margin-top: 50px;
     padding: 20px;
 }
 
 .form-tambahakun-container button {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .icon-container {
@@ -234,7 +234,7 @@ main {
 }
 
 .table-list tr {
-    background-color: #273038;
+    /* background-color: #273038; */
 }
 
 .table-list tr:hover {
