@@ -284,7 +284,7 @@ router.get('/usertambah', async (req, res) => {
         name_page: `Tambah User - ${APP_TITLE}`,
         scriptglobal: "scripts/script",
         footer: "footer",
-        style: "user",
+        style: role,
         navbar: `noauth/navbar`,
         page: `noauth/index`,
         scriptlocal: `noauth/script`
