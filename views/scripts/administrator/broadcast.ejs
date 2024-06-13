@@ -37,44 +37,43 @@
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                // Hapus semua opsi saat ini
-                // console.log(data)
-                toastToast(data.success, "", data.message);
-                if (data.success) {
-                    dataklien = data.data;
-                    // console.log(dataklien);
-                    const selectElement = document.getElementById('tujuan');
-                    selectElement.innerHTML = "";
+        .then(response => response.json())
+        .then(data => {
+            // Hapus semua opsi saat ini
+            toastToast(data.success, "", data.message);
+            if (data.success) {
+                const dataklien = data.data;
+                const selectElement = document.getElementById('tujuan');
+                selectElement.innerHTML = "";
 
-                    const semuaOption = document.createElement('option');
-                    semuaOption.textContent = "Semua";
-                    semuaOption.value = "semua";
-                    selectElement.appendChild(semuaOption);
+                const semuaOption = document.createElement('option');
+                semuaOption.textContent = "Semua";
+                semuaOption.value = "semua";
+                selectElement.appendChild(semuaOption);
 
-                    const tamuOption = document.createElement('option');
-                    tamuOption.textContent = "Tamu";
-                    tamuOption.value = "tamu";
-                    selectElement.appendChild(tamuOption);
+                const tamuOption = document.createElement('option');
+                tamuOption.textContent = "Tamu";
+                tamuOption.value = "tamu";
+                selectElement.appendChild(tamuOption);
 
-                    const karyawanOption = document.createElement('option');
-                    karyawanOption.textContent = "Karyawan";
-                    karyawanOption.value = "karyawan";
-                    selectElement.appendChild(karyawanOption);
+                const karyawanOption = document.createElement('option');
+                karyawanOption.textContent = "Karyawan";
+                karyawanOption.value = "karyawan";
+                selectElement.appendChild(karyawanOption);
 
-                    data.data.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.textContent = option.comment ? `${option.name} - ${option.comment} - ${option.profile.toLowerCase().includes('tamu') ? 'Tamu' : 'Karyawan'}` : `${option.name} - ${option.profile.toLowerCase().includes('tamu') ? 'Tamu' : 'Karyawan'}`;
-                        optionElement.value = option.name;
-                        selectElement.appendChild(optionElement);
-                    });
-                }
-            })
-            .catch(error => {
-                toastToast(true, "", `Gagal Mendapatkan data jenis akun, Error: ${error}`);
-                console.log('Error:', error);
-            });
+                dataklien.forEach(option => {
+                    const optionElement = document.createElement('option');
+                    const profile = option.profile ? option.profile : "Tidak Diketahui";
+                    optionElement.textContent = option.comment ? `${option.name} - ${option.comment} - ${profile}` : `${option.name} - ${profile}`;
+                    optionElement.value = option.name;
+                    selectElement.appendChild(optionElement);
+                });
+            }
+        })
+        .catch(error => {
+            toastToast(true, "", `Gagal Mendapatkan data jenis akun, Error: ${error}`);
+            console.log('Error:', error);
+        });
     }
 
     document.addEventListener('DOMContentLoaded', function () {
