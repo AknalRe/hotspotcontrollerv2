@@ -21,9 +21,14 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const authParam = urlParams.get('auth');
-        console.log(urlParams, authParam)
+        // Mendapatkan URL path
+        const path = window.location.pathname;
+        // Memecah path menjadi bagian-bagian
+        const pathParts = path.split('/');
+        // Mendapatkan parameter terakhir
+        const authParam = pathParts[pathParts.length - 1];
+        
+        console.log('Auth parameter:', authParam);
         document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
