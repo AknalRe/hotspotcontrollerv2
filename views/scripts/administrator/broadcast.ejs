@@ -221,8 +221,8 @@
                     }, 5 * 60 * 1000);
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    toastToast(true, "", `Gagal melakukan broadcast, Error: ${error}`);
+                    console.log('Error:', error);
+                    toastToast(false, "", `Gagal melakukan broadcast, Error: ${error}`);
                     // Menyembunyikan animasi loading
                     submitButton.disabled = false;
                     loadingSpinner.style.display = 'none';
