@@ -141,7 +141,7 @@ const isAuthenticated = async (req, res, next) => {
       return next();
     }
   } else if (req.param['param'] == PARAM_USERTAMBAH) {
-    const role = req.session.role;
+    req.session.role = "tamu";
     return next();
   } else {
     const data = {
