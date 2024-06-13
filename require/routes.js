@@ -270,6 +270,7 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
 
 router.get('/usertambah', async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
+    const style = "user";
     const data = {
         auth: false,
         mikrotik: mikrotikstatus,
