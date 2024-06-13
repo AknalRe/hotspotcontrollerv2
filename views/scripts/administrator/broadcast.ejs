@@ -109,20 +109,46 @@
                 return;
             }
 
+            // if (tujuan == "semua") {
+            //     tujuan = dataklien.map(klien => klien.name);
+            //     message = "mengirimkan ke semua klien";
+            //     alert('Anda melakukan broadcast ke semua klien');
+            // } else if (tujuan == 'tamu') {
+            //     tujuan = dataklien.filter(klien => klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
+            //     message = "mengirimkan ke semua tamu";
+            //     alert('Anda melakukan broadcast ke semua tamu');
+            // } else if (tujuan == 'karyawan') {
+            //     tujuan = dataklien.filter(klien => !klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
+            //     message = "mengirimkan ke semua karyawan";
+            //     alert('Anda melakukan broadcast ke semua karyawan');
+            // } else {
+            //     message = `mengirimkan ke klien ${tujuan}`;
+            // }
+
             if (tujuan == "semua") {
                 tujuan = dataklien.map(klien => klien.name);
                 message = "mengirimkan ke semua klien";
                 alert('Anda melakukan broadcast ke semua klien');
-            } else if (tujuan == 'tamu') {
-                tujuan = dataklien.filter(klien => klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
+            } else if (tujuan == "tamu") {
+                tujuan = dataklien.filter(klien => klien.profile && klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
                 message = "mengirimkan ke semua tamu";
                 alert('Anda melakukan broadcast ke semua tamu');
-            } else if (tujuan == 'karyawan') {
-                tujuan = dataklien.filter(klien => !klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
+            } else if (tujuan == "karyawan") {
+                tujuan = dataklien.filter(klien => klien.profile && !klien.profile.toLowerCase().includes('tamu')).map(klien => klien.name);
                 message = "mengirimkan ke semua karyawan";
                 alert('Anda melakukan broadcast ke semua karyawan');
             } else {
-                message = `mengirimkan ke klien ${tujuan}`;
+                // Mengirim ke profile yang spesifik
+                const filteredKlien = dataklien.filter(klien => klien.profile && klien.profile.toLowerCase() === tujuan);
+                if (filteredKlien.length > 0) {
+                    tujuan = filteredKlien.map(klien => klien.name);
+                    message = `mengirimkan ke semua klien dengan profile ${tujuan}`;
+                    alert(`Anda melakukan broadcast ke semua klien dengan profile ${tujuan}`);
+                } else {
+                    // Mengirim ke klien spesifik berdasarkan nama
+                    message = `mengirimkan ke klien ${tujuan}`;
+                    alert(`Anda melakukan broadcast ke klien ${tujuan}`);
+                }
             }
 
             const formData = !gambar ? {
