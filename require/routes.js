@@ -275,7 +275,7 @@ router.get('/usertambah', async (req, res) => {
         mikrotik: mikrotikstatus,
         title: APP_TITLE,
         author: APP_AUTHOR,
-        name_page: `Broadcast Klien - ${APP_TITLE}`,
+        name_page: `Tambah User - ${APP_TITLE}`,
         scriptglobal: "scripts/script",
         footer: "footer",
         style: style,
