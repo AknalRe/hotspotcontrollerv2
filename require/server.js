@@ -128,6 +128,7 @@ async function start() {
 
 const isAuthenticated = async (req, res, next) => {
   console.log(req.body.authlogin);
+  console.log(req.body.authlogin == PARAM_USERTAMBAH);
   // console.log('Auth Param:', req.params['auth']);
   // console.log('Expected Param:', PARAM_USERTAMBAH);
   // console.log(req.params['auth'] == PARAM_USERTAMBAH);
