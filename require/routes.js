@@ -276,6 +276,8 @@ router.get('/usertambah', async (req, res) => {
     const data = {
         auth: false,
         mikrotik: mikrotikstatus,
+        user_name: "tamu",
+        user_username: "tamu",
         user_role: (role == "Demo" ? "Administrator" : role),
         user_demo: (role == "Demo" ? true : false),
         title: APP_TITLE,
