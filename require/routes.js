@@ -272,12 +272,11 @@ router.get('/usertambah', async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
     const role = "tamu";
     const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
-    const style = "tamu";
     const data = {
         auth: false,
         mikrotik: mikrotikstatus,
-        user_name: "tamu",
-        user_username: "tamu",
+        user_name: role,
+        user_username: role,
         user_role: (role == "Demo" ? "Administrator" : role),
         user_demo: (role == "Demo" ? true : false),
         title: APP_TITLE,
@@ -285,7 +284,7 @@ router.get('/usertambah', async (req, res) => {
         name_page: `Tambah User - ${APP_TITLE}`,
         scriptglobal: "scripts/script",
         footer: "footer",
-        style: style,
+        style: role,
         navbar: `noauth/navbar`,
         page: `noauth/index`,
         scriptlocal: `noauth/script`
