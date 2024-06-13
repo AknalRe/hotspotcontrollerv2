@@ -23,6 +23,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const urlParams = new URLSearchParams(window.location.search);
         const authParam = urlParams.get('auth');
+        console.log(urlParams, authParam)
         document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
