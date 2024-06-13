@@ -268,6 +268,24 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
+router.get('/usertambah', async (req, res) => {
+    const { mikrotikstatus } = Mikrotik;
+    const data = {
+        auth: false,
+        mikrotik: mikrotikstatus,
+        title: APP_TITLE,
+        author: APP_AUTHOR,
+        name_page: `Broadcast Klien - ${APP_TITLE}`,
+        scriptglobal: "scripts/script",
+        footer: "footer",
+        style: style,
+        navbar: `noauth/navbar`,
+        page: `noauth/index`,
+        scriptlocal: `noauth/script`
+    };
+    res.render('index', data);
+})
+
 // router.get('/user', async (req, res) => {
 //     req.session.prevpage = req.path;
 //     const response = await CekTotalUserHotspot();
