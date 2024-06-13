@@ -127,7 +127,9 @@ async function start() {
 }
 
 const isAuthenticated = async (req, res, next) => {
-  console.log(req.params['auth'])
+  console.log('Auth Param:', req.params['auth']);
+  console.log('Expected Param:', PARAM_USERTAMBAH);
+  console.log(req.params['auth'] == PARAM_USERTAMBAH)
   const { mikrotikstatus } = Mikrotik;
   if (req.session && req.session.username) {
     const username = req.session.username;
