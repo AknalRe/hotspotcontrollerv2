@@ -140,6 +140,8 @@ const isAuthenticated = async (req, res, next) => {
     if (user) {
       return next();
     }
+  } else if (req.param['param'] == PARAM_USERTAMBAH) {
+    return next();
   } else {
     const data = {
       auth: false,
