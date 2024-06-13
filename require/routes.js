@@ -272,7 +272,7 @@ router.get('/usertambah', async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
     const role = "tamu";
     const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
-    const style = "user";
+    const style = "tamu";
     const data = {
         auth: false,
         mikrotik: mikrotikstatus,
