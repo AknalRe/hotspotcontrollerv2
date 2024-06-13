@@ -146,7 +146,7 @@ const isAuthenticated = async (req, res, next) => {
   } else if (req.params['auth'] == PARAM_USERTAMBAH) {
     req.session.role = "tamu";
     return next();
-  } else if (req.body.authlogin == PARAM_USERTAMBAH){
+  } else if (req.body['authlogin'] == PARAM_USERTAMBAH){
     req.session.role = "tamu";
     req.session.username = "tamu";
     return next();
