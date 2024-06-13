@@ -268,7 +268,7 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/usertambah/:param', isAuthenticated, async (req, res) => {
+router.get('/usertambah/:param', isAuthenticated(req,res), async (req, res) => {
     try {
         const { param } = req.params;
         const { mikrotikstatus } = Mikrotik;
