@@ -1,4 +1,4 @@
-const { logg, Mikrotik, moment, APP_NAME, APP_ENV, APP_DEBUG, APP_PORT, APP_TITLE, APP_AUTHOR } = require('./main');
+const { logg, Mikrotik, moment, APP_NAME, APP_ENV, APP_DEBUG, APP_PORT, APP_TITLE, APP_AUTHOR, PROFILE_DEFAULT_TAMU, PARAM_USERTAMBAH } = require('./main');
 const { CekTotalUserHotspot } = require("./mikrotikfunction");
 
 const port = parseInt(APP_PORT || 3000);

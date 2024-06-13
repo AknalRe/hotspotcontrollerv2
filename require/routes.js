@@ -273,25 +273,27 @@ router.get('/usertambah/:param', async (req, res) => {
         const { param } = req.params;
         const { mikrotikstatus } = Mikrotik;
         const role = "tamu";
-        const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
-        const data = {
-            auth: false,
-            mikrotik: mikrotikstatus,
-            user_name: role,
-            user_username: role,
-            user_role: (role == "Demo" ? "Administrator" : role),
-            user_demo: (role == "Demo" ? true : false),
-            title: APP_TITLE,
-            author: APP_AUTHOR,
-            name_page: `Tambah User - ${APP_TITLE}`,
-            scriptglobal: "scripts/script",
-            footer: "footer",
-            style: role,
-            navbar: `noauth/navbar`,
-            page: `noauth/index`,
-            scriptlocal: `noauth/script`
-        };
-        res.render('index', data);
+        if (param == PARAM_USERTAMBAH) {
+            const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
+            const data = {
+                auth: false,
+                mikrotik: mikrotikstatus,
+                user_name: role,
+                user_username: role,
+                user_role: (role == "Demo" ? "Administrator" : role),
+                user_demo: (role == "Demo" ? true : false),
+                title: APP_TITLE,
+                author: APP_AUTHOR,
+                name_page: `Tambah User - ${APP_TITLE}`,
+                scriptglobal: "scripts/script",
+                footer: "footer",
+                style: role,
+                navbar: `noauth/navbar`,
+                page: `noauth/index`,
+                scriptlocal: `noauth/script`
+            };
+            res.render('index', data);
+        }
     } catch (error) {
         console.error(error);
         if (!res.headersSent) {
