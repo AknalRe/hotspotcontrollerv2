@@ -156,11 +156,12 @@ main {
 }
 
 .form-tambahakun-container {
-    padding: 10px;
+    margin: 20px;
+    padding: 20px;
 }
 
 .form-tambahakun-container button {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .icon-container {

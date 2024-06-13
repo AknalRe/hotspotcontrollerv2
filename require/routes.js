@@ -1,7 +1,7 @@
 const path = require('path');
 
 const { router, isAuthenticated } = require('./server');
-const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik } = require('./main');
+const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik, PROFILE_DEFAULT_TAMU, PARAM_USERTAMBAH } = require('./main');
 const { testINT, CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
 const { KirimPesanWA, kirimNotif, notif, notifspam } = require('./whatsapp');
 const { client } = require('./mikrotik');
@@ -268,29 +268,38 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/usertambah', async (req, res) => {
-    const { mikrotikstatus } = Mikrotik;
-    const role = "tamu";
-    const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
-    const data = {
-        auth: false,
-        mikrotik: mikrotikstatus,
-        user_name: role,
-        user_username: role,
-        user_role: (role == "Demo" ? "Administrator" : role),
-        user_demo: (role == "Demo" ? true : false),
-        title: APP_TITLE,
-        author: APP_AUTHOR,
-        name_page: `Tambah User - ${APP_TITLE}`,
-        scriptglobal: "scripts/script",
-        footer: "footer",
-        style: role,
-        navbar: `noauth/navbar`,
-        page: `noauth/index`,
-        scriptlocal: `noauth/script`
-    };
-    res.render('index', data);
-})
+router.get('/usertambah/:param', async (req, res) => {
+    try {
+        const { param } = req.params;
+        const { mikrotikstatus } = Mikrotik;
+        const role = "tamu";
+        const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
+        const data = {
+            auth: false,
+            mikrotik: mikrotikstatus,
+            user_name: role,
+            user_username: role,
+            user_role: (role == "Demo" ? "Administrator" : role),
+            user_demo: (role == "Demo" ? true : false),
+            title: APP_TITLE,
+            author: APP_AUTHOR,
+            name_page: `Tambah User - ${APP_TITLE}`,
+            scriptglobal: "scripts/script",
+            footer: "footer",
+            style: role,
+            navbar: `noauth/navbar`,
+            page: `noauth/index`,
+            scriptlocal: `noauth/script`
+        };
+        res.render('index', data);
+    } catch (error) {
+        console.error(error);
+        if (!res.headersSent) {
+            res.status(500).send('Internal Server Error');
+        }
+    }
+});
+
 
 // router.get('/user', async (req, res) => {
 //     req.session.prevpage = req.path;
@@ -371,6 +380,9 @@ router.post('/infoprofilhotspot', isAuthenticated, async (req, res) => {
 router.post('/tambahakunhotspot', isAuthenticated, async (req, res) => {
     if (req.session.role.toLowerCase() !== 'demo') {
         const { username, password, jenisAkun, comment } = req.body;
+        if (!jenisAkun) {
+            jenisAkun = PROFILE_DEFAULT_TAMU;
+        }
         const response = comment ?
         password ? await addakun(username, jenisAkun, password, comment) : await addakun(username, jenisAkun, null, comment) :
         password ? await addakun(username, jenisAkun, password) : await addakun(username, jenisAkun);
@@ -1043,15 +1055,36 @@ router.post("/logout", isAuthenticated, async (req, res) => {
 })
 
 router.use(async (req, res) => {
-    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
-        ? `${req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']}`
-        : `${req.ip == "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "")}`;
-    const hostname = req.hostname;
-    const url = req.url;
-    const username = req.session.username || "Anonymous";
-    const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url} `;
-    await notifspam(message);
-    res.status(404).send('<html><head><link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png"><title>404</title></head><body></body></html>');
+    try {
+        const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+            ? (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']).split(',')[0].trim()
+            : req.ip === "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "");
+        const hostname = req.hostname;
+        const url = req.originalUrl;  // Use originalUrl to get the full URL with query parameters
+        const username = req.session.username || "Anonymous";
+        const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url}`;
+        
+        await notifspam(message);
+
+        if (!res.headersSent) {
+            res.status(404).send(`
+                <html>
+                    <head>
+                        <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
+                        <title>404</title>
+                    </head>
+                    <body>
+                        <h1>404 - Not Found</h1>
+                    </body>
+                </html>
+            `);
+        }
+    } catch (error) {
+        console.error("Error handling request:", error);
+        if (!res.headersSent) {
+            res.status(500).send("Internal Server Error");
+        }
+    }
 });
 
 module.exports = {

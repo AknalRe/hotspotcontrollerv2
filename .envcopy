@@ -7,6 +7,10 @@ APP_TITLE="Mikrotik Controller"
 APP_AUTHOR="AknalRe"
 
 
+PROFILE_DEFAULT_TAMU="Tamu"
+PARAM_USERTAMBAH="Nwx3MUpSp3I5aX1ItaitkvYBYAkWFsjgDj7t1jbI0PjjUuEk27"
+
+
 # Mikrotik Host
 # MK_HOST=
 MK_HOST=
