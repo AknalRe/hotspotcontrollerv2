@@ -127,8 +127,8 @@ async function start() {
 }
 
 const isAuthenticated = async (req, res, next) => {
-  console.log(req.body['authlogin']);
-  console.log(req.body['authlogin'] == PARAM_USERTAMBAH);
+  // console.log(req.body['authlogin']);
+  // console.log(req.body['authlogin'] == PARAM_USERTAMBAH);
   // console.log('Auth Param:', req.params['auth']);
   // console.log('Expected Param:', PARAM_USERTAMBAH);
   // console.log(req.params['auth'] == PARAM_USERTAMBAH);
@@ -138,21 +138,25 @@ const isAuthenticated = async (req, res, next) => {
     const role = req.session.role;
     const userData = await CekTotalUserHotspot();
 
-    const user = Object.values(userData.data).find(
+    let user = Object.values(userData.data).find(
       (user) => user.name === username && user.profile === role
     );
+
+    if (username == 'tamu') {
+      user = true;
+    }
 
     if (user) {
       return next();
     }
-  } else if (req.params['auth'] == PARAM_USERTAMBAH) {
-    req.session.role = "tamu";
-    req.session.username = "tamu";
-    return next();
-  } else if (req.body['authlogin'] == PARAM_USERTAMBAH){
-    req.session.role = "tamu";
-    req.session.username = "tamu";
-    return next();
+  // } else if (req.params['auth'] == PARAM_USERTAMBAH) {
+  //   req.session.role = "tamu";
+  //   req.session.username = "tamu";
+  //   return next();
+  // } else if (req.body['authlogin'] == PARAM_USERTAMBAH){
+  //   req.session.role = "tamu";
+  //   req.session.username = "tamu";
+  //   return next();
   } else {
     const data = {
       auth: false,
@@ -173,11 +177,22 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
+const AuthTamu = async (req, res, next) => {
+  if (req.params['auth'] == PARAM_USERTAMBAH) {
+    req.session.role = "tamu";
+    req.session.username = "tamu";
+    next();
+  } else {
+    res.redirect('/')
+  }
+}
+
 app.use('/static', isAuthenticated, express.static('views/public'));
 
 module.exports = {
   start,
   isAuthenticated,
+  AuthTamu,
   app,
   io,
   router,

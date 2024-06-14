@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
+    <title><%= name_page %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tamu.css">
+</head>
+<body>
+
+    <div class="ie-fixMinHeight">
+        <div class="main">
+            <div class="wrap animated fadeIn">
+                <img class="logo" src="https://www.claricebeauty.co.id/wp-content/uploads/2021/03/logo-png.png" alt="clarice_logo.jpg">
+                <div class="content-form">
+                    <form id="tambahAkunForm" action="/tambahakunhotspot" method="POST">
+
+                        <div class="info" id="info">Masukkan nomor HP Anda untuk mendaftarkan akun yang dapat digunakan untuk terhubung ke WiFi</div>
+                        <div class="notice" id="err" style="display: none;"></div>
+
+                        <div class="centerform">
+                            <label>
+                                <input id="username" name="username" type="text" placeholder="Isi dengan nomor hp" />
+                            </label>
+                        </div>
+                        <input type="submit" value="Simpan" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                
+                if (!username) {
+                    document.getElementById('err').style.display = 'block';
+                    document.getElementById('err').innerText = "Silakan mengisikan username akun";
+                    return;
+                }
+
+                const formData = {
+                    username: username
+                };
+
+                fetch('/tambahakunhotspot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const errDiv = document.getElementById('err');
+                    errDiv.style.display = 'block';
+                    errDiv.innerText = data.message;
+                    if (data.success) {
+                        document.getElementById('username').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                    const errDiv = document.getElementById('err');
+                    errDiv.style.display = 'block';
+                    errDiv.innerText = 'Terjadi kesalahan. Silakan coba lagi.';
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { router, isAuthenticated } = require('./server');
+const { router, isAuthenticated, AuthTamu } = require('./server');
 const { logg, moment, fs, QRCode, APP_NAME, APP_TITLE, APP_AUTHOR, Mikrotik, PROFILE_DEFAULT_TAMU, PARAM_USERTAMBAH } = require('./main');
 const { testINT, CekTotalUserHotspot, addakun, listakun, editakun, addbinding, listakunuser } = require("./mikrotikfunction");
 const { KirimPesanWA, kirimNotif, notif, notifspam } = require('./whatsapp');
@@ -268,36 +268,34 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/usertambah/:auth', isAuthenticated, async (req, res) => {
-    try {
-        const { auth } = req.params;
-        const { mikrotikstatus } = Mikrotik;
-        const role = "tamu";
-        const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
-        const data = {
-            auth: false,
-            mikrotik: mikrotikstatus,
-            user_name: role,
-            user_username: role,
-            user_role: (role == "Demo" ? "Administrator" : role),
-            user_demo: (role == "Demo" ? true : false),
-            title: APP_TITLE,
-            author: APP_AUTHOR,
-            name_page: `Tambah User - ${APP_TITLE}`,
-            scriptglobal: "scripts/script",
-            footer: "footer",
-            style: role,
-            navbar: `noauth/navbar`,
-            page: `noauth/index`,
-            scriptlocal: `noauth/script`
-        };
-        res.render('index', data);
-    } catch (error) {
-        console.error(error);
-        if (!res.headersSent) {
-            res.status(500).send('Internal Server Error');
-        }
+router.get('/usertambah/:auth', AuthTamu, async (req, res) => {
+    const { mikrotikstatus } = Mikrotik;
+    const role = "tamu";
+    // const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
+    const data = {
+        mikrotik: mikrotikstatus,
+        title: APP_TITLE,
+        name_page: `Tambah User - ${APP_TITLE}`,
     }
+    res.render('tamu/index', data);
+    // const data = {
+    //     auth: false,
+    //     mikrotik: mikrotikstatus,
+    //     user_name: role,
+    //     user_username: role,
+    //     user_role: (role == "Demo" ? "Administrator" : role),
+    //     user_demo: (role == "Demo" ? true : false),
+    //     title: APP_TITLE,
+    //     author: APP_AUTHOR,
+    //     name_page: `Tambah User - ${APP_TITLE}`,
+    //     scriptglobal: "scripts/script",
+    //     footer: "footer",
+    //     style: role,
+    //     navbar: `noauth/navbar`,
+    //     page: `noauth/index`,
+    //     scriptlocal: `noauth/script`
+    // };
+    // res.render('index', data);
 });
 
 
@@ -379,13 +377,15 @@ router.post('/infoprofilhotspot', isAuthenticated, async (req, res) => {
 
 router.post('/tambahakunhotspot', isAuthenticated, async (req, res) => {
     if (req.session.role.toLowerCase() !== 'demo') {
-        const { username, password, jenisAkun, comment } = req.body;
+        let { username, password, jenisAkun, comment } = req.body;
+        
         if (!jenisAkun) {
             jenisAkun = PROFILE_DEFAULT_TAMU;
         }
         const response = comment ?
         password ? await addakun(username, jenisAkun, password, comment) : await addakun(username, jenisAkun, null, comment) :
         password ? await addakun(username, jenisAkun, password) : await addakun(username, jenisAkun);
+        console.log(response)
         if (response.success) {
             const notifres = await notif(req.hostname, req.session.username, req.session.role, `Menambahkan akun ${username}-${jenisAkun}`)
             logg(notif.success, notifres.success ? `Berhasil mengirimkan notif informasi tambahakun` : `Gagal mengirimkan notif informasi tambahakun`)
@@ -1054,38 +1054,38 @@ router.post("/logout", isAuthenticated, async (req, res) => {
     }
 })
 
-router.use(async (req, res) => {
-    try {
-        const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
-            ? (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']).split(',')[0].trim()
-            : req.ip === "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "");
-        const hostname = req.hostname;
-        const url = req.originalUrl;  // Use originalUrl to get the full URL with query parameters
-        const username = req.session.username || "Anonymous";
-        const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url}`;
+// router.use(async (req, res) => {
+//     try {
+//         const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+//             ? (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']).split(',')[0].trim()
+//             : req.ip === "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "");
+//         const hostname = req.hostname;
+//         const url = req.originalUrl;  // Use originalUrl to get the full URL with query parameters
+//         const username = req.session.username || "Anonymous";
+//         const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url}`;
         
-        await notifspam(message);
+//         await notifspam(message);
 
-        if (!res.headersSent) {
-            res.status(404).send(`
-                <html>
-                    <head>
-                        <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
-                        <title>404</title>
-                    </head>
-                    <body>
-                        <h1>404 - Not Found</h1>
-                    </body>
-                </html>
-            `);
-        }
-    } catch (error) {
-        console.error("Error handling request:", error);
-        if (!res.headersSent) {
-            res.status(500).send("Internal Server Error");
-        }
-    }
-});
+//         if (!res.headersSent) {
+//             res.status(404).send(`
+//                 <html>
+//                     <head>
+//                         <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
+//                         <title>404</title>
+//                     </head>
+//                     <body>
+//                         <h1>404 - Not Found</h1>
+//                     </body>
+//                 </html>
+//             `);
+//         }
+//     } catch (error) {
+//         console.error("Error handling request:", error);
+//         if (!res.headersSent) {
+//             res.status(500).send("Internal Server Error");
+//         }
+//     }
+// });
 
 module.exports = {
     router,
