@@ -1054,38 +1054,38 @@ router.post("/logout", isAuthenticated, async (req, res) => {
     }
 })
 
-// router.use(async (req, res) => {
-//     try {
-//         const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
-//             ? (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']).split(',')[0].trim()
-//             : req.ip === "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "");
-//         const hostname = req.hostname;
-//         const url = req.originalUrl;  // Use originalUrl to get the full URL with query parameters
-//         const username = req.session.username || "Anonymous";
-//         const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url}`;
+router.use(async (req, res) => {
+    try {
+        const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']
+            ? (req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']).split(',')[0].trim()
+            : req.ip === "::1" ? "127.0.0.1" : req.ip.replace("::ffff:", "");
+        const hostname = req.hostname;
+        const url = req.originalUrl;  // Use originalUrl to get the full URL with query parameters
+        const username = req.session.username || "Anonymous";
+        const message = `WARNING !!!!!!\n\nTerdapat ${username}-${ip} mengakses pada ${hostname}${url}`;
         
-//         await notifspam(message);
+        await notifspam(message);
 
-//         if (!res.headersSent) {
-//             res.status(404).send(`
-//                 <html>
-//                     <head>
-//                         <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
-//                         <title>404</title>
-//                     </head>
-//                     <body>
-//                         <h1>404 - Not Found</h1>
-//                     </body>
-//                 </html>
-//             `);
-//         }
-//     } catch (error) {
-//         console.error("Error handling request:", error);
-//         if (!res.headersSent) {
-//             res.status(500).send("Internal Server Error");
-//         }
-//     }
-// });
+        if (!res.headersSent) {
+            res.status(404).send(`
+                <html>
+                    <head>
+                        <link rel="icon" type="image/x-icon" href="https://merch.mikrotik.com/cdn/shop/files/512.png">
+                        <title>404</title>
+                    </head>
+                    <body>
+                        <h1>404 - Not Found</h1>
+                    </body>
+                </html>
+            `);
+        }
+    } catch (error) {
+        console.error("Error handling request:", error);
+        if (!res.headersSent) {
+            res.status(500).send("Internal Server Error");
+        }
+    }
+});
 
 module.exports = {
     router,
