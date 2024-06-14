@@ -26,7 +26,7 @@
 
                         <div class="centerform">
                             <label>
-                                <input id="username" name="username" type="text" placeholder="Isi dengan nomor hp" required />
+                                <input id="nomor" name="nomor" type="text" placeholder="Isi dengan nomor hp" required />
                             </label>
                         </div>
                         <input type="submit" value="Simpan" />
@@ -40,16 +40,23 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
                 event.preventDefault();
-                const username = document.getElementById('username').value;
+                const nomor = document.getElementById('nomor').value;
+                const phonePattern = /^0[0-9]{9,14}$/;
                 
-                if (!username) {
+                if (!nomor) {
                     document.getElementById('err').style.display = 'block';
-                    document.getElementById('err').innerText = "Silakan mengisikan username akun";
+                    document.getElementById('err').innerText = "Silakan mengisikan nomor akun";
+                    return;
+                }
+
+                if (!phonePattern.test(nomor)) {
+                    document.getElementById('err').style.display = 'block';
+                    document.getElementById('err').innerText = "Nomor HP tidak valid. Pastikan berisi angka dan panjangnya 10-15 digit.";
                     return;
                 }
 
                 const formData = {
-                    username: username
+                    username: nomor
                 };
 
                 fetch('/tambahakunhotspot', {
@@ -65,7 +72,7 @@
                     errDiv.style.display = 'block';
                     errDiv.innerText = data.message;
                     if (data.success) {
-                        document.getElementById('username').value = '';
+                        document.getElementById('nomor').value = '';
                     }
                 })
                 .catch(error => {
