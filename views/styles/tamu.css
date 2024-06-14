@@ -168,6 +168,7 @@ input:focus {
 }
 
 input[type=password],
+input[type=tel],
 input[type=text] {
     width: 100%;
     border: 1px solid background-color rgba(255, 255, 255, .8);
@@ -183,6 +184,7 @@ input[type=text] {
 }
 
 input[type=password]:focus,
+input[type=tel]:focus,
 input[type=text]:focus {
     -webkit-box-shadow: 0 0 5px 0 #fff;
     box-shadow: 0 0 5px 0 #fff
