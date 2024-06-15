@@ -73,9 +73,11 @@
                     });
                 }
 
-                // Menampilkan tombol lanjut
-                const lanjutButton = document.getElementById('lanjutButton');
-                lanjutButton.style.display = 'block';
+                if (data.message !== "Mikrotik Tidak Terhubung") {
+                    // Menampilkan tombol lanjut
+                    const lanjutButton = document.getElementById('lanjutButton');
+                    lanjutButton.style.display = 'block';
+                }
             })
             .catch(error => {
                 console.log('Error:', error);
