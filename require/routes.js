@@ -25,6 +25,9 @@ const {
 const { KirimPesanWA, kirimNotif, notif, notifspam } = require("./whatsapp");
 const { client } = require("./mikrotik");
 const { ExportXLSX } = require("./export");
+const {
+    insertsheet
+} = require("./n8nworkflow");
 
 // GET
 router.get("/", isAuthenticated, async (req, res) => {
@@ -523,6 +526,9 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
   if (!jenisAkun) {
     jenisAkun = PROFILE_DEFAULT_TAMU;
   }
+  if (!comment) {
+    comment = nama_lengkap
+  }
   const response = comment
     ? password
       ? await addakun(username, jenisAkun, password, comment)
@@ -530,7 +536,15 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
     : password
     ? await addakun(username, jenisAkun, password)
     : await addakun(username, jenisAkun);
-  console.log(response);
+//   console.log(response);
+  let data = {
+    nama: nama_lengkap,
+    nomor: username,
+    infoclarice: info_clarice,
+    tgl_lahir: tgl_lahir,
+    akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
+  }
+  await insertsheet(data);
   if (response.success) {
     const notifres = await notif(
       req.hostname,
