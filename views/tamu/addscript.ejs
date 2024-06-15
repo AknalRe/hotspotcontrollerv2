@@ -1,0 +1,88 @@
+<script>
+    const urlhostpot = '<%= urlhotspot %>';
+    console.log(urlhostpot);
+
+    document.getElementById('lanjutButton').addEventListener('click', function () {
+        window.location.href = urlhostpot;
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const authParam = urlParams.get('auth');
+
+        if (authParam) {
+            console.log('Auth parameter:', authParam);
+            // Gunakan authParam sesuai kebutuhan
+        }
+
+        document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const nomor = document.getElementById('nomor').value;
+            const nama_lengkap = document.getElementById('nama-lengkap').value;
+            const info_clarice = document.getElementById('tau-clarice').value;
+            const tgl_lahir = document.getElementById('tanggal_lahir').value;
+            // console.log(nomor, nama_lengkap, info_clarice, tgl_lahir);
+
+            const phonePattern = /^0[0-9]{9,14}$/;
+
+            if (!nomor) {
+                document.getElementById('err').style.display = 'block';
+                document.getElementById('err').innerText = "Silakan mengisikan nomor akun";
+                return;
+            }
+
+            if (!phonePattern.test(nomor)) {
+                document.getElementById('err').style.display = 'block';
+                document.getElementById('err').innerText = "Nomor HP tidak valid. Pastikan berisi angka dan panjangnya 10-15 digit.";
+                return;
+            }
+
+            const formData = {
+                username: nomor,
+                nama_lengkap: nama_lengkap,
+                info_clarice: info_clarice,
+                tgl_lahir: tgl_lahir,
+            };
+
+            fetch(`/tambahakuntamu?auth=${authParam}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const errDiv = document.getElementById('err');
+                errDiv.style.display = 'block';
+                errDiv.innerText = data.message;
+                if (data.success) {
+                    document.getElementById('nomor').value = '';
+                    document.getElementById('nama-lengkap').value = '';
+                    document.getElementById('tau-clarice').value = '';
+                    document.getElementById('tanggal_lahir').value = '';
+
+                    const form = document.getElementById('tambahAkunForm');
+
+                    // Mendapatkan semua elemen input dan select dalam form
+                    const elements = form.querySelectorAll('input, select');
+
+                    // Menambahkan atribut disabled ke semua elemen input dan select
+                    elements.forEach(element => {
+                        element.disabled = true;
+                    });
+                }
+
+                // Menampilkan tombol lanjut
+                const lanjutButton = document.getElementById('lanjutButton');
+                lanjutButton.style.display = 'block';
+            })
+            .catch(error => {
+                console.log('Error:', error);
+                const errDiv = document.getElementById('err');
+                errDiv.style.display = 'block';
+                errDiv.innerText = 'Terjadi kesalahan. Silakan coba lagi.';
+            });
+        });
+    });
+</script>

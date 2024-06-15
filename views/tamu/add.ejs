@@ -1,0 +1,30 @@
+<div class="info" id="info">Isikan data diri anda dengan lengkap dan sesuai dengan form di bawah</div>
+<div class="notice" id="err" style="display: none;"></div>
+
+<form id="tambahAkunForm" action="/tambahakunhotspot" method="POST">
+
+    <label for="nama-lengkap">Nama Lengkap</label>
+    <input type="text" id="nama-lengkap" name="nama-lengkap" required>
+    
+    <label for="nomor">Nomor</label>
+    <input type="tel" id="nomor" name="nomor" required>
+    
+    <label for="tau-clarice">Tau Clarice dari?</label>
+    <select class="form-select" id="tau-clarice" name="tau-clarice" required>
+        <option value="">Pilih sumber</option>
+        <option value="teman">Teman</option>
+        <option value="keluarga">Keluarga</option>
+        <option value="internet">Sosmed Clarice</option>
+        <option value="lainnya">Lainnya</option>
+    </select>
+    <br>
+    
+    <label for="tanggal-lahir">Tanggal Lahir</label>
+    <div class="form-group">
+        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+    </div>
+    <br>
+    
+    <input type="submit" value="Submit">
+</form>
+<button id="lanjutButton" class="daftar-btn" style="display: none;">Lanjut Login</button>
