@@ -21,7 +21,7 @@
                 <div class="content-form">
                     <form id="tambahAkunForm" action="/tambahakunhotspot" method="POST">
 
-                        <div class="info" id="info">Masukkan nomor HP Anda untuk mendaftarkan akun yang dapat digunakan untuk terhubung ke WiFi</div>
+                        <div class="info" id="info">Isikan data diri anda dengan lengkap dan sesuai dengan form di bawah</div>
                         <div class="notice" id="err" style="display: none;"></div>
 
                         <div class="centerform">
@@ -37,6 +37,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Mendapatkan URL path
+            const path = window.location.pathname;
+            // Memecah path menjadi bagian-bagian
+            const pathParts = path.split('/');
+            // Mendapatkan parameter terakhir
+            const authParam = pathParts[pathParts.length - 1];
+            
+            console.log('Auth parameter:', authParam);
             document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const nomor = document.getElementById('nomor').value;
@@ -55,7 +63,8 @@
                 }
 
                 const formData = {
-                    username: nomor
+                    username: nomor,
+                    authlogin: authParam
                 };
 
                 fetch('/tambahakuntamu', {
