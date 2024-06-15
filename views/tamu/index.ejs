@@ -39,11 +39,13 @@
                             <option value="internet">Sosmed Clarice</option>
                             <option value="lainnya">Lainnya</option>
                         </select>
+                        <br>
                         
                         <label for="tanggal-lahir">Tanggal Lahir</label>
                         <div class="form-group">
                             <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
                         </div>
+                        <br>
                         
                         <input type="submit" value="Submit">
                     </form>
@@ -73,6 +75,12 @@
             document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const nomor = document.getElementById('nomor').value;
+                const nama_lengkap = document.getElementById('nama-lengkap').value;
+                const info_clarice = document.getElementById('tau-clarice').value;
+                const tgl_lahir = document.getElementById('tanggal_lahir').value;
+                console.log(nomor, nama_lengkap, info_clarice, tgl_lahir);
+
+
                 const phonePattern = /^0[0-9]{9,14}$/;
                 
                 if (!nomor) {
