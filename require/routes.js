@@ -544,7 +544,7 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
     tgl_lahir: tgl_lahir,
     akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
   }
-  await insertsheet(data);
+  const sheet = insertsheet(data);
   if (response.success) {
     const notifres = await notif(
       req.hostname,
