@@ -11,7 +11,7 @@ const {
   APP_AUTHOR,
   Mikrotik,
   PROFILE_DEFAULT_TAMU,
-  PARAM_USERTAMBAH,
+  URL_HOTSPOT
 } = require("./main");
 const {
   testINT,
@@ -359,10 +359,12 @@ router.get("/broadcast", isAuthenticated, async (req, res) => {
 
 router.get("/usertambah", AuthTamu, async (req, res) => {
   const { mikrotikstatus } = Mikrotik;
+  const url = URL_HOTSPOT;
   const data = {
     mikrotik: mikrotikstatus,
     title: APP_TITLE,
     name_page: `Tambah User - ${APP_TITLE}`,
+    urlhotspot: url,
   };
   res.render("tamu/index", data);
 });
