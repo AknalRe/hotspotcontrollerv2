@@ -268,7 +268,7 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
     res.render('index', data);
 })
 
-router.get('/usertambah/:auth', AuthTamu, async (req, res) => {
+router.get('/usertambah', AuthTamu, async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
     const role = "tamu";
     // const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();

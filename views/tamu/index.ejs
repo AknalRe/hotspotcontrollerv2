@@ -37,14 +37,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Mendapatkan URL path
-            const path = window.location.pathname;
-            // Memecah path menjadi bagian-bagian
-            const pathParts = path.split('/');
-            // Mendapatkan parameter terakhir
-            const authParam = pathParts[pathParts.length - 1];
-            
-            console.log('Auth parameter:', authParam);
             document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const nomor = document.getElementById('nomor').value;
@@ -63,8 +55,7 @@
                 }
 
                 const formData = {
-                    username: nomor,
-                    authlogin: authParam
+                    username: nomor
                 };
 
                 fetch('/tambahakuntamu', {
