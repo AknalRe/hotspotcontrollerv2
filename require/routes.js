@@ -374,6 +374,20 @@ router.get("/usertambah", AuthTamu, async (req, res) => {
   res.render("tamu/index", data);
 });
 
+router.get("/wifi", AuthTamu, async (req, res) => {
+  const { mikrotikstatus } = Mikrotik;
+  const url = URL_HOTSPOT;
+  const data = {
+    mikrotik: mikrotikstatus,
+    title: APP_TITLE,
+    name_page: `Tambah User - ${APP_TITLE}`,
+    urlhotspot: url,
+    page: 'tamu/wifi',
+    script: 'tamu/wifiscript'
+  };
+  res.render("tamu/index", data);
+});
+
 // router.get('/user', async (req, res) => {
 //     req.session.prevpage = req.path;
 //     const response = await CekTotalUserHotspot();
