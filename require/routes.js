@@ -396,6 +396,27 @@ router.post('/tambahakunhotspot', isAuthenticated, async (req, res) => {
     }
 });
 
+router.post('/tambahakuntamu', AuthTamu, async (req, res) => {
+    if (req.session.role.toLowerCase() !== 'demo') {
+        let { username, password, jenisAkun, comment, nama_lengkap, info_clarice, tgl_lahir } = req.body;
+        
+        if (!jenisAkun) {
+            jenisAkun = PROFILE_DEFAULT_TAMU;
+        }
+        const response = comment ?
+        password ? await addakun(username, jenisAkun, password, comment) : await addakun(username, jenisAkun, null, comment) :
+        password ? await addakun(username, jenisAkun, password) : await addakun(username, jenisAkun);
+        console.log(response)
+        if (response.success) {
+            const notifres = await notif(req.hostname, 'Tamu', 'Tamu', `Menambahkan akun ${username}-${jenisAkun}`)
+            logg(notif.success, notifres.success ? `Berhasil mengirimkan notif informasi tambahakun` : `Gagal mengirimkan notif informasi tambahakun`)
+        }
+        res.json(response);
+    } else {
+        res.json({ success: false, message: `Gagal, Anda berada di user demo` })
+    }
+});
+
 router.post('/listakun', isAuthenticated, async (req, res) => {
     const { role } = req.session;
     if (!role) {
