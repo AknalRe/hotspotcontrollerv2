@@ -50,21 +50,13 @@
                         <input type="submit" value="Submit">
                     </form>
                 </div>
-                <button id="lanjutButton" class="daftar-btn">Detail Akun</button>
+                <button id="lanjutButton" class="daftar-btn" style="display: none;"></button>
             </div>
         </div>
     </div>
 
     <script>
-        // $(function() {
-        //     $("#tanggal_lahir").datepicker({
-        //         dateFormat: "dd-mm-yy", // Format tanggal yang ingin ditampilkan
-        //         yearRange: "-100:+0", // Batas tahun yang dapat dipilih (100 tahun sebelum dan sesudah tahun sekarang)
-        //         changeMonth: true, // Tampilkan pilihan bulan
-        //         changeYear: true // Tampilkan pilihan tahun
-        //     });
-        // });
-
+        const urlhostpot = '<%= urlhotspot %>';
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const authParam = urlParams.get('auth');
@@ -114,6 +106,23 @@
                     errDiv.innerText = data.message;
                     if (data.success) {
                         document.getElementById('nomor').value = '';
+                        document.getElementById('nama-lengkap').value = '';
+                        document.getElementById('tau-clarice').value = '';
+                        document.getElementById('tanggal_lahir').value = '';
+
+                        const form = document.getElementById('tambahAkunForm');
+
+                        // Mendapatkan semua elemen input dan select dalam form
+                        const elements = form.querySelectorAll('input, select');
+
+                        // Menambahkan atribut disabled ke semua elemen input dan select
+                        elements.forEach(element => {
+                            element.disabled = true;
+                        });
+
+                        document.getElementById('lanjutButton').addEventListener('click', function () {
+                            window.location.href = urlhostpot;
+                        });
                     }
                 })
                 .catch(error => {
