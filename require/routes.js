@@ -368,8 +368,8 @@ router.get("/usertambah", AuthTamu, async (req, res) => {
     title: APP_TITLE,
     name_page: `Tambah User - ${APP_TITLE}`,
     urlhotspot: url,
-    page: 'tamu/add',
-    script: 'tamu/addscript'
+    page: 'add',
+    script: 'addscript'
   };
   res.render("tamu/index", data);
 });
@@ -382,8 +382,8 @@ router.get("/wifi", async (req, res) => {
     title: APP_TITLE,
     name_page: `Tambah User - ${APP_TITLE}`,
     urlhotspot: url,
-    page: 'tamu/wifi',
-    script: 'tamu/wifiscript'
+    page: 'wifi',
+    script: 'wifiscript'
   };
   res.render("tamu/index", data);
 });
