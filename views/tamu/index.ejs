@@ -57,6 +57,11 @@
 
     <script>
         const urlhostpot = '<%= urlhotspot %>';
+
+        document.getElementById('lanjutButton').addEventListener('click', function () {
+            window.location.href = urlhostpot;
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const authParam = urlParams.get('auth');
@@ -120,9 +125,11 @@
                             element.disabled = true;
                         });
 
-                        document.getElementById('lanjutButton').addEventListener('click', function () {
-                            window.location.href = urlhostpot;
-                        });
+                        // Mendapatkan elemen tombol
+                        const lanjutButton = document.getElementById('lanjutButton');
+
+                        // Mengubah properti display menjadi block
+                        lanjutButton.style.display = 'block';
                     }
                 })
                 .catch(error => {
