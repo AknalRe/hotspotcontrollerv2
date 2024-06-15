@@ -178,7 +178,7 @@ const isAuthenticated = async (req, res, next) => {
 };
 
 const AuthTamu = async (req, res, next) => {
-  if (req.params['auth'] == PARAM_USERTAMBAH || req.body['authlogin'] == PARAM_USERTAMBAH) {
+  if (req.query.auth == PARAM_USERTAMBAH) {
     next();
   } else {
     res.redirect('/')

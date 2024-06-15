@@ -270,32 +270,12 @@ router.get('/broadcast', isAuthenticated, async (req, res) => {
 
 router.get('/usertambah', AuthTamu, async (req, res) => {
     const { mikrotikstatus } = Mikrotik;
-    const role = "tamu";
-    // const userRole = (role === "Demo" ? "Administrator" : role !== "Administrator" && role !== "Admin" ? "User" : role).toLowerCase();
     const data = {
         mikrotik: mikrotikstatus,
         title: APP_TITLE,
         name_page: `Tambah User - ${APP_TITLE}`,
     }
     res.render('tamu/index', data);
-    // const data = {
-    //     auth: false,
-    //     mikrotik: mikrotikstatus,
-    //     user_name: role,
-    //     user_username: role,
-    //     user_role: (role == "Demo" ? "Administrator" : role),
-    //     user_demo: (role == "Demo" ? true : false),
-    //     title: APP_TITLE,
-    //     author: APP_AUTHOR,
-    //     name_page: `Tambah User - ${APP_TITLE}`,
-    //     scriptglobal: "scripts/script",
-    //     footer: "footer",
-    //     style: role,
-    //     navbar: `noauth/navbar`,
-    //     page: `noauth/index`,
-    //     scriptlocal: `noauth/script`
-    // };
-    // res.render('index', data);
 });
 
 

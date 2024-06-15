@@ -37,6 +37,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const authParam = urlParams.get('auth');
+
+            if (authParam) {
+                console.log('Auth parameter:', authParam);
+                // Gunakan authParam sesuai kebutuhan
+            }
             document.getElementById('tambahAkunForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const nomor = document.getElementById('nomor').value;
@@ -58,7 +65,7 @@
                     username: nomor
                 };
 
-                fetch('/tambahakuntamu', {
+                fetch(`/tambahakuntamu?auth=${authParam}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
