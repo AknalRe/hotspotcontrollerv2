@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/tamu.css">
@@ -51,6 +54,15 @@
     </div>
 
     <script>
+        $(function() {
+            $("#tanggal_lahir").datepicker({
+                dateFormat: "dd-mm-yy", // Format tanggal yang ingin ditampilkan
+                yearRange: "-100:+0", // Batas tahun yang dapat dipilih (100 tahun sebelum dan sesudah tahun sekarang)
+                changeMonth: true, // Tampilkan pilihan bulan
+                changeYear: true // Tampilkan pilihan tahun
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const authParam = urlParams.get('auth');
