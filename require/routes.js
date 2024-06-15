@@ -374,7 +374,7 @@ router.get("/usertambah", AuthTamu, async (req, res) => {
   res.render("tamu/index", data);
 });
 
-router.get("/wifi", AuthTamu, async (req, res) => {
+router.get("/wifi", async (req, res) => {
   const { mikrotikstatus } = Mikrotik;
   const url = URL_HOTSPOT;
   const data = {
