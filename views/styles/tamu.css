@@ -170,7 +170,7 @@ form label {
     margin-bottom: 8px;
     font-weight: bold;
     color: #333;
-    font-size: 18px;
+    font-size: 23px;
 }
 
 form input[type="text"],
@@ -178,18 +178,19 @@ form input[type="tel"],
 form input[type="date"],
 form select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Pastikan padding tidak mempengaruhi ukuran total */
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
 form input[type="submit"] {
     background: #3e4d59;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -198,6 +199,7 @@ form input[type="submit"] {
 form input[type="submit"]:hover {
     background: #33404a;
 }
+
 
 input {
     outline: 0;
