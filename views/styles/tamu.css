@@ -465,3 +465,22 @@ iframe {
   display: block;
   margin: 10px auto;
 }
+
+.daftar-btn {
+    margin-top: 10px;
+    /* background: #008cff; */
+    background: #008cff;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    height: 44px;
+    border-radius: 6px;
+    -webkit-transition: background .3s ease-in-out;
+    transition: background .3s ease-in-out
+}
+
+.daftar-btn:hover {
+    background: #003f6e
+}
