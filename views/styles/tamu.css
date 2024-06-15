@@ -181,6 +181,7 @@ form select {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* Pastikan padding tidak mempengaruhi ukuran total */
 }
 
 form input[type="submit"] {
