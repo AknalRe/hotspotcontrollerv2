@@ -1,5 +1,5 @@
 const { WEBHOOKN8N } = require('./main');
-const webhookUrl = WEBHOOKN8N;
+const webhookUrl = "http://172.17.0.2:5678/" + WEBHOOKN8N;
 
 async function main() {
   const fetch = (await import('node-fetch')).default;
@@ -19,7 +19,7 @@ async function main() {
   console.log(result);
 }
 
-// main().catch(console.error);
+main().catch(console.error);
 
 const insertsheet = async (data) => {
     try {
