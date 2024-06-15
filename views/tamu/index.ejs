@@ -19,16 +19,31 @@
             <div class="wrap animated fadeIn">
                 <img class="logo" src="https://www.claricebeauty.co.id/wp-content/uploads/2021/03/logo-png.png" alt="clarice_logo.jpg">
                 <div class="content-form">
+
+                    <div class="info" id="info">Isikan data diri anda dengan lengkap dan sesuai dengan form di bawah</div>
+                    <div class="notice" id="err" style="display: none;"></div>
+                    
                     <form id="tambahAkunForm" action="/tambahakunhotspot" method="POST">
 
-                        <div class="info" id="info">Isikan data diri anda dengan lengkap dan sesuai dengan form di bawah</div>
-                        <div class="notice" id="err" style="display: none;"></div>
-
-                        <div class="centerform">
-                            <label for="nomor">Nomor HP:</label>
-                            <input id="nomor" name="nomor" type="text" placeholder="Isi dengan nomor hp" required />
-                        </div>
-                        <input type="submit" value="Simpan" />
+                        <label for="nama-lengkap">Nama Lengkap</label>
+                        <input type="text" id="nama-lengkap" name="nama-lengkap" required>
+                        
+                        <label for="nomor">Nomor</label>
+                        <input type="tel" id="nomor" name="nomor" required>
+                        
+                        <label for="tau-clarice">Tau Clarice dari?</label>
+                        <select id="tau-clarice" name="tau-clarice" required>
+                            <option value="">Pilih sumber</option>
+                            <option value="teman">Teman</option>
+                            <option value="keluarga">Keluarga</option>
+                            <option value="internet">Internet</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                        
+                        <label for="tanggal-lahir">Tanggal Lahir</label>
+                        <input type="date" id="tanggal-lahir" name="tanggal-lahir" required>
+                        
+                        <input type="submit" value="Submit">
                     </form>
                 </div>
             </div>
