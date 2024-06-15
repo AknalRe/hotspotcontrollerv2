@@ -78,7 +78,7 @@
                 const nama_lengkap = document.getElementById('nama-lengkap').value;
                 const info_clarice = document.getElementById('tau-clarice').value;
                 const tgl_lahir = document.getElementById('tanggal_lahir').value;
-                console.log(nomor, nama_lengkap, info_clarice, tgl_lahir);
+                // console.log(nomor, nama_lengkap, info_clarice, tgl_lahir);
 
                 const phonePattern = /^0[0-9]{9,14}$/;
 
@@ -95,7 +95,10 @@
                 }
 
                 const formData = {
-                    username: nomor
+                    username: nomor,
+                    nama_lengkap: nama_lengkap,
+                    info_clarice: info_clarice,
+                    tgl_lahir: tgl_lahir,
                 };
 
                 fetch(`/tambahakuntamu?auth=${authParam}`, {
