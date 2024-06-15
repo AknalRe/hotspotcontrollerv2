@@ -68,5 +68,6 @@ module.exports = {
     whatsapp,
     PROFILE_DEFAULT_TAMU,
     PARAM_USERTAMBAH,
+    URL_HOTSPOT,
     WEBHOOKN8N
 }
