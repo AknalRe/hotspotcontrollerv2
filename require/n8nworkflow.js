@@ -19,7 +19,7 @@ async function main() {
   console.log(result);
 }
 
-main().catch(console.error);
+// main().catch(console.error);
 
 const insertsheet = async (data) => {
     try {
