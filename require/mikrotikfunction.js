@@ -120,10 +120,8 @@ async function addakun(username, jenisakun, password, comment) {
                 return { success: false, title: `Tambah Akun Hotspot`, message: `Username (${username}) hotspot sudah ada!` };
             }
 
-            // Buat akun hotspot baru
             await client.write('/ip/hotspot/user/add', commands);
             
-            // Cek kembali apakah akun hotspot berhasil dibuat
             const resultcreateuser = await checkakun(username);
             if (resultcreateuser.success) {
                 let response = { success: false }, nomortujuan, ucapan, pesan;
