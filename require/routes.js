@@ -601,7 +601,7 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       ? await addakun(username, jenisAkun, password, comment)
       : await addakun(username, jenisAkun, null, comment);
 
-    console.log(response);
+    // console.log(response);
 
     if (response.success) {
       // Send notification
@@ -622,16 +622,16 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
         akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
       };
 
-      // Insert data into sheet
-      await insertsheet(data);
-
-      // Log notification result
-      logg(
-        notifres.success,
-        notifres.success
-          ? `Berhasil mengirimkan notif informasi tambahakun`
-          : `Gagal mengirimkan notif informasi tambahakun`
-      );
+      // Insert data into sheet and send notification
+      await Promise.all([
+        insertsheet(data),
+        logg(
+          notifres.success,
+          notifres.success
+            ? `Berhasil mengirimkan notif informasi tambahakun`
+            : `Gagal mengirimkan notif informasi tambahakun`
+        )
+      ]);
     }
 
     // Send response back to client
