@@ -560,16 +560,16 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       "Tamu",
       `Menambahkan akun ${username}-${jenisAkun}`
     );
-    let data = {
-      cabang: req.hostname,
-      nama: nama_lengkap,
-      nomor: username,
-      infoclarice: info_clarice,
-      tgl_lahir: tgl_lahir,
-      akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
-    }
-    const sheet = insertsheet(data);
-    console.log(sheet);
+    // let data = {
+    //   cabang: req.hostname,
+    //   nama: nama_lengkap,
+    //   nomor: username,
+    //   infoclarice: info_clarice,
+    //   tgl_lahir: tgl_lahir,
+    //   akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
+    // }
+    // const sheet = insertsheet(data);
+    // console.log(sheet);
     logg(
       notif.success,
       notifres.success
