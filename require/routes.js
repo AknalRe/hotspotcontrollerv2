@@ -26,7 +26,7 @@ const { KirimPesanWA, kirimNotif, notif, notifspam } = require("./whatsapp");
 const { client } = require("./mikrotik");
 const { ExportXLSX } = require("./export");
 const {
-    insertsheet
+  insertsheet
 } = require("./n8nworkflow");
 
 // GET
@@ -38,8 +38,8 @@ router.get("/", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -71,8 +71,8 @@ router.get("/listakun", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -104,8 +104,8 @@ router.get("/listakunaktif", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -137,8 +137,8 @@ router.get("/limitasiakun", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -170,8 +170,8 @@ router.get("/listbinding", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -203,8 +203,8 @@ router.get("/loghotspot", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -236,8 +236,8 @@ router.get("/logsistem", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -269,8 +269,8 @@ router.get("/bannerhotspot", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -302,8 +302,8 @@ router.get("/generateqr", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -335,8 +335,8 @@ router.get("/broadcast", isAuthenticated, async (req, res) => {
     role === "Demo"
       ? "Administrator"
       : role !== "Administrator" && role !== "Admin"
-      ? "User"
-      : role
+        ? "User"
+        : role
   ).toLowerCase();
   const style =
     userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
@@ -505,8 +505,8 @@ router.post("/tambahakunhotspot", isAuthenticated, async (req, res) => {
         ? await addakun(username, jenisAkun, password, comment)
         : await addakun(username, jenisAkun, null, comment)
       : password
-      ? await addakun(username, jenisAkun, password)
-      : await addakun(username, jenisAkun);
+        ? await addakun(username, jenisAkun, password)
+        : await addakun(username, jenisAkun);
     console.log(response);
     if (response.success) {
       const notifres = await notif(
@@ -550,19 +550,9 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       ? await addakun(username, jenisAkun, password, comment)
       : await addakun(username, jenisAkun, null, comment)
     : password
-    ? await addakun(username, jenisAkun, password)
-    : await addakun(username, jenisAkun);
-//   console.log(response);
-  let data = {
-    cabang: req.hostname,
-    nama: nama_lengkap,
-    nomor: username,
-    infoclarice: info_clarice,
-    tgl_lahir: tgl_lahir,
-    akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
-  }
-  const sheet = await insertsheet(data);
-  console.log(sheet);
+      ? await addakun(username, jenisAkun, password)
+      : await addakun(username, jenisAkun);
+  //   console.log(response);
   if (response.success) {
     const notifres = await notif(
       req.hostname,
@@ -570,6 +560,16 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       "Tamu",
       `Menambahkan akun ${username}-${jenisAkun}`
     );
+    let data = {
+      cabang: req.hostname,
+      nama: nama_lengkap,
+      nomor: username,
+      infoclarice: info_clarice,
+      tgl_lahir: tgl_lahir,
+      akun: response.success == true ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar"
+    }
+    const sheet = await insertsheet(data);
+    console.log(sheet);
     logg(
       notif.success,
       notifres.success
@@ -1413,9 +1413,9 @@ router.post("/listklienbroadcast", isAuthenticated, async (req, res) => {
             const nomor =
               req.session.role.toLowerCase() == "demo"
                 ? item.name.substring(0, 3) +
-                  "*".repeat(
-                    item.name.length >= 16 ? item.name.length - 3 : 20 - 3
-                  )
+                "*".repeat(
+                  item.name.length >= 16 ? item.name.length - 3 : 20 - 3
+                )
                 : item.name;
             item.name = nomor;
             sendData.push(item);
