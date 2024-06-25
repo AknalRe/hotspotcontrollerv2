@@ -601,7 +601,10 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       ? await addakun(username, jenisAkun, password, comment)
       : await addakun(username, jenisAkun, null, comment);
 
-    // console.log(response);
+    console.log(response);
+
+    // Send response back to client
+    res.json(response);
 
     if (response.success) {
       // Send notification
@@ -622,20 +625,17 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
         akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
       };
 
-      // Insert data into sheet and send notification
-      await Promise.all([
-        insertsheet(data),
-        logg(
-          notifres.success,
-          notifres.success
-            ? `Berhasil mengirimkan notif informasi tambahakun`
-            : `Gagal mengirimkan notif informasi tambahakun`
-        )
-      ]);
-    }
+      // Insert data into sheet
+      await insertsheet(data);
 
-    // Send response back to client
-    res.json(response);
+      // Log notification result
+      logg(
+        notifres.success,
+        notifres.success
+          ? `Berhasil mengirimkan notif informasi tambahakun`
+          : `Gagal mengirimkan notif informasi tambahakun`
+      );
+    }
   } catch (error) {
     // Error handling
     console.error("Error adding guest account:", error);
