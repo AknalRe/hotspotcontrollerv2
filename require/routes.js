@@ -554,6 +554,7 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
     : await addakun(username, jenisAkun);
 //   console.log(response);
   let data = {
+    cabang: req.hostname,
     nama: nama_lengkap,
     nomor: username,
     infoclarice: info_clarice,
