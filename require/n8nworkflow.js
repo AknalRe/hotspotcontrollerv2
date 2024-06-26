@@ -22,6 +22,10 @@ const webhookUrl = "http://172.17.0.2:5678/" + WEBHOOKN8N;
 // main().catch(console.error);
 
 const insertsheet = async (data) => {
+    let data = {
+        action: "input",
+        data: data
+    }
     try {
         const fetch = (await import('node-fetch')).default;
         const response = await fetch(webhookUrl, {
