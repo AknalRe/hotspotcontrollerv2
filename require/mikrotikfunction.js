@@ -155,7 +155,7 @@ async function addakun(username, jenisakun, password, comment) {
 async function addakuntamu(username, jenisakun, password, comment) {
     const { mikrotikstatus } = Mikrotik;
     let pesandata = await getpesan();
-    // console.log(pesandata);
+    console.log(pesandata.data);
     if (mikrotikstatus) {
         try {
             const commands = [
