@@ -57,7 +57,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 errDiv.style.display = 'block';
                 errDiv.innerText = data.message;
                 if (data.success) {

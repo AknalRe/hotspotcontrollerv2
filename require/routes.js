@@ -602,39 +602,39 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
 
   console.log(response);
 
+  if (response.success) {
+    // Send notification
+    const notifres = await notif(
+      req.hostname,
+      "Tamu",
+      "Tamu",
+      `Menambahkan akun ${username}-${jenisAkun}`
+    );
+
+    // Prepare data for sheet insertion
+    let data = {
+      cabang: req.hostname,
+      nama: nama_lengkap,
+      nomor: username,
+      infoclarice: info_clarice,
+      tgl_lahir: tgl_lahir,
+      akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
+    };
+
+    // Insert data into sheet
+    insertsheet(data);
+
+    // Log notification result
+    logg(
+      notifres.success,
+      notifres.success
+        ? `Berhasil mengirimkan notif informasi tambahakun`
+        : `Gagal mengirimkan notif informasi tambahakun`
+    );
+  }
+
   // Send response back to client
   res.json(response);
-
-  // if (response.success) {
-  //   // Send notification
-  //   const notifres = await notif(
-  //     req.hostname,
-  //     "Tamu",
-  //     "Tamu",
-  //     `Menambahkan akun ${username}-${jenisAkun}`
-  //   );
-
-  //   // Prepare data for sheet insertion
-  //   let data = {
-  //     cabang: req.hostname,
-  //     nama: nama_lengkap,
-  //     nomor: username,
-  //     infoclarice: info_clarice,
-  //     tgl_lahir: tgl_lahir,
-  //     akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
-  //   };
-
-  //   // Insert data into sheet
-  //   await insertsheet(data);
-
-  //   // Log notification result
-  //   logg(
-  //     notifres.success,
-  //     notifres.success
-  //       ? `Berhasil mengirimkan notif informasi tambahakun`
-  //       : `Gagal mengirimkan notif informasi tambahakun`
-  //   );
-  // }
 });
 
 router.post("/listakun", isAuthenticated, async (req, res) => {
