@@ -17,6 +17,7 @@ const {
   testINT,
   CekTotalUserHotspot,
   addakun,
+  addakuntamu,
   listakun,
   editakun,
   addbinding,
