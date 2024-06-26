@@ -193,8 +193,8 @@ async function addakuntamu(username, jenisakun, password, comment) {
                         .replace(/{ucapan}/g, ucapan)
                         .replace(/{nama_lengkap}/g, comment)
                         .replace(/{username}/g, username);
-                        
-                    response = pesandata.data.link ? await KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : await KirimPesanWA(nomortujuan, pesan);
+
+                    response = pesandata.data.link ? KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : KirimPesanWA(nomortujuan, pesan);
                 }
                 logg(resultcreateuser.success, response.success ? `Nomor (${username}) berhasil di daftarkan dan berhasil kirim notif` : `Nomor (${username}) berhasil di daftarkan`);
                 return { success: true, title: `Tambah Akun Hotspot`, successwa: response.success, message: `Nomor (${username}) berhasil di daftarkan`};
