@@ -182,19 +182,25 @@ async function addakuntamu(username, jenisakun, password, comment) {
             
             const resultcreateuser = await checkakun(username);
             if (resultcreateuser.success) {
-                let response = { success: false }, nomortujuan, ucapan, pesan;
-                if (isnumber) {
-                    nomortujuan = username;
-                    ucapan = await getUcapan();
-                    // const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
-                    // pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
-                    // KirimPesanWA(nomortujuan, pesan);
-                    pesan = pesandata.data.pesan
-                        .replace(/{ucapan}/g, ucapan)
-                        .replace(/{nama_lengkap}/g, comment)
-                        .replace(/{username}/g, username);
 
-                    response = pesandata.data.link ? KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : KirimPesanWA(nomortujuan, pesan);
+                let response = { success: false }, nomortujuan, ucapan, pesan;
+
+                try {
+                    if (isnumber) {
+                        nomortujuan = username;
+                        ucapan = await getUcapan();
+                        // const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
+                        // pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
+                        // KirimPesanWA(nomortujuan, pesan);
+                        pesan = pesandata.data.pesan
+                            .replace(/{ucapan}/g, ucapan)
+                            .replace(/{nama_lengkap}/g, comment)
+                            .replace(/{username}/g, username);
+    
+                        response = pesandata.data.link ? KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : KirimPesanWA(nomortujuan, pesan);
+                    }
+                } catch (error) {
+                    logg(false, error.message)
                 }
                 logg(resultcreateuser.success, response.success ? `Nomor (${username}) berhasil di daftarkan dan berhasil kirim notif` : `Nomor (${username}) berhasil di daftarkan`);
                 return { success: true, title: `Tambah Akun Hotspot`, successwa: response.success, message: `Nomor (${username}) berhasil di daftarkan`};

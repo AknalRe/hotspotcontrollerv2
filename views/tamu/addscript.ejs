@@ -89,6 +89,8 @@
                 errDiv.style.display = 'block';
                 errDiv.innerText = 'Terjadi kesalahan. Silakan coba lagi.';
                 hideErrorAfterDelay();
+                const lanjutButton = document.getElementById('lanjutButton');
+                lanjutButton.style.display = 'none';
             });
         });
 
