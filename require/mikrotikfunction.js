@@ -148,6 +148,58 @@ async function addakun(username, jenisakun, password, comment) {
     }
 }
 
+async function addakuntamu(username, jenisakun, password, comment) {
+    const { mikrotikstatus } = Mikrotik;
+    if (mikrotikstatus) {
+        try {
+            const commands = [
+                `=name=${username}`,
+                `=password=${password ? password : username}`,
+                `=profile=${jenisakun}`,
+                '=disabled=false',
+                `=comment=${comment ? comment : ""}`,
+            ];
+
+            // Cek apakah akun hotspot sudah tersedia
+            let isAkunHotspotAvailable = await checkakun(username);
+
+            // Cek apakah username merupakan nomor
+            const isnumber = await testINT(username);
+
+            // Jika akun hotspot sudah tersedia, kembalikan respons dengan pesan bahwa username sudah ada
+            if (isAkunHotspotAvailable.success) {
+                logg(false, `Nomor (${username}) sudah terdaftar!`)
+                return { success: false, title: `Tambah Akun Hotspot`, message: `Nomor (${username}) sudah terdaftar!` };
+            }
+
+            await client.write('/ip/hotspot/user/add', commands);
+            
+            const resultcreateuser = await checkakun(username);
+            if (resultcreateuser.success) {
+                let response = { success: false }, nomortujuan, ucapan, pesan;
+                if (isnumber) {
+                    nomortujuan = username;
+                    ucapan = await getUcapan();
+                    const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
+                    pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
+                    await KirimPesanWA(nomortujuan, pesan);
+                }
+                logg(resultcreateuser.success, response.success ? `Nomor (${username}) berhasil di daftarkan dan berhasil kirim notif` : `Nomor (${username}) berhasil di daftarkan`);
+                return { success: true, title: `Tambah Akun Hotspot`, successwa: response.success, message: `Nomor (${username}) berhasil di daftarkan`};
+            } else {
+                logg(resultcreateuser.success, `Nomor (${username}) gagal di buat`);
+                return { success: false, title: `Tambah Akun Hotspot`, message: `Nomor (${username}) gagal di daftarkan`};
+            }
+        } catch (err) {
+            logg(false, `Terjadi kesalahan tambah akun hotspot : ${err.message}`);
+            return { success: false, title: `Tambah Akun Hotspot`, message: `Terjadi kesalahan mendaftarkan nomor ${username}`, err: `${err.message}`}
+        }
+    } else {
+        logg(false, `Mikrotik Tidak Terhubung`);
+        return { success: false, title: `Tambah Akun Hotspot`, message: "Sistem Tidak Terhubung"}
+    }
+}
+
 async function listakun(role) {
     const mikrotik = Mikrotik.mikrotikstatus;
     if(mikrotik) {
@@ -317,6 +369,7 @@ async function addbinding(action, id, add, toadd, mac, server, req) {
 module.exports = {
     CekTotalUserHotspot,
     addakun,
+    addakuntamu,
     listakun,
     editakun,
     addbinding,

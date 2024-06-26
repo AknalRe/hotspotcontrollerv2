@@ -596,8 +596,8 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
   comment = comment || nama_lengkap;
 
   const response = password
-    ? await addakun(username, jenisAkun, password, comment)
-    : await addakun(username, jenisAkun, null, comment);
+    ? await addakuntamu(username, jenisAkun, password, comment)
+    : await addakuntamu(username, jenisAkun, null, comment);
 
   console.log(response);
 
