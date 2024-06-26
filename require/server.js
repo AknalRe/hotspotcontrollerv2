@@ -29,19 +29,19 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   store: new session.MemoryStore(),
-  cookie: { maxAge: 800000 }
+  // cookie: { maxAge: 800000 }
 }));
 
-app.use((req, res, next) => {
-  const forwardedFor = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'];
-  if (forwardedFor) {
-    const ips = forwardedFor.split(',').map(ip => ip.trim());
-    req.ip = ips[0];
-  } else {
-    next();
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   const forwardedFor = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'];
+//   if (forwardedFor) {
+//     const ips = forwardedFor.split(',').map(ip => ip.trim());
+//     req.ip = ips[0];
+//   } else {
+//     next();
+//   }
+//   next();
+// });
 
 app.use((req, res, next) => {
   let method = req.method == 'GET' ? 'GET' : req.method == 'POST' ? '\x1b[31mPOST\x1b[0m' : req.method;
