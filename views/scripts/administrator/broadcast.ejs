@@ -55,12 +55,16 @@
 
                     // Mengumpulkan profile unik dan jumlah totalnya
                     const profileMap = new Map();
+
+                    // Mengelompokkan data berdasarkan profil dan menghitung jumlahnya
                     dataklien.forEach(option => {
                         if (option.profile) {
-                            if (!profileMap.has(option.profile)) {
-                                profileMap.set(option.profile, 0);
+                            const profile = option.profile;
+                            const jumlah = parseFloat(option.jumlah) || 0; // Pastikan jumlah adalah angka
+                            if (!profileMap.has(profile)) {
+                                profileMap.set(profile, 0);
                             }
-                            profileMap.set(option.profile, profileMap.get(option.profile) + option.jumlah);
+                            profileMap.set(profile, profileMap.get(profile) + jumlah);
                         }
                     });
 
