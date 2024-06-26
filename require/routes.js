@@ -595,52 +595,45 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
   jenisAkun = jenisAkun || PROFILE_DEFAULT_TAMU;
   comment = comment || nama_lengkap;
 
-  try {
-    // Adding account with appropriate parameters
-    const response = password
-      ? await addakun(username, jenisAkun, password, comment)
-      : await addakun(username, jenisAkun, null, comment);
+  const response = password
+    ? await addakun(username, jenisAkun, password, comment)
+    : await addakun(username, jenisAkun, null, comment);
 
-    console.log(response);
+  console.log(response);
 
-    // Send response back to client
-    res.json(response);
+  // Send response back to client
+  res.json(response);
 
-    if (response.success) {
-      // Send notification
-      const notifres = await notif(
-        req.hostname,
-        "Tamu",
-        "Tamu",
-        `Menambahkan akun ${username}-${jenisAkun}`
-      );
+  // if (response.success) {
+  //   // Send notification
+  //   const notifres = await notif(
+  //     req.hostname,
+  //     "Tamu",
+  //     "Tamu",
+  //     `Menambahkan akun ${username}-${jenisAkun}`
+  //   );
 
-      // Prepare data for sheet insertion
-      let data = {
-        cabang: req.hostname,
-        nama: nama_lengkap,
-        nomor: username,
-        infoclarice: info_clarice,
-        tgl_lahir: tgl_lahir,
-        akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
-      };
+  //   // Prepare data for sheet insertion
+  //   let data = {
+  //     cabang: req.hostname,
+  //     nama: nama_lengkap,
+  //     nomor: username,
+  //     infoclarice: info_clarice,
+  //     tgl_lahir: tgl_lahir,
+  //     akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
+  //   };
 
-      // Insert data into sheet
-      await insertsheet(data);
+  //   // Insert data into sheet
+  //   await insertsheet(data);
 
-      // Log notification result
-      logg(
-        notifres.success,
-        notifres.success
-          ? `Berhasil mengirimkan notif informasi tambahakun`
-          : `Gagal mengirimkan notif informasi tambahakun`
-      );
-    }
-  } catch (error) {
-    // Error handling
-    console.error("Error adding guest account:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
+  //   // Log notification result
+  //   logg(
+  //     notifres.success,
+  //     notifres.success
+  //       ? `Berhasil mengirimkan notif informasi tambahakun`
+  //       : `Gagal mengirimkan notif informasi tambahakun`
+  //   );
+  // }
 });
 
 router.post("/listakun", isAuthenticated, async (req, res) => {
