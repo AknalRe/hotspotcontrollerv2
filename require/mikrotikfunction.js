@@ -168,7 +168,7 @@ async function addakuntamu(username, jenisakun, password, comment) {
 
             // Jika akun hotspot sudah tersedia, kembalikan respons dengan pesan bahwa username sudah ada
             if (isAkunHotspotAvailable.success) {
-                logg(false, `Nomor (${username}) sudah terdaftar!`)
+                logg(false, `Nomor (${username}) sudah terdaftar!`);
                 return { success: false, title: `Tambah Akun Hotspot`, message: `Nomor (${username}) sudah terdaftar!` };
             }
 
@@ -182,12 +182,12 @@ async function addakuntamu(username, jenisakun, password, comment) {
                     ucapan = await getUcapan();
                     const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
                     pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
-                    await KirimPesanWA(nomortujuan, pesan);
+                    KirimPesanWA(nomortujuan, pesan);
                 }
                 logg(resultcreateuser.success, response.success ? `Nomor (${username}) berhasil di daftarkan dan berhasil kirim notif` : `Nomor (${username}) berhasil di daftarkan`);
                 return { success: true, title: `Tambah Akun Hotspot`, successwa: response.success, message: `Nomor (${username}) berhasil di daftarkan`};
             } else {
-                logg(resultcreateuser.success, `Nomor (${username}) gagal di buat`);
+                logg(resultcreateuser.success, `Nomor (${username}) gagal di daftarkan`);
                 return { success: false, title: `Tambah Akun Hotspot`, message: `Nomor (${username}) gagal di daftarkan`};
             }
         } catch (err) {
