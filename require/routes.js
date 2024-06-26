@@ -616,23 +616,23 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
   // Insert data into sheet
   insertsheet(data);
 
-  if (response.success) {
-    // Send notification
-    const notifres = await notif(
-      req.hostname,
-      "Tamu",
-      "Tamu",
-      `Menambahkan akun ${username}-${jenisAkun}`
-    );
+  // if (response.success) {
+  //   // Send notification
+  //   // const notifres = await notif(
+  //   //   req.hostname,
+  //   //   "Tamu",
+  //   //   "Tamu",
+  //   //   `Menambahkan akun ${username}-${jenisAkun}`
+  //   // );
 
-    // Log notification result
-    logg(
-      notifres.success,
-      notifres.success
-        ? `Berhasil mengirimkan notif informasi tambahakun`
-        : `Gagal mengirimkan notif informasi tambahakun`
-    );
-  }
+  //   // // Log notification result
+  //   // logg(
+  //   //   notifres.success,
+  //   //   notifres.success
+  //   //     ? `Berhasil mengirimkan notif informasi tambahakun`
+  //   //     : `Gagal mengirimkan notif informasi tambahakun`
+  //   // );
+  // }
 
   // Send response back to client
   res.json(response);

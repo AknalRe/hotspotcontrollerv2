@@ -53,18 +53,21 @@
                     semuaOption.value = "semua";
                     selectElement.appendChild(semuaOption);
 
-                    // Mengumpulkan profile unik
-                    const uniqueProfiles = new Set();
+                    // Mengumpulkan profile unik dan jumlah totalnya
+                    const profileMap = new Map();
                     dataklien.forEach(option => {
                         if (option.profile) {
-                            uniqueProfiles.add(option.profile);
+                            if (!profileMap.has(option.profile)) {
+                                profileMap.set(option.profile, 0);
+                            }
+                            profileMap.set(option.profile, profileMap.get(option.profile) + option.jumlah);
                         }
                     });
 
-                    // Menambahkan opsi profile unik ke dropdown
-                    uniqueProfiles.forEach(profile => {
+                    // Menambahkan opsi profile unik ke dropdown dengan jumlah totalnya
+                    profileMap.forEach((jumlah, profile) => {
                         const profileOption = document.createElement('option');
-                        profileOption.textContent = profile;
+                        profileOption.textContent = `${profile} (${jumlah})`;
                         profileOption.value = profile.toLowerCase();
                         selectElement.appendChild(profileOption);
                     });
