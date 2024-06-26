@@ -58,7 +58,7 @@ const getpesan = async () => {
         });
     
         const result = await response.json();
-        return { success: true, msg: result.message };
+        return result;
     } catch(err) {
         return { success: false, msg: err.message };
     }
