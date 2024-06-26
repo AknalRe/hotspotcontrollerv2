@@ -43,6 +43,28 @@ const insertsheet = async (data) => {
     }
 }
 
+const getpesan = async () => {
+    let data = {
+        action: "get"
+    }
+    try {
+        const fetch = (await import('node-fetch')).default;
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    
+        const result = await response.json();
+        return { success: true, msg: result.message };
+    } catch(err) {
+        return { success: false, msg: err.message };
+    }
+}
+
 module.exports = {
-    insertsheet
+    insertsheet,
+    getpesan
 }

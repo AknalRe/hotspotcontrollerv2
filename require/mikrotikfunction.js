@@ -1,6 +1,10 @@
 const { logg, Mikrotik, moment } = require('./main');
 const { KirimPesanWA, kirimNotif, notif } = require('./whatsapp');
 const { client } = require('./mikrotik');
+const {
+    insertsheet,
+    getpesan
+  } = require("./n8nworkflow");
 
 async function testINT(input) {
     const isNumber = !isNaN(input);
@@ -150,6 +154,7 @@ async function addakun(username, jenisakun, password, comment) {
 
 async function addakuntamu(username, jenisakun, password, comment) {
     const { mikrotikstatus } = Mikrotik;
+    let pesandata = getpesan();
     if (mikrotikstatus) {
         try {
             const commands = [
