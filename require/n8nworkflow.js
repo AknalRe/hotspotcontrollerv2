@@ -22,7 +22,7 @@ const webhookUrl = "http://172.17.0.2:5678/" + WEBHOOKN8N;
 // main().catch(console.error);
 
 const insertsheet = async (data) => {
-    let data = {
+    data = {
         action: "input",
         data: data
     }
