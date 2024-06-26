@@ -155,7 +155,7 @@ async function addakun(username, jenisakun, password, comment) {
 async function addakuntamu(username, jenisakun, password, comment) {
     const { mikrotikstatus } = Mikrotik;
     let pesandata = await getpesan();
-    console.log(pesandata);
+    // console.log(pesandata);
     if (mikrotikstatus) {
         try {
             const commands = [
@@ -186,9 +186,15 @@ async function addakuntamu(username, jenisakun, password, comment) {
                 if (isnumber) {
                     nomortujuan = username;
                     ucapan = await getUcapan();
-                    const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
-                    pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
-                    KirimPesanWA(nomortujuan, pesan);
+                    // const wifi = jenisakun.toLowerCase().includes("clarice") ? "WiFi Clarice" : jenisakun.toLowerCase().includes("haicantik") ? "WiFi Haicantik" : "WiFi"
+                    // pesan = `${ucapan}\n\nBerikut kami informasi akun untuk login pada ${wifi} :\n\nUsername : ${username}${password ? `\nPassword : ${password}` : ''}\n\nHarap untuk login sesuai dengan data diatas.\nTerima Kasih`;
+                    // KirimPesanWA(nomortujuan, pesan);
+                    pesan = pesandata.data.pesan
+                        .replace(/{ucapan}/g, ucapan)
+                        .replace(/{nama_lengkap}/g, comment)
+                        .replace(/{username}/g, username);
+                        
+                    response = pesandata.data.link ? await KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : await KirimPesanWA(nomortujuan, pesan);
                 }
                 logg(resultcreateuser.success, response.success ? `Nomor (${username}) berhasil di daftarkan dan berhasil kirim notif` : `Nomor (${username}) berhasil di daftarkan`);
                 return { success: true, title: `Tambah Akun Hotspot`, successwa: response.success, message: `Nomor (${username}) berhasil di daftarkan`};
