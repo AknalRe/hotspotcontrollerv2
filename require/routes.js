@@ -602,6 +602,19 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
 
   console.log(response);
 
+  // Prepare data for sheet insertion
+  let data = {
+    cabang: req.hostname,
+    nama: nama_lengkap,
+    nomor: username,
+    infoclarice: info_clarice,
+    tgl_lahir: tgl_lahir,
+    akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
+  };
+
+  // Insert data into sheet
+  insertsheet(data);
+
   if (response.success) {
     // Send notification
     const notifres = await notif(
@@ -610,19 +623,6 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
       "Tamu",
       `Menambahkan akun ${username}-${jenisAkun}`
     );
-
-    // Prepare data for sheet insertion
-    let data = {
-      cabang: req.hostname,
-      nama: nama_lengkap,
-      nomor: username,
-      infoclarice: info_clarice,
-      tgl_lahir: tgl_lahir,
-      akun: response.success ? "Nomor Baru Terdaftar" : "Nomor Sudah Pernah Terdaftar",
-    };
-
-    // Insert data into sheet
-    insertsheet(data);
 
     // Log notification result
     logg(
