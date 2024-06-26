@@ -53,25 +53,24 @@
                     semuaOption.value = "semua";
                     selectElement.appendChild(semuaOption);
 
-                    // Mengumpulkan profile unik dan jumlah totalnya
-                    const profileMap = new Map();
+                    // Mengumpulkan profile unik dan menghitung jumlah data
+                    const profileCountMap = new Map();
 
-                    // Mengelompokkan data berdasarkan profil dan menghitung jumlahnya
+                    // Mengelompokkan data berdasarkan profil dan menghitung jumlah data
                     dataklien.forEach(option => {
                         if (option.profile) {
                             const profile = option.profile;
-                            const jumlah = parseFloat(option.jumlah) || 0; // Pastikan jumlah adalah angka
-                            if (!profileMap.has(profile)) {
-                                profileMap.set(profile, 0);
+                            if (!profileCountMap.has(profile)) {
+                                profileCountMap.set(profile, 0);
                             }
-                            profileMap.set(profile, profileMap.get(profile) + jumlah);
+                            profileCountMap.set(profile, profileCountMap.get(profile) + 1);
                         }
                     });
 
-                    // Menambahkan opsi profile unik ke dropdown dengan jumlah totalnya
-                    profileMap.forEach((jumlah, profile) => {
+                    // Menambahkan opsi profile unik ke dropdown dengan jumlah data
+                    profileCountMap.forEach((count, profile) => {
                         const profileOption = document.createElement('option');
-                        profileOption.textContent = `${profile} (${jumlah})`;
+                        profileOption.textContent = `${profile} (${count})`;
                         profileOption.value = profile.toLowerCase();
                         selectElement.appendChild(profileOption);
                     });
