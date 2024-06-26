@@ -600,7 +600,7 @@ router.post("/tambahakuntamu", AuthTamu, async (req, res) => {
     ? await addakuntamu(username, jenisAkun, password, comment)
     : await addakuntamu(username, jenisAkun, null, comment);
 
-  console.log(response);
+  // console.log(response);
 
   // Prepare data for sheet insertion
   let data = {
