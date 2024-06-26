@@ -65,25 +65,25 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  if (req.session && req.session.lastAccess) {
-    const now = new Date();
-    const elapsedTime = now - req.session.lastAccess;
-    const maxAge = req.session.cookie.maxAge;
+// app.use((req, res, next) => {
+//   if (req.session && req.session.lastAccess) {
+//     const now = new Date();
+//     const elapsedTime = now - req.session.lastAccess;
+//     const maxAge = req.session.cookie.maxAge;
 
-    if (elapsedTime > maxAge) {
-      req.session.destroy((err) => {
-        if (err) {
-          console.error('Error destroying session:', err);
-        } else {
-          console.log('Session has been destroyed due to inactivity');
-        }
-      });
-    }
-  }
-  req.session.lastAccess = new Date();
-  next();
-});
+//     if (elapsedTime > maxAge) {
+//       req.session.destroy((err) => {
+//         if (err) {
+//           console.error('Error destroying session:', err);
+//         } else {
+//           console.log('Session has been destroyed due to inactivity');
+//         }
+//       });
+//     }
+//   }
+//   req.session.lastAccess = new Date();
+//   next();
+// });
 
 async function startServer(port) {
   return new Promise((resolve, reject) => {
