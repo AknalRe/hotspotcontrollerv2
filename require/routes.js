@@ -11,7 +11,8 @@ const {
   APP_AUTHOR,
   Mikrotik,
   PROFILE_DEFAULT_TAMU,
-  URL_HOTSPOT
+  URL_HOTSPOT,
+  PATH_BANNER
 } = require("./main");
 const {
   testINT,
@@ -1219,7 +1220,7 @@ router.post("/getfilebannerjs", isAuthenticated, async (req, res) => {
   if (mikrotikstatus) {
     try {
       let response = await client.write("/file/print", [
-        "?name=flash/HotspotClarice/banner.js",
+        `?name=${PATH_BANNER}`,
       ]);
       response = response.length > 1 ? response : response[0];
       logg(true, `Berhasil mendapatkan data banner.js`);

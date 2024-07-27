@@ -73,7 +73,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
         return response.data;
     } catch (err) {
         console.log(err.message || err)
-        return { success: false, response: err };
+        return { success: false, response: err.message || "Error" };
     }
 }
 
