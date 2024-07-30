@@ -40,17 +40,14 @@
         .then(data => {
             toastToast(true, "", "Berhasil mengambil info sistem hotspot");
             const contents = data.response.contents;
-            const jsonString = contents.replace(/^let serverConfig = /, '').replace(/;$/, '');
+            const regex = /(\w+):\s*"(.*?)"/g;
+            const result = {};
+            let match;
 
-            let result;
-            try {
-                // Parsing JSON string menjadi objek JavaScript
-                result = JSON.parse(jsonString);
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                return;
+            // Iterasi melalui semua hasil regex
+            while ((match = regex.exec(contents)) !== null) {
+                result[match[1]] = match[2];
             }
-
             id = data.response[".id"];
             serv = result;
             updateserv(result);
@@ -84,10 +81,28 @@
             });
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
 
-            const newserv = `let serverConfig = ${JSON.stringify(updatedResult)};`;
+            const newserv = `let serverConfig = ${convertObjectToString(updatedResult)};`;
             console.log(id, newserv, updatedResult);
             saveserv(id, newserv, updatedResult);
         });
+    }
+
+    function convertObjectToString(obj) {
+        let result = '{\n';
+        for (const [key, value] of Object.entries(obj)) {
+            // Tambahkan setiap properti ke string hasil
+            // Untuk nilai string, tambahkan tanda kutip
+            // Untuk nilai selain string, tidak perlu tanda kutip
+            if (typeof value === 'string') {
+                result += `  ${key}: "${value}",\n`;
+            } else {
+                result += `  ${key}: ${value},\n`;
+            }
+        }
+        // Hapus koma terakhir dan tambahkan kurung penutup
+        result = result.replace(/,\n$/, '\n');
+        result += '}';
+        return result;
     }
 
     function saveserv(id, newserv, updatedResult) {
