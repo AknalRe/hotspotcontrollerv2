@@ -40,14 +40,17 @@
         .then(data => {
             toastToast(true, "", "Berhasil mengambil info sistem hotspot");
             const contents = data.response.contents;
-            const regex = /(\w+):\s*"(.*?)"/g;
-            const result = {};
-            let match;
+            const jsonString = contents.replace(/^let serverConfig = /, '').replace(/;$/, '');
 
-            // Iterasi melalui semua hasil regex
-            while ((match = regex.exec(contents)) !== null) {
-                result[match[1]] = match[2];
+            let result;
+            try {
+                // Parsing JSON string menjadi objek JavaScript
+                result = JSON.parse(jsonString);
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                return;
             }
+
             id = data.response[".id"];
             serv = result;
             updateserv(result);
