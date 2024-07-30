@@ -53,7 +53,7 @@
                     result[match[1]] = match[2];
                 }
                 id = data.response[".id"];
-                console.log(id, result);
+                // console.log(id, result);
                 serv = result;
                 updateserv(result);;
             })
@@ -85,7 +85,8 @@
             });
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
             const newserv = "let serverConfig = " + JSON.stringify(updatedResult) + ";";
-            saveserv(id, newserv, updatedResult);
+            console.log(id, newserv, updatedResult)
+            // saveserv(id, newserv, updatedResult);
             // Here you can save `updatedResult` to server or local storage
         });
     }
