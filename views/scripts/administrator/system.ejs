@@ -84,10 +84,10 @@
                 updatedResult[key] = document.getElementById(key).value;
             });
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
-            const newserv = toString("let serverConfig = " + JSON.stringify(updatedResult));
+            // const newserv = toString("let serverConfig = " + JSON.stringify(updatedResult));
+            const newserv = "let serverConfig = " + JSON.stringify(updatedResult);
             console.log(id, newserv, updatedResult)
             saveserv(id, newserv, updatedResult);
-            // Here you can save `updatedResult` to server or local storage
         });
     }
 
