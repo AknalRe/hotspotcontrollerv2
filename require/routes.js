@@ -1716,6 +1716,7 @@ router.post("/updateservjs", isAuthenticated, async (req, res) => {
   if (req.session.role.toLowerCase() !== "demo") {
     const { mikrotikstatus, mikrotikidentity } = Mikrotik;
     const { id, contents, data } = req.body;
+    console.log(id, contents, data)
     if (mikrotikstatus) {
       try {
         if (!contents) {
