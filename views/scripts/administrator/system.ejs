@@ -27,8 +27,6 @@
 <script>
     let id;
     let serv;
-    let newserv;
-    let oldserv;
 
     function getdataserv() {
         toastToast(true, "", "Memproses mengambil info sistem hotspot");
@@ -38,36 +36,34 @@
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                toastToast(true, "", "Berhasil mengambil info sistem hotspot");
-                // console.log(data.response);
-                const contents = data.response.contents;
-                const regex = /(\w+):\s*"(.*?)"/g;
-                const result = {};
-                let match;
+        .then(response => response.json())
+        .then(data => {
+            toastToast(true, "", "Berhasil mengambil info sistem hotspot");
+            const contents = data.response.contents;
+            const regex = /(\w+):\s*"(.*?)"/g;
+            const result = {};
+            let match;
 
-                // Iterasi melalui semua hasil regex
-                while ((match = regex.exec(contents)) !== null) {
-                    // match[1] adalah nama property, match[2] adalah nilai
-                    result[match[1]] = match[2];
-                }
-                id = data.response[".id"];
-                // console.log(id, result);
-                serv = result;
-                updateserv(result);;
-            })
-            .catch(error => {
-                console.log('Error:', error);
-                toastToast(false, "", "Gagal mengambil info sistem hotspot");
-            });
+            // Iterasi melalui semua hasil regex
+            while ((match = regex.exec(contents)) !== null) {
+                result[match[1]] = match[2];
+            }
+            id = data.response[".id"];
+            serv = result;
+            updateserv(result);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            toastToast(false, "", "Gagal mengambil info sistem hotspot");
+        });
     }
 
     getdataserv();
 
     function updateserv(result) {
         const container = document.getElementById('config-container');
-    
+        container.innerHTML = ''; // Clear previous content
+
         for (const [key, value] of Object.entries(result)) {
             const div = document.createElement('div');
             div.className = 'form-group';
@@ -77,16 +73,16 @@
             `;
             container.appendChild(div);
         }
-        
+
         document.getElementById('save-btn').addEventListener('click', () => {
             const updatedResult = {};
             Object.keys(result).forEach(key => {
                 updatedResult[key] = document.getElementById(key).value;
             });
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
-            // const newserv = toString("let serverConfig = " + JSON.stringify(updatedResult));
-            const newserv = "let serverConfig = " + JSON.stringify(updatedResult);
-            console.log(id, newserv, updatedResult)
+
+            const newserv = `let serverConfig = ${JSON.stringify(updatedResult)};`;
+            console.log(id, newserv, updatedResult);
             saveserv(id, newserv, updatedResult);
         });
     }
@@ -96,7 +92,8 @@
             id: id,
             contents: newserv,
             data: updatedResult
-        }
+        };
+
         fetch('/updateservjs', {
             method: 'POST',
             headers: {
@@ -104,26 +101,19 @@
             },
             body: JSON.stringify(formData)
         })
-            .then(response => response.json())
-            .then(data => {
-                // console.log(data);
-                toastToast(data.success, "", data.message);
-                if (data.success) {
-                    setTimeout(() => {
-                        // tbody.removeChild(tbody.firstChild);
-                        // array = [];
-                        serv = null;
-                        newserv = null;
-                        oldserv = null;
-                        getdataserv();
-                        // toastToast(true, "", `Memperbarui data`);
-                        count = 0;
-                    }, 1000);
-                }
-            })
-            .catch(error => {
-                console.log('Error:', error);
-                toastToast(false, "", "Gagal mengupdate sistem hotspot");
-            });
+        .then(response => response.json())
+        .then(data => {
+            toastToast(data.success, "", data.message);
+            if (data.success) {
+                setTimeout(() => {
+                    serv = null;
+                    getdataserv();
+                }, 1000);
+            }
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            toastToast(false, "", "Gagal mengupdate sistem hotspot");
+        });
     }
 </script>

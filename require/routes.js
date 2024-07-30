@@ -1714,58 +1714,63 @@ router.post("/getfileservjs", isAuthenticated, async (req, res) => {
 
 router.post("/updateservjs", isAuthenticated, async (req, res) => {
   if (req.session.role.toLowerCase() !== "demo") {
-    const { mikrotikstatus, mikrotikidentity } = Mikrotik;
-    const { id, contents, data } = req.body;
-    console.log(id, contents, data)
-    if (mikrotikstatus) {
-      try {
-        if (!contents) {
-          es.json({ success: false, message: `Gagal merubah content Sistem` });
-        }
-        await client.write("/file/set", [
-          "=.id=" + id,
-          "=contents=" + contents,
-        ]);
-        // console.log(data)
-        logg(true, `Berhasil merubah content Sistem`);
-        let pesan = `List data Sistem :\n\n`;
-        for (const [key, value] of Object.entries(data)) {
-          pesan += `${key}: ${value}\n`;
-        }
-        await notif(
-          req.hostname,
-          req.session.username,
-          req.session.role,
-          `Berhasil mengupdate sistem ${mikrotikidentity}\n\n${pesan}`
-        );
-        res.json({
-          success: true,
-          title: `Ubah Sistem Hotspot`,
-          message: `Berhasil merubah content Sistem`,
-        });
-      } catch (err) {
-        logg(false, `Gagal merubah content Sistem, error: ${err}`);
-        res.json({
-          success: false,
-          title: `Ubah Sistem Hotspot`,
-          message: `Gagal merubah content Sistem`,
-          response: err.message,
-        });
+      const { mikrotikstatus, mikrotikidentity } = Mikrotik;
+      const { id, contents, data } = req.body;
+      console.log(id, contents, data);
+
+      if (mikrotikstatus) {
+          try {
+              if (!contents) {
+                  return res.json({ success: false, message: `Gagal merubah content Sistem` });
+              }
+
+              await client.write("/file/set", [
+                  "=.id=" + id,
+                  "=contents=" + contents,
+              ]);
+
+              logg(true, `Berhasil merubah content Sistem`);
+
+              let pesan = `List data Sistem :\n\n`;
+              for (const [key, value] of Object.entries(data)) {
+                  pesan += `${key}: ${value}\n`;
+              }
+
+              await notif(
+                  req.hostname,
+                  req.session.username,
+                  req.session.role,
+                  `Berhasil mengupdate sistem ${mikrotikidentity}\n\n${pesan}`
+              );
+
+              res.json({
+                  success: true,
+                  title: `Ubah Sistem Hotspot`,
+                  message: `Berhasil merubah content Sistem`,
+              });
+          } catch (err) {
+              logg(false, `Gagal merubah content Sistem, error: ${err}`);
+              res.json({
+                  success: false,
+                  title: `Ubah Sistem Hotspot`,
+                  message: `Gagal merubah content Sistem`,
+                  response: err.message,
+              });
+          }
+      } else {
+          logg(false, `Mikrotik tidak terhubung`);
+          res.json({
+              success: false,
+              title: `Ubah Banner Hotspot`,
+              message: `Mikrotik tidak terhubung`,
+          });
       }
-    } else {
-      logg(false, `Mikrotik tidak terhubung`);
-      res.json({
-        success: false,
-        title: `Ubah Banner Hotspot`,
-        message: `Mikrotik tidak terhubung`,
-      });
-    }
   } else {
-    res.json({
-      success: false,
-      title: `Ubah Banner Hotspot`,
-      message: `Gagal, Anda berada di user demo`,
-    });
+      res.json({
+          success: false,
+          title: `Ubah Banner Hotspot`,
+          message: `Gagal, Anda berada di user demo`,
+      });
   }
 });
 
