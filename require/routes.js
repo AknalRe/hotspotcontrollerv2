@@ -1685,7 +1685,7 @@ router.post("/getfileservjs", isAuthenticated, async (req, res) => {
       let response = await client.write("/file/print", [
         `?name=${PATH_SERV}`,
       ]);
-      // response = response.length > 1 ? response : response[0];
+      response = response.length > 1 ? response : response[0];
       logg(true, `Berhasil mendapatkan data banner.js`);
       res.json({
         success: true,

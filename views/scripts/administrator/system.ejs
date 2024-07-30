@@ -25,6 +25,7 @@
     }
 </script>
 <script>
+    let id;
     let serv;
     let newserv;
     let oldserv;
@@ -38,7 +39,19 @@
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data.response)
+                console.log(data.response);
+                const contents = data.response.contents;
+                const regex = /(\w+):\s*"(.*?)"/g;
+                const result = {};
+                let match;
+
+                // Iterasi melalui semua hasil regex
+                while ((match = regex.exec(contents)) !== null) {
+                    // match[1] adalah nama property, match[2] adalah nilai
+                    result[match[1]] = match[2];
+                }
+                id = data.response[".id"];
+                console.log(result);
             })
             .catch(error => {
                 console.log('Error:', error);
