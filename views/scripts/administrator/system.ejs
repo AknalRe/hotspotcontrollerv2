@@ -31,6 +31,7 @@
     let oldserv;
 
     function getdataserv() {
+        toastToast(true, "", "Memproses mengambil info sistem hotspot");
         fetch('/getfileservjs', {
             method: 'POST',
             headers: {
@@ -39,6 +40,7 @@
         })
             .then(response => response.json())
             .then(data => {
+                toastToast(true, "", "Berhasil mengambil info sistem hotspot");
                 // console.log(data.response);
                 const contents = data.response.contents;
                 const regex = /(\w+):\s*"(.*?)"/g;
@@ -57,6 +59,7 @@
             })
             .catch(error => {
                 console.log('Error:', error);
+                toastToast(false, "", "Gagal mengambil info sistem hotspot");
             });
     }
 
@@ -80,8 +83,43 @@
             Object.keys(result).forEach(key => {
                 updatedResult[key] = document.getElementById(key).value;
             });
-            console.log('Updated Values:', updatedResult);
+            toastToast(true, "", "Memproses mengupdate sistem hotspot");
+            const newserv = "let serverConfig = " + JSON.stringify(updatedResult) + ";";
+            saveserv(id, newserv, updatedResult);
             // Here you can save `updatedResult` to server or local storage
         });
+    }
+
+    function saveserv(id, newserv, updatedResult) {
+        const formData = {
+            id: id,
+            contents: newserv,
+            data: updatedResult
+        }
+        fetch('/updateservjs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                toastToast(data.success, "", data.message);
+                if (data.success) {
+                    setTimeout(() => {
+                        // tbody.removeChild(tbody.firstChild);
+                        // array = [];
+                        getdataserv();
+                        // toastToast(true, "", `Memperbarui data`);
+                        count = 0;
+                    }, 1000);
+                }
+            })
+            .catch(error => {
+                console.log('Error:', error);
+                toastToast(false, "", "Gagal mengupdate sistem hotspot");
+            });
     }
 </script>
