@@ -12,7 +12,8 @@ const {
   Mikrotik,
   PROFILE_DEFAULT_TAMU,
   URL_HOTSPOT,
-  PATH_BANNER
+  PATH_BANNER,
+  PATH_SERV
 } = require("./main");
 const {
   testINT,
@@ -389,6 +390,39 @@ router.get("/wifi", async (req, res) => {
     script: 'wifiscript'
   };
   res.render("tamu/index", data);
+});
+
+router.get("/system", isAuthenticated, async (req, res) => {
+  const { mikrotikstatus } = Mikrotik;
+  req.session.prevpage = req.path;
+  const role = req.session.role;
+  const userRole = (
+    role === "Demo"
+      ? "Administrator"
+      : role !== "Administrator" && role !== "Admin"
+        ? "User"
+        : role
+  ).toLowerCase();
+  const style =
+    userRole !== "administrator" && userRole !== "admin" ? "user" : "style";
+  const data = {
+    auth: true,
+    mikrotik: mikrotikstatus,
+    user_name: req.session.name,
+    user_username: req.session.username,
+    user_role: role == "Demo" ? "Administrator" : role,
+    user_demo: role == "Demo" ? true : false,
+    title: APP_TITLE,
+    author: APP_AUTHOR,
+    name_page: `System - ${APP_TITLE}`,
+    scriptglobal: "scripts/script",
+    footer: "footer",
+    style: style,
+    navbar: `navbar/${userRole}`,
+    page: `partials/${userRole}/system`,
+    scriptlocal: `scripts/${userRole}/system`,
+  };
+  res.render("index", data);
 });
 
 // router.get('/user', async (req, res) => {
@@ -1643,6 +1677,40 @@ router.post("/broadcast", isAuthenticated, async (req, res) => {
 // } else {
 //     res.json({ success: false, title: `Broadcast Klien`, message: `Gagal, Anda berada di user demo` })
 // }
+
+router.post("/getfileservjs", isAuthenticated, async (req, res) => {
+  const { mikrotikstatus } = Mikrotik;
+  if (mikrotikstatus) {
+    try {
+      let response = await client.write("/file/print", [
+        `?name=${PATH_SERV}`,
+      ]);
+      // response = response.length > 1 ? response : response[0];
+      logg(true, `Berhasil mendapatkan data banner.js`);
+      res.json({
+        success: true,
+        title: `Sistem Hotspot`,
+        message: `Berhasil mendapatkan data serv.js`,
+        response: response,
+      });
+    } catch (err) {
+      logg(false, `Gagal mendapatkan data serv.js, error: ${err.message}`);
+      res.json({
+        success: false,
+        title: `Sistem Hotspot`,
+        message: `Gagal mendapatkan data serv.js`,
+        response: err.message,
+      });
+    }
+  } else {
+    logg(false, `Mikrotik tidak terhubung`);
+    res.json({
+      success: false,
+      title: `Banner Hotspot`,
+      message: `Mikrotik tidak terhubung`,
+    });
+  }
+});
 
 router.post("/logout", isAuthenticated, async (req, res) => {
   const ip =

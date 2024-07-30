@@ -1,25 +1,26 @@
 # App Configuration
 APP_DEBUG=false
 APP_ENV=production
-APP_PORT=8881
+APP_PORT=8885
 APP_URL=localhost
 APP_NAME=
 APP_TITLE="Mikrotik Controller"
 APP_AUTHOR="AknalRe"
 
 # Path Configuration
-PATH_BANNER="flash/Custom/banner.js"
+PATH_BANNER="flash/Custom-DeltaPS2/banner.js"
+PATH_SERV="flash/Custom-DeltaPS2/serv.js"
 
 # Profile and Parameters
 PROFILE_DEFAULT_TAMU="Tamu"
 PARAM_USERTAMBAH="Nwx3MUpSp3I5aX1ItaitkvYBYAkWFsjgDj7t1jbI0PjjUuEk27"
-URL_HOTSPOT="http://claricemjk.login/"
+URL_HOTSPOT="http://deltaps2.login/"
 WEBHOOKN8N="webhook/eceaca6c-93ba-4901-ad4e-ecdd59fe5bd7"
 
 # Mikrotik Configuration
 MK_HOST="vpn.aknalre.my.id"
-MK_PORT=8730
-MK_USER=admin
+MK_PORT=8734
+MK_USER=Renaldi
 MK_PASS="Renaldi123!@#"
 MK_TIMEOUT=3000
 INTERVAL=5
