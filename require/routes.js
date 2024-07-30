@@ -1727,15 +1727,10 @@ router.post("/updateservjs", isAuthenticated, async (req, res) => {
         ]);
         // console.log(data)
         logg(true, `Berhasil merubah content Sistem`);
-        let pesan = `List data Sistem :\n`;
+        let pesan = `List data Sistem :\n\n`;
         for (const [key, value] of Object.entries(data)) {
           pesan += `${key}: ${value}\n`;
         }
-        // data.forEach(function (item) {
-        //   if (item.alt !== "" && item.link !== "") {
-        //     pesan += `\n\n${item.id}. ${item.alt}\nLink Gambar : ${item.link} `;
-        //   }
-        // });
         await notif(
           req.hostname,
           req.session.username,
