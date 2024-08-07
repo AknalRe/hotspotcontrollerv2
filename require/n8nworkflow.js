@@ -1,5 +1,5 @@
 const { WEBHOOKN8N } = require('./main');
-const webhookUrl = "http://172.17.0.2:5678/" + WEBHOOKN8N;
+const webhookUrl = "http://172.17.0.1:5678/" + WEBHOOKN8N;
 
 // async function main() {
 //   const fetch = (await import('node-fetch')).default;
