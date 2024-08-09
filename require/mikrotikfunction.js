@@ -197,7 +197,7 @@ async function addakuntamu(username, jenisakun, password, comment) {
                             .replace(/{nama_lengkap}/g, comment)
                             .replace(/{username}/g, username);
     
-                        response = pesandata.data.link ? await KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : KirimPesanWA(nomortujuan, pesan);
+                        response = pesandata.data.link ? KirimPesanWA(nomortujuan, pesan, pesandata.data.link) : KirimPesanWA(nomortujuan, pesan);
                     }
                 } catch (error) {
                     logg(false, error.message)
