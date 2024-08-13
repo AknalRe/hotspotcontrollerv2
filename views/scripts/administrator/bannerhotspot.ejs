@@ -80,14 +80,20 @@
             var linkCell = document.createElement('td');
             var linkInput = document.createElement('input');
             linkInput.type = 'text';
-            linkInput.value = item.link;
+            linkInput.value = item.img;
             linkInput.style.width = '100%';
             linkCell.appendChild(linkInput);
             // linkCell.style.width = '150px';
 
+            var targetCell = document.createElement('td');
+            var targetInput = document.createElement('input');
+            targetInput.type = 'text';
+            targetInput.value = item.link;
+            targetCell.appendChild(targetInput);
+
             var imgCell = document.createElement('td');
             var imgElement = document.createElement('img');
-            imgElement.src = item.link;
+            imgElement.src = item.img;
             imgElement.style.width = '100%';
             imgElement.style.height = 'auto';
             imgCell.style.width = '350px';
@@ -103,12 +109,14 @@
             SaveButton.addEventListener('click', function () {
                 var newAlt = altInput.value;
                 var newLink = linkInput.value;
+                var newTarget = targetInput.value;
                 var index = array.findIndex(x => x.id === item.id);
                 // console.log(index)
                 if (index !== -1) {
                     if (array[index].alt !== newAlt || array[index].link !== newLink) {
                         array[index].alt = newAlt;
-                        array[index].link = newLink;
+                        array[index].img = newLink;
+                        array[index].link = newTarget;
                         toastToast(true, "", `Data nomor ${array[index].id} berhasil diubah`);
                     } else {
                         toastToast(false, "", `Data nomor ${array[index].id} gagal di simpan, tidak ada perubahan`);
@@ -140,10 +148,11 @@
             actionCell.appendChild(SaveButton);
             actionCell.appendChild(DeleteButton);
             if (!array.some(x => x.id === item.id)) {
-                array.push({ id: item.id, alt: item.alt, link: item.link });
+                array.push({ id: item.id, alt: item.alt, link: item.link, img: item.img });
                 row.appendChild(countCell);
                 row.appendChild(altCell);
                 row.appendChild(linkCell);
+                row.appendChild(targetCell);
                 row.appendChild(imgCell);
                 row.appendChild(actionCell);
                 tbody.appendChild(row);
@@ -151,7 +160,7 @@
                 toastToast(false, "", `Data dengan ID ${item.id} tidak unik`);
             }
         });
-        newarray.push({ id: (lastid + 1), alt: "", link: "" })
+        newarray.push({ id: (lastid + 1), alt: "", link: "", img: "" })
     }
 
     function TambahBanner() {
@@ -175,13 +184,19 @@
         var linkCell = document.createElement('td');
         var linkInput = document.createElement('input');
         linkInput.type = 'text';
-        linkInput.value = newarray.link ? newarray.link : "";
+        linkInput.value = newarray.img ? newarray.img : "";
         linkCell.appendChild(linkInput);
         linkCell.style.width = '150px';
 
+        var targetCell = document.createElement('td');
+        var targetInput = document.createElement('input');
+        targetInput.type = 'text';
+        targetInput.value = newarray.link ? newarray.link : "";
+        targetCell.appendChild(targetInput);
+
         var imgCell = document.createElement('td');
         var imgElement = document.createElement('img');
-        imgElement.src = newarray.link ? newarray.link : "";
+        imgElement.src = newarray.img ? newarray.img : "";
         imgElement.style.width = '100%';
         imgElement.style.height = 'auto';
         imgCell.style.width = '150px';
@@ -197,12 +212,13 @@
             var newid = newarray.id ? newarray.id : id;
             var newAlt = altInput.value;
             var newLink = linkInput.value;
+            var newTarget = targetInput.value;
             let index = array.findIndex(x => x.id === newid);
             var isFound = index !== -1;
             // console.log(`newid : \n${newid}\n\nnewAlt : \n${newAlt}\n\nnewLink : \n${newLink}\n\narray : \n${JSON.stringify(array)}\n\nnewarray : \n${JSON.stringify(newarray)}\n\nindex : \n${index}\n\nisFound : \n${isFound}`);
             if (!isFound) {
                 // console.log('Array lama : ', array)
-                array.push({ id: newid, alt: newAlt, link: newLink });
+                array.push({ id: newid, alt: newAlt, img: newLink, link: newTarget });
                 index = array.findIndex(x => x.id === newid);
                 // console.log('Array baru : ', array)
                 // SaveButton.disabled = 'true';
@@ -213,9 +229,10 @@
                 // console.log('Array lama : ', array);
                 // console.log(found);
                 if (found) {
-                    if (array[foundIndex].alt !== newAlt || array[index].link !== newLink) {
+                    if (array[foundIndex].alt !== newAlt || array[index].img !== newLink || array[index].link !== newTarget) {
                         array[foundIndex].alt = newAlt;
-                        array[foundIndex].link = newLink;
+                        array[foundIndex].img = newLink;
+                        array[foundIndex].link = newTarget;
                         toastToast(true, "", `Data nomor ${array[index].id ? array[index].id : count} berhasil di ubah ke data baru`);
                     } else {
                         toastToast(false, "", `Data nomor ${array[index].id ? array[index].id : count} gagal di simpan, tidak ada perubahan`);
@@ -278,6 +295,7 @@
         row.appendChild(countCell);
         row.appendChild(altCell);
         row.appendChild(linkCell);
+        row.appendChild(targetCell);
         row.appendChild(imgCell);
         row.appendChild(actionCell);
         tbody.appendChild(row);
