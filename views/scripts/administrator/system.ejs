@@ -82,7 +82,7 @@
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
 
             const newserv = `let serverConfig = ${convertObjectToString(updatedResult)};`;
-            console.log(id, newserv, updatedResult);
+            // console.log(id, newserv, updatedResult);
             saveserv(id, newserv, updatedResult);
         });
     }
