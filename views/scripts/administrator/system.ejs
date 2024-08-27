@@ -90,13 +90,11 @@
     function convertObjectToString(obj) {
         let result = '{\n';
         for (const [key, value] of Object.entries(obj)) {
-            // Tambahkan setiap properti ke string hasil
-            // Untuk nilai string, tambahkan tanda kutip
-            // Untuk nilai selain string, tidak perlu tanda kutip
-            if (typeof value === 'string') {
-                result += `  ${key}: "${value}",\n`;
+            // Jika nilai bisa dikonversi ke angka dan tidak ada karakter selain angka dan titik desimal, simpan sebagai angka
+            if (!isNaN(value) && !isNaN(parseFloat(value))) {
+                result += `  ${key}: ${parseFloat(value)},\n`;
             } else {
-                result += `  ${key}: ${value},\n`;
+                result += `  ${key}: "${value}",\n`;
             }
         }
         // Hapus koma terakhir dan tambahkan kurung penutup
