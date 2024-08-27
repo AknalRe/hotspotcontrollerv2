@@ -67,27 +67,17 @@
         for (const [key, value] of Object.entries(result)) {
             const div = document.createElement('div');
             div.className = 'form-group';
-
-            // Tentukan tipe input berdasarkan jenis nilai
-            let inputType = typeof value === 'number' ? 'number' : 'text';
-
             div.innerHTML = `
                 <label for="${key}">${key}:</label>
-                <input type="${inputType}" id="${key}" class="form-control" value="${value}" />
+                <input type="text" id="${key}" class="form-control" value="${value}" />
             `;
             container.appendChild(div);
         }
 
-
         document.getElementById('save-btn').addEventListener('click', () => {
             const updatedResult = {};
             Object.keys(result).forEach(key => {
-                let value = document.getElementById(key).value;
-                // Konversi ke angka jika memungkinkan
-                if (!isNaN(value) && !isNaN(parseFloat(value))) {
-                    value = parseFloat(value);
-                }
-                updatedResult[key] = value;
+                updatedResult[key] = document.getElementById(key).value;
             });
             toastToast(true, "", "Memproses mengupdate sistem hotspot");
 
@@ -100,11 +90,13 @@
     function convertObjectToString(obj) {
         let result = '{\n';
         for (const [key, value] of Object.entries(obj)) {
-            // Jika nilai bisa dikonversi ke angka dan tidak ada karakter selain angka dan titik desimal, simpan sebagai angka
-            if (!isNaN(value) && !isNaN(parseFloat(value))) {
-                result += `  ${key}: ${parseFloat(value)},\n`;
-            } else {
+            // Tambahkan setiap properti ke string hasil
+            // Untuk nilai string, tambahkan tanda kutip
+            // Untuk nilai selain string, tidak perlu tanda kutip
+            if (typeof value === 'string') {
                 result += `  ${key}: "${value}",\n`;
+            } else {
+                result += `  ${key}: ${value},\n`;
             }
         }
         // Hapus koma terakhir dan tambahkan kurung penutup
