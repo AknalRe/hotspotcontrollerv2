@@ -19,12 +19,11 @@ const MikrotikConfig = {
 }
 
 const whatsapp = {
-    LINKWA: LINKWA,
-    LINKWA2: LINKWA2,
-    APIKEYWA: APIKEYWA,
-    APIKEYWA2: APIKEYWA2,
-    IDKOMUNITAS: IDKOMUNITAS,
-    IDGRUPINFOSPAM: IDGRUPINFOSPAM,
+    url: WAHA_URL,
+    key: WAHA_KEY,
+    session: WAHA_SESSION,
+    grupNotif: ID_GRUP_NOTIF,
+    grupSpam: ID_GRUP_SPAM,
 }
 
 const Mikrotik = {

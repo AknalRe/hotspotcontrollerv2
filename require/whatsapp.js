@@ -1,6 +1,10 @@
 const { logg, moment, Mikrotik, APP_DEBUG, APP_ENV, whatsapp } = require('./main');
 const axios = require('axios');
 
+const WAHA = {
+    ...whatsapp
+}
+
 const urlWA = whatsapp.LINKWA;
 const urlWA2 = whatsapp.LINKWA2;
 const apikeyWA = whatsapp.APIKEYWA;
@@ -36,41 +40,81 @@ const idspam = whatsapp.IDGRUPINFOSPAM;
 
 async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
     const payload = linkGambar
-        ? { apikey: apikeyWA, to: nomorTujuan, message: pesan, url: linkGambar }
-        : { apikey: apikeyWA, to: nomorTujuan, message: pesan };
+        ? {
+            chatId: nomorTujuan,
+            file: {
+              mimetype: "image/jpeg",
+              filename: "clarice.jpg",
+              url: linkGambar
+            },
+            reply_to: null,
+            caption: pesan,
+            session: WAHA.session
+          }
+        : {
+            chatId: nomorTujuan,
+            reply_to: null,
+            text: pesan,
+            linkPreview: true,
+            session: WAHA.session
+          };
 
     const options = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-Api-key": WAHA.key // Menambahkan header X-Api-key
+        },
         data: JSON.stringify(payload),
-        url: urlWA,
+        url: WAHA.url,
     };
 
     try {
         const response = await axios(options);
         // console.log(response.data);
-        return response.data;
+        // return response.data;
+        return { success: true, response};
     } catch (err) {
         return KirimPesanWA2(nomorTujuan, pesan, linkGambar);
     }
 }
 
 async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
-    const payload = linkGambar 
-        ? { secretApp: apikeyWA2, grup: "no", phoneNumber: nomorTujuan, message: pesan, url: linkGambar }
-        : { secretApp: apikeyWA2, grup: "no", phoneNumber: nomorTujuan, message: pesan };
+    const payload = linkGambar
+        ? {
+            chatId: nomorTujuan,
+            file: {
+              mimetype: "image/jpeg",
+              filename: "clarice.jpg",
+              url: linkGambar
+            },
+            reply_to: null,
+            caption: pesan,
+            session: WAHA.session
+          }
+        : {
+            chatId: nomorTujuan,
+            reply_to: null,
+            text: pesan,
+            linkPreview: true,
+            session: WAHA.session
+          };
 
     const options = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-Api-key": WAHA.key // Menambahkan header X-Api-key
+        },
         data: JSON.stringify(payload),
-        url: urlWA2,
+        url: WAHA.url,
     };
 
     try {
         const response = await axios(options);
         // // console.log(response.data);
-        return response.data;
+        // return response.data;
+        return { success: true, response};
     } catch (err) {
         console.log(err.message || err)
         return { success: false, response: err };
@@ -80,23 +124,28 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
 async function kirimNotif(pesan) {
     if (!APP_DEBUG && APP_ENV !== 'local') {
         const payload = {
-            secretApp: apikeyWA2,
-            grup: "yes",
-            phoneNumber: idgrup,
-            message: pesan,
+            chatId: idgrup,
+            reply_to: null,
+            text: pesan,
+            linkPreview: true,
+            session: WAHA.session
         };
     
         const options = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "X-Api-key": WAHA.key // Menambahkan header X-Api-key
+            },
             data: JSON.stringify(payload),
-            url: urlWA2,
+            url: WAHA.url,
         };
     
         try {
             const response = await axios(options);
             // console.log(response.data);
-            return response.data;
+            // return response.data;
+            return { success: true, response};
         } catch (err) {
             console.log(err.message || err);
             return { success: false, response: err.message || err };
@@ -129,23 +178,28 @@ async function notif(hostname, username, role, message) {
 async function notifspam(message) {
     try {
         const payload = {
-            secretApp: apikeyWA2,
-            grup: "yes",
-            phoneNumber: idspam,
-            message: message,
-        };
+            chatId: idspam,
+            reply_to: null,
+            text: message,
+            linkPreview: true,
+            session: WAHA.session
+        }
     
         const options = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "X-Api-key": WAHA.key // Menambahkan header X-Api-key
+            },
             data: JSON.stringify(payload),
-            url: urlWA2,
+            url: WAHA.url,
         };
     
         try {
             const response = await axios(options);
             // console.log(response.data);
-            return response.data;
+            // return response.data;
+            return { success: true, response};
         } catch (err) {
             logg(false, (err.message || err));
             return { success: false, response: err.message || err };
