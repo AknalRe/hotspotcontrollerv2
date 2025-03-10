@@ -5,12 +5,6 @@ const WAHA = {
     ...whatsapp
 }
 
-const urlWA = whatsapp.LINKWA;
-const urlWA2 = whatsapp.LINKWA2;
-const apikeyWA = whatsapp.APIKEYWA;
-const apikeyWA2 = whatsapp.APIKEYWA2;
-const idgrup = whatsapp.IDKOMUNITAS;
-const idspam = whatsapp.IDGRUPINFOSPAM;
 // console.log(APP_DEBUG, APP_ENV);
 
 // async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
@@ -58,6 +52,7 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
             linkPreview: true,
             session: WAHA.session
           };
+    const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
 
     const options = {
         method: "POST",
@@ -66,7 +61,7 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
             "X-Api-key": WAHA.key // Menambahkan header X-Api-key
         },
         data: JSON.stringify(payload),
-        url: WAHA.url,
+        url: url,
     };
 
     try {
@@ -99,6 +94,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
             linkPreview: true,
             session: WAHA.session
           };
+    const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
 
     const options = {
         method: "POST",
@@ -107,7 +103,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
             "X-Api-key": WAHA.key // Menambahkan header X-Api-key
         },
         data: JSON.stringify(payload),
-        url: WAHA.url,
+        url: url,
     };
 
     try {
@@ -130,6 +126,8 @@ async function kirimNotif(pesan) {
             linkPreview: true,
             session: WAHA.session
         };
+
+        const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
     
         const options = {
             method: "POST",
@@ -138,7 +136,7 @@ async function kirimNotif(pesan) {
                 "X-Api-key": WAHA.key // Menambahkan header X-Api-key
             },
             data: JSON.stringify(payload),
-            url: WAHA.url,
+            url: url,
         };
     
         try {
@@ -184,6 +182,8 @@ async function notifspam(message) {
             linkPreview: true,
             session: WAHA.session
         }
+
+        const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
     
         const options = {
             method: "POST",
@@ -192,7 +192,7 @@ async function notifspam(message) {
                 "X-Api-key": WAHA.key // Menambahkan header X-Api-key
             },
             data: JSON.stringify(payload),
-            url: WAHA.url,
+            url: url,
         };
     
         try {
