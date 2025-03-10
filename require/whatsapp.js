@@ -120,7 +120,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
 async function kirimNotif(pesan) {
     if (!APP_DEBUG && APP_ENV !== 'local') {
         const payload = {
-            chatId: idgrup,
+            chatId: WAHA.grupNotif,
             reply_to: null,
             text: pesan,
             linkPreview: true,
@@ -176,7 +176,7 @@ async function notif(hostname, username, role, message) {
 async function notifspam(message) {
     try {
         const payload = {
-            chatId: idspam,
+            chatId: WAHA.grupSpam,
             reply_to: null,
             text: message,
             linkPreview: true,
