@@ -127,7 +127,7 @@ async function kirimNotif(pesan) {
             session: WAHA.session
         };
 
-        const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
+        const url = `${WAHA.url}/api/sendText`;
     
         const options = {
             method: "POST",
@@ -183,7 +183,7 @@ async function notifspam(message) {
             session: WAHA.session
         }
 
-        const url = linkGambar ? `${WAHA.url}/api/sendImage` : `${WAHA.url}/api/sendText`;
+        const url = `${WAHA.url}/api/sendText`;
     
         const options = {
             method: "POST",
