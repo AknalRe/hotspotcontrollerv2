@@ -35,7 +35,7 @@ const WAHA = {
 async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
     const payload = linkGambar
         ? {
-            chatId: nomorTujuan,
+            chatId: nomorTujuan + '@c.us',
             file: {
               mimetype: "image/jpeg",
               filename: "clarice.jpg",
@@ -46,7 +46,7 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
             session: WAHA.session
           }
         : {
-            chatId: nomorTujuan,
+            chatId: nomorTujuan + '@c.us',
             reply_to: null,
             text: pesan,
             linkPreview: true,
@@ -77,7 +77,7 @@ async function KirimPesanWA(nomorTujuan, pesan, linkGambar) {
 async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
     const payload = linkGambar
         ? {
-            chatId: nomorTujuan,
+            chatId: nomorTujuan + '@c.us',
             file: {
               mimetype: "image/jpeg",
               filename: "clarice.jpg",
@@ -88,7 +88,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
             session: WAHA.session
           }
         : {
-            chatId: nomorTujuan,
+            chatId: nomorTujuan + '@c.us',
             reply_to: null,
             text: pesan,
             linkPreview: true,
@@ -120,7 +120,7 @@ async function KirimPesanWA2(nomorTujuan, pesan, linkGambar) {
 async function kirimNotif(pesan) {
     if (!APP_DEBUG && APP_ENV !== 'local') {
         const payload = {
-            chatId: WAHA.grupNotif,
+            chatId: WAHA.grupNotif + '@g.us',
             reply_to: null,
             text: pesan,
             linkPreview: true,
@@ -176,7 +176,7 @@ async function notif(hostname, username, role, message) {
 async function notifspam(message) {
     try {
         const payload = {
-            chatId: WAHA.grupSpam,
+            chatId: WAHA.grupSpam + '@g.us',
             reply_to: null,
             text: message,
             linkPreview: true,
